@@ -1,6 +1,6 @@
 ﻿namespace ClothesRentalSystem.ConsoleUI.Entity.Bases;
 
-public class BasePeopleEntity
+public class BasePeopleEntity : BaseLongEntity
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
