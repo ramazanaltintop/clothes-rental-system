@@ -2,9 +2,9 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Service.Abstract;
 
-public interface IAdminService
+public interface IUserService
 {
     void Save(string username, string email, string password);
-    Admin GetByUsername(string username);
-    Admin GetByEmail(string email);
+    User GetByUsername(string username);
+    User GetByEmail(string email);
 }

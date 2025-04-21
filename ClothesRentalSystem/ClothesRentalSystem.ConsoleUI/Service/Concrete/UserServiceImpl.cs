@@ -2,26 +2,25 @@
 using ClothesRentalSystem.ConsoleUI.Entity.Enums;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
-using ClothesRentalSystem.ConsoleUI.Util;
 
 namespace ClothesRentalSystem.ConsoleUI.Service.Concrete;
 
-public class AdminServiceImpl : IAdminService
+public class UserServiceImpl : IUserService
 {
-    private readonly AdminRepository _repository;
+    private readonly UserRepository _repository;
 
-    public AdminServiceImpl(AdminRepository repository)
+    public UserServiceImpl(UserRepository repository)
     {
         _repository = repository;
     }
 
-    public Admin GetByEmail(string email)
+    public User GetByEmail(string email)
     {
         return _repository.GetByEmail(email)
             ?? throw new Exception("Please check your information");
     }
 
-    public Admin GetByUsername(string username)
+    public User GetByUsername(string username)
     {
         return _repository.GetByUsername(username)
             ?? throw new Exception("Please check your information");
@@ -31,15 +30,14 @@ public class AdminServiceImpl : IAdminService
     {
         if (_repository.HasUsername(username)
             || _repository.HasEmail(email))
-            throw new Exception("This admin already exists");
+            throw new Exception("This user already exists");
 
-        Admin admin = new Admin();
-        admin.Id = GenerateId.GenerateAdminId();
-        admin.Username = username;
-        admin.Email = email;
-        admin.Password = password;
-        admin.Role = Role.Admin;
+        User user = new User();
+        user.Username = username;
+        user.Email = email;
+        user.Password = password;
+        user.Role = Role.User;
 
-        _repository.Save(admin);
+        _repository.Save(user);
     }
 }

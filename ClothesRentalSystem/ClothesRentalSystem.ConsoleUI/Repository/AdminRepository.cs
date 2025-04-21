@@ -1,22 +1,31 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 
-namespace ClothesRentalSystem.ConsoleUI.Repository
+namespace ClothesRentalSystem.ConsoleUI.Repository;
+
+public class AdminRepository : List
 {
-    public class AdminRepository : List
+    public void Save(Admin admin)
     {
-        public void Save(Admin admin)
-        {
-            admins.Add(admin);
-        }
+        admins.Add(admin);
+    }
 
-        public bool CheckUsername(string username)
-        {
-            return admins.Any(admin => admin.Username.Equals(username));
-        }
+    public Admin? GetByUsername(string username)
+    {
+        return admins.FirstOrDefault(admin => admin.Username.Equals(username));
+    }
 
-        public bool CheckEmail(string email)
-        {
-            return admins.Any(admin => admin.Email.Equals(email));
-        }
+    public Admin? GetByEmail(string email)
+    {
+        return admins.FirstOrDefault(admin => admin.Email.Equals(email));
+    }
+
+    public bool HasUsername(string username)
+    {
+        return admins.Any(admin => admin.Username.Equals(username));
+    }
+
+    public bool HasEmail(string email)
+    {
+        return admins.Any(admin => admin.Email.Equals(email));
     }
 }
