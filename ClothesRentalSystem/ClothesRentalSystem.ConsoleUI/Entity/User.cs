@@ -1,12 +1,27 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity.Bases;
-using ClothesRentalSystem.ConsoleUI.Entity.Enums;
+﻿using ClothesRentalSystem.ConsoleUI.Entity.Base;
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
 public class User : BasePeopleEntity
 {
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public Role Role { get; set; }
+    public Auth Auth { get; set; }
+    public DateTime CreatedAt { get; set; }
+
+    public User()
+    {
+        CreatedAt = DateTime.UtcNow;
+        Auth = new Auth();
+    }
+
+    public override string ToString()
+    {
+        string message = base.ToString() +
+            $"Username : {Auth.Username}\n" +
+            $"Email : {Auth.Email}\n" +
+            $"Password : {Auth.Password}\n" +
+            $"Role : {Auth.Role.ToString()}\n" +
+            $"CreatedAt : {CreatedAt}\n";
+
+        return message;
+    }
 }

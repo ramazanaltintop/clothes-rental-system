@@ -2,7 +2,7 @@
 
 public interface IAuthService
 {
-    int SignInWithUsername(string username, string password);
-    int SignInWithEmail(string email, string password);
-    bool SignOut(int id);
+    long SignInWithUsername(string username, string password);
+    long SignInWithEmail(string email, string password);
+    bool SignOut(long peopleId);
 }

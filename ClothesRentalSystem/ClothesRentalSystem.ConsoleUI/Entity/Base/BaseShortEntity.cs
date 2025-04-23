@@ -1,4 +1,4 @@
-﻿namespace ClothesRentalSystem.ConsoleUI.Entity.Bases;
+﻿namespace ClothesRentalSystem.ConsoleUI.Entity.Base;
 
 public class BaseShortEntity
 {
@@ -6,6 +6,6 @@ public class BaseShortEntity
 
     public override string ToString()
     {
-        return $"Id: {Id}";
+        return $"Id: {Id}\n";
     }
 }

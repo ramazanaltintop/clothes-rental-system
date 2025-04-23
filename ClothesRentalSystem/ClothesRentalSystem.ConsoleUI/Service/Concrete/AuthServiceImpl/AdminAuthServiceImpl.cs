@@ -1,5 +1,4 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Entity.Enums;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -19,46 +18,48 @@ public class AdminAuthServiceImpl : IAuthService
         _adminService = adminService;
     }
 
-    public int SignInWithUsername(string username, string password)
+    public long SignInWithUsername(string username, string password)
     {
         if (_repository.HasUsernameSignedInBefore(username))
             throw new Exception("You have already signed to system");
 
         Admin admin = _adminService.GetByUsername(username);
-        if (!admin.Password.Equals(password))
+        if (!admin.Auth.Password.Equals(password))
             throw new Exception("Incorrect password");
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
+        auth.PeopleId = admin.Id;
         auth.Username = username;
-        auth.Role = admin.Role;
-        auth.LogInDate = DateTime.UtcNow;
+        auth.Role = admin.Auth.Role;
+        auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
 
-    public int SignInWithEmail(string email, string password)
+    public long SignInWithEmail(string email, string password)
     {
         if (_repository.HasEmailSignedInBefore(email))
             throw new Exception("You have already signed to system");
 
         Admin admin = _adminService.GetByEmail(email);
 
-        if (!admin.Password.Equals(password))
+        if (!admin.Auth.Password.Equals(password))
             throw new Exception("Incorrect password");
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
+        auth.PeopleId = admin.Id;
         auth.Email = email;
-        auth.Role = admin.Role;
-        auth.LogInDate = DateTime.UtcNow;
+        auth.Role = admin.Auth.Role;
+        auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
 
-    public bool SignOut(int id)
+    public bool SignOut(long peopleId)
     {
-        Auth auth = _repository.GetById(id)
+        Auth auth = _repository.GetByPeopleId(peopleId)
             ?? throw new Exception("You have not already signed in the system");
 
         return _repository.SignOut(auth);

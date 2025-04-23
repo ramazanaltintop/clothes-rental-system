@@ -6,26 +6,36 @@ public class UserRepository : List
 {
     public void Save(User user)
     {
-        users.Add(user);
+        Users.Add(user);
+    }
+
+    public List<User> GetList()
+    {
+        return Users;
+    }
+
+    public User? GetById(long id)
+    {
+        return Users.FirstOrDefault(user => user.Id == id);
     }
 
     public User? GetByUsername(string username)
     {
-        return users.FirstOrDefault(user => user.Username.Equals(username));
+        return Users.FirstOrDefault(user => user.Auth.Username.Equals(username));
     }
 
     public User? GetByEmail(string email)
     {
-        return users.FirstOrDefault(user => user.Email.Equals(email));
+        return Users.FirstOrDefault(user => user.Auth.Email.Equals(email));
     }
 
     public bool HasUsername(string username)
     {
-        return users.Any(user => user.Username.Equals(username));
+        return Users.Any(user => user.Auth.Username.Equals(username));
     }
 
     public bool HasEmail(string email)
     {
-        return users.Any(user => user.Email.Equals(email));
+        return Users.Any(user => user.Auth.Email.Equals(email));
     }
 }

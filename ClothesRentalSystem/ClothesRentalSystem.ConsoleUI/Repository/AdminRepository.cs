@@ -6,26 +6,31 @@ public class AdminRepository : List
 {
     public void Save(Admin admin)
     {
-        admins.Add(admin);
+        Admins.Add(admin);
+    }
+
+    public Admin? GetById(long id)
+    {
+        return Admins.FirstOrDefault(admin => admin.Id == id);
     }
 
     public Admin? GetByUsername(string username)
     {
-        return admins.FirstOrDefault(admin => admin.Username.Equals(username));
+        return Admins.FirstOrDefault(admin => admin.Auth.Username.Equals(username));
     }
 
     public Admin? GetByEmail(string email)
     {
-        return admins.FirstOrDefault(admin => admin.Email.Equals(email));
+        return Admins.FirstOrDefault(admin => admin.Auth.Email.Equals(email));
     }
 
     public bool HasUsername(string username)
     {
-        return admins.Any(admin => admin.Username.Equals(username));
+        return Admins.Any(admin => admin.Auth.Username.Equals(username));
     }
 
     public bool HasEmail(string email)
     {
-        return admins.Any(admin => admin.Email.Equals(email));
+        return Admins.Any(admin => admin.Auth.Email.Equals(email));
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ClothesRentalSystem.ConsoleUI.Entity.Bases;
+﻿namespace ClothesRentalSystem.ConsoleUI.Entity.Base;
 
 public class BaseByteEntity
 {

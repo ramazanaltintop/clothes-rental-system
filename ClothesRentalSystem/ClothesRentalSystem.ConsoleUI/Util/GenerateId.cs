@@ -6,6 +6,8 @@ public static class GenerateId
     private static int _authId = 0;
     private static long _userId = 0;
     private static short _categoryId = 0;
+    private static long _clothesId = 0;
+    private static long _rentId = 0;
 
     public static short GenerateAdminId()
     {
@@ -29,5 +31,17 @@ public static class GenerateId
     {
         _categoryId = (short)(_categoryId + 1);
         return _categoryId;
+    }
+
+    public static long GenerateClothesId()
+    {
+        _clothesId = _clothesId + 1;
+        return _clothesId;
+    }
+
+    public static long GenerateRentId()
+    {
+        _rentId = _rentId + 1;
+        return _rentId;
     }
 }
