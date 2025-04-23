@@ -10,7 +10,7 @@ public static class FeAdminLogin
     {
         string hr = Program.HR;
 
-        Console.WriteLine($"{hr}\nKullanici Girisi");
+        Console.WriteLine($"{hr}\nAdmin Login");
 
         int choice = 0;
 
@@ -18,17 +18,17 @@ public static class FeAdminLogin
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Username_ile_Giris\n" +
-                "2_Email_ile_Giris\n" +
-                "3_Ust_Menuye_Don\n");
+                "1_Sign_In_with_Username\n" +
+                "2_Sign_In_with_Email\n" +
+                "3_Return_to_Main_Menu\n");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
             if (!isValid || choice < 1 || choice > 3)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalid input");
                 continue;
             }
 
@@ -42,7 +42,7 @@ public static class FeAdminLogin
 
                     if (username is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
@@ -51,7 +51,7 @@ public static class FeAdminLogin
 
                     if (password is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
@@ -64,7 +64,7 @@ public static class FeAdminLogin
 
                     if (email is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
@@ -73,7 +73,7 @@ public static class FeAdminLogin
 
                     if (password is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 

@@ -3,15 +3,15 @@ using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
-public static class FeClothesMenu
+public static class FeClothingMenu
 {
-    public static void OpenClothesMenu()
+    public static void OpenClothingMenu()
     {
         string hr = Program.HR;
 
         ClothesController clothesController = new ClothesController();
 
-        Console.WriteLine($"{hr}\nKiyafet Menusu");
+        Console.WriteLine($"{hr}\nClothing Menu");
 
         int choice = 0;
 
@@ -19,19 +19,19 @@ public static class FeClothesMenu
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Kiyafet_Listesi\n" +
-                "2_Kategoriye_Gore_Kiyafet_Listesi\n" +
-                "3_Stogu_Olan_Kiyafetler\n" +
-                "4_En_Cok_Kiralanan_Kiyafetler\n" +
-                "5_Ust_Menu\n");
+                "1_View_All_Clothes\n" +
+                "2_View_Clothes_by_Category\n" +
+                "3_View_Available_Clothes\n" +
+                "4_View_Most_Rented_Clothes\n" +
+                "5_Back_to_Previous_Menu\n");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
             if (!isValid || choice < 1 || choice > 5)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalid input");
                 continue;
             }
 
@@ -45,13 +45,13 @@ public static class FeClothesMenu
                     }
                     break;
                 case 2:
-                    Console.WriteLine($"{hr}\nHangi kategorideki kiyafetleri gormek istiyorsunuz (categoryName)");
+                    Console.WriteLine($"{hr}\nWhich category of clothes do you want to see(categoryName)");
 
                     string? categoryName = Console.ReadLine();
 
                     if (categoryName is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 

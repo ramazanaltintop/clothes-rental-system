@@ -10,31 +10,31 @@ public static class FeUserMenu
 
         UserAuthController userAuthController = new UserAuthController();
 
-        Console.WriteLine($"Hosgeldiniz");
+        Console.WriteLine($"Welcome");
         int choice = 0;
         while (choice != 4)
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Kiyafet_Menusu\n" +
-                "2_Kiralama_Menusu\n" +
-                "3_Iade_Menusu\n" +
-                "4_Oturumu_Kapat\n");
+                "1_Clothing_Menu\n" +
+                "2_Rental_Menu\n" +
+                "3_Give_Back_Menu\n" +
+                "4_Sign_Out\n");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
             if (!isValid || choice < 1 || choice > 4)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalid input");
                 continue;
             }
 
             switch (choice)
             {
                 case 1:
-                    FeClothesMenu.OpenClothesMenu();
+                    FeClothingMenu.OpenClothingMenu();
                     break;
                 case 2:
                     FeRentMenu.OpenRentMenu();

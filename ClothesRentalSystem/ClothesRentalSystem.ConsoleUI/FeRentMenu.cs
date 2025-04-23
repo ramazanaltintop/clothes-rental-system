@@ -21,50 +21,50 @@ public static class FeRentMenu
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Kiyafet_Kiralama_Talebi\n" +
-                "2_Gecmis_Kiralama_Istekleri\n" +
-                "3_Onaylanan_Kiralama_Istekleri\n" +
-                "4_Onaylanmayan_Kiralama_Istekleri\n" +
-                "5_Bekleyen_Kiralama_Istekleri\n" +
-                "6_Ust_Menu\n");
+                "1_Create_Rental_Request\n" +
+                "2_View_Past_Rental_Requests\n" +
+                "3_View_Approved_Rental_Requests\n" +
+                "4_View_Rejected_Rental_Requests\n" +
+                "5_View_Pending_Rental_Requests\n" +
+                "6_Back_to_Previous_Menu\n");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
             if (!isValid || choice < 1 || choice > 6)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalid input");
                 continue;
             }
 
             switch (choice)
             {
                 case 1:
-                    Console.WriteLine($"{hr}\nKac gun kiralamak istiyorsunuz : ");
+                    Console.WriteLine($"{hr}\nDay : ");
                     isValid = byte.TryParse(Console.ReadLine(), out byte day);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nKac tane kiralamak istiyorsunuz : ");
+                    Console.WriteLine($"{hr}\nQuantity : ");
                     isValid = byte.TryParse(Console.ReadLine(), out byte quantity);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nKac no'lu kiyafeti kiralamak istiyorsunuz : ");
+                    Console.WriteLine($"{hr}\nWhich clothes would you like to rent : ");
                     isValid = long.TryParse(Console.ReadLine(), out long clothesId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 

@@ -10,21 +10,21 @@ public static class FeClothesRentalSystem
 
         while (controller)
         {
-            Console.WriteLine($"Hosgeldiniz");
+            Console.WriteLine($"Welcome");
             int choice = 0;
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Kullanici_Girisi\n" +
-                "2_Admin_Girisi\n" +
-                "3_Cikis_Yap");
+                "1_User_Login\n" +
+                "2_Admin_Login\n" +
+                "3_Exit");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
             if (!isValid || choice < 1 || choice > 3)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalid input");
                 continue;
             }
 

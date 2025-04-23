@@ -16,98 +16,100 @@ public static class FeAdminMenu
         RentController rentController = new RentController();
         GiveBackController giveBackController = new GiveBackController();
         
-        Console.WriteLine($"{hr}\nKiyafet Menusu");
+        Console.WriteLine($"{hr}\nAdmin Menu");
 
         int choice = 0;
 
-        while (choice != 9)
+        while (choice != 11)
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Kiyafet_Ekle\n" +
-                "2_Kiyafet_Sil\n" +
-                "3_Bir_Kullanicinin_Gecmis_Kiralamalarini_Goruntule\n" +
-                "4_Bekleyen_Kiralama_Taleplerini_Goruntule\n" +
-                "5_Kiralama_Taleplerini_Onayla\n" +
-                "6_Kiralama_Taleplerini_Reddet\n" +
-                "7_Iade_Taleplerini_Onayla\n" +
-                "8_Iade_Taleplerini_Reddet\n" +
-                "9_Oturumu_Kapat\n");
+                "1_Add_Clothing_Item\n" +
+                "2_Remove_Clothing_Item\n" +
+                "3_View_a_User's_Rental_History\n" +
+                "4_View_Pending_Rental_Requests\n" +
+                "5_Approve_Rental_Requests\n" +
+                "6_Reject_Rental_Requests\n" +
+                "7_Approve_Give_Back_Requests\n" +
+                "8_Reject_Give_Back_Requests\n" +
+                "9_View_a_User's_Give_Back_History\n" +
+                "10_View_Pending_Give_Back_Requests\n" +
+                "11_Sign_Out\n");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValid || choice < 1 || choice > 9)
+            if (!isValid || choice < 1 || choice > 11)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalid input");
                 continue;
             }
 
             switch (choice)
             {
                 case 1:
-                    Console.WriteLine($"{hr}\nKiyafetin adini giriniz : ");
+                    Console.WriteLine($"{hr}\nName : ");
                     string? name = Console.ReadLine();
 
                     if (name is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nKiyafetin fiyatini giriniz : ");
+                    Console.WriteLine($"{hr}\nPrice : ");
 
                     isValid = decimal.TryParse(Console.ReadLine(), out decimal price);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nKac adet eklemek istiyorsunuz?");
+                    Console.WriteLine($"{hr}\nStock count : ");
 
                     isValid = int.TryParse(Console.ReadLine(), out int stockCount);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nHangi kategoriye eklemek istiyorsunuz? (CategoryId)");
+                    Console.WriteLine($"{hr}\nWhich category would you like to add it to (CategoryId)");
 
                     isValid = short.TryParse(Console.ReadLine(), out short categoryId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
                     clothesController.Save(name, price, stockCount, categoryId, FeAdminLogin.PeopleId);
                     break;
                 case 2:
-                    Console.WriteLine($"{hr}\nHangi kiyafeti silmek istiyorsunuz (clothesId)");
+                    Console.WriteLine($"{hr}\nWhich clothes do you want to delete (clothesId)");
 
                     isValid = int.TryParse(Console.ReadLine(), out int clothesId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
                     clothesController.Remove(clothesId, FeAdminLogin.PeopleId);
                     break;
                 case 3:
-                    Console.WriteLine($"{hr}\nHangi kullanicinin gecmis kiralamalarini gormek istiyorsunuz (username)");
+                    Console.WriteLine($"{hr}\nWhich user's rentals history do you want to see (username)");
 
                     string? username = Console.ReadLine();
 
                     if (username is null)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
 
@@ -125,54 +127,58 @@ public static class FeAdminMenu
                     }
                     break;
                 case 5:
-                    Console.WriteLine($"{hr}\nHangi kiralama talebini onaylamak istiyorsunuz (rentId)");
+                    Console.WriteLine($"{hr}\nWhich rental request do you want to approve (rentId)");
 
                     isValid = int.TryParse(Console.ReadLine(), out int rentId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
                     rentController.ApproveRequest(rentId, FeAdminLogin.PeopleId);
                     break;
                 case 6:
-                    Console.WriteLine($"{hr}\nHangi kiralama talebini reddetmek istiyorsunuz (rentId)");
+                    Console.WriteLine($"{hr}\nWhich rental request do you want to reject (rentId)");
 
                     isValid = int.TryParse(Console.ReadLine(), out rentId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
                     rentController.RejectRequest(rentId, FeAdminLogin.PeopleId);
                     break;
                 case 7:
-                    Console.WriteLine($"{hr}\nHangi iade talebini onaylamak istiyorsunuz (rentId)");
+                    Console.WriteLine($"{hr}\nWhich give back request do you want to approve (rentId)");
 
                     isValid = int.TryParse(Console.ReadLine(), out rentId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
                     giveBackController.ApproveRequest(rentId, FeAdminLogin.PeopleId);
                     break;
                 case 8:
-                    Console.WriteLine($"{hr}\nHangi iade talebini reddetmek istiyorsunuz (rentId)");
+                    Console.WriteLine($"{hr}\nWhich give back request do you want to reject (rentId)");
 
                     isValid = int.TryParse(Console.ReadLine(), out rentId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
                     giveBackController.RejectRequest(rentId, FeAdminLogin.PeopleId);
                     break;
                 case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
                     adminAuthController.SignOut(FeAdminLogin.PeopleId);
                     break;
             }

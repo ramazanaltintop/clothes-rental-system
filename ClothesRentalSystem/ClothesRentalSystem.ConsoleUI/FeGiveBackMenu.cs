@@ -11,7 +11,7 @@ public static class FeGiveBackMenu
 
         GiveBackController giveBackController = new GiveBackController();
 
-        Console.WriteLine($"{hr}\nKiyafet Iade Menusu");
+        Console.WriteLine($"{hr}\nGive Back Menu");
 
         int choice = 0;
 
@@ -19,33 +19,33 @@ public static class FeGiveBackMenu
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Kiyafet_Iade_Talebi\n" +
-                "2_Gecmis_Iade_Istekleri\n" +
-                "3_Onaylanan_Iade_Istekleri\n" +
-                "4_Onaylanmayan_Iade_Istekleri\n" +
-                "5_Bekleyen_Iade_Istekleri\n" +
-                "6_Ust_Menu\n");
+                "1_Create_Give_Back_Request\n" +
+                "2_Past_Give_Back_Requests\n" +
+                "3_Approved_Give_Back_Requests\n" +
+                "4_Rejected_Give_Back_Requests\n" +
+                "5_Pending_Give_Back_Requests\n" +
+                "6_Back_to_Previous_Menu\n");
 
-            Console.WriteLine($"{hr}\nSeciminiz : ");
+            Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
             if (!isValid || choice < 1 || choice > 6)
             {
-                Console.WriteLine($"{hr}\nGecersiz giris");
+                Console.WriteLine($"{hr}\nInvalidInput");
                 continue;
             }
 
             switch (choice)
             {
                 case 1:
-                    Console.WriteLine($"{hr}\nHangi no'lu kiralamanizi iade etmek istiyorsunuz (rentId)");
+                    Console.WriteLine($"{hr}\nWhich rental would you like to give back (rentId)");
 
                     isValid = long.TryParse(Console.ReadLine(), out long rentId);
 
                     if (!isValid)
                     {
-                        Console.WriteLine($"{hr}\nGecersiz giris");
+                        Console.WriteLine($"{hr}\nInvalidInput");
                         continue;
                     }
                     giveBackController.SendRequest(rentId, FeUserLogin.PeopleId);
