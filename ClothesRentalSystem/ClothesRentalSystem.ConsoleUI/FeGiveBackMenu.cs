@@ -20,10 +20,10 @@ public static class FeGiveBackMenu
             Console.WriteLine(
                 $"{hr}\n" +
                 "1_Create_Give_Back_Request\n" +
-                "2_Past_Give_Back_Requests\n" +
-                "3_Approved_Give_Back_Requests\n" +
-                "4_Rejected_Give_Back_Requests\n" +
-                "5_Pending_Give_Back_Requests\n" +
+                "2_View_Past_Give_Back_Requests\n" +
+                "3_View_Approved_Give_Back_Requests\n" +
+                "4_View_Rejected_Give_Back_Requests\n" +
+                "5_View_Pending_Give_Back_Requests\n" +
                 "6_Back_to_Previous_Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");

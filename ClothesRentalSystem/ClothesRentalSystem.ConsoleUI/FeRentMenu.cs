@@ -13,7 +13,7 @@ public static class FeRentMenu
         RentController rentController = new RentController();
         ClothesController clothesController = new ClothesController();
 
-        Console.WriteLine($"{hr}\nKiralama Menusu");
+        Console.WriteLine($"{hr}\nRental Menu");
 
         int choice = 0;
 
@@ -59,7 +59,7 @@ public static class FeRentMenu
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nWhich clothes would you like to rent : ");
+                    Console.WriteLine($"{hr}\nWhich clothes would you like to rent : (clothesId)");
                     isValid = long.TryParse(Console.ReadLine(), out long clothesId);
 
                     if (!isValid)
