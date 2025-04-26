@@ -58,4 +58,19 @@ public class GiveBackRepository : List
             rent.GiveBack == ECondition.REJECTED))
             .ToList();
     }
+
+    public List<Rent> GetListByUsername(string username)
+    {
+        return Rents.Where(rent => 
+                rent.User.Auth.Username.Equals(username) &&
+                rent.GiveBack != ECondition.FALSE)
+            .ToList();
+    }
+
+    public List<Rent> GetListByRequestedAll()
+    {
+        return Rents
+            .Where(rent => rent.GiveBack == ECondition.REQUESTED)
+            .ToList();
+    }
 }

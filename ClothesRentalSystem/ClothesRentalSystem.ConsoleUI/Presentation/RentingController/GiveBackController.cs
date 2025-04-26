@@ -70,4 +70,16 @@ public class GiveBackController
     {
         return _giveBackService.GetListByApprovedOrRejected(peopleId);
     }
+
+    // Herhangi bir kullanıcının Geçmiş Iade İstekleri
+    public List<Rent> GetListByUsername(string username, long peopleId)
+    {
+        return _giveBackService.GetListByUsername(username, peopleId);
+    }
+
+    // Tüm kullanıcıların bekleyen iade istekleri
+    public List<Rent> GetListByRequestedAll(long peopleId)
+    {
+        return _giveBackService.GetListByRequestedAll(peopleId);
+    }
 }

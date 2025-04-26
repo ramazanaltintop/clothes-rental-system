@@ -90,7 +90,7 @@ public class GiveBackServiceImpl : IGiveBackService
         Rent rent = _rentService.GetById(rentId);
 
         // iade talebi zaten reddedildi mi
-        if (rent.GiveBack != ECondition.REJECTED)
+        if (rent.GiveBack == ECondition.REJECTED)
             throw new Exception("Give back request already rejected");
 
         rent.GiveBack = ECondition.REJECTED;
@@ -168,5 +168,35 @@ public class GiveBackServiceImpl : IGiveBackService
             throw new Exception("You are not authorized");
 
         return _repository.GetListByApprovedOrRejected(peopleId);
+    }
+
+    public List<Rent> GetListByUsername(string username, long peopleId)
+    {
+        // herhangi bir kullanıcının geçmiş iade isteklerini
+        // görüntülemek isteyen kullanıcı sistemde kayıtlı bir
+        // kullanıcı mı?
+        Admin admin = _adminService.GetById(peopleId);
+
+        // Kullanıcı sistemde varsa rolü uygun mu?
+        if (admin.Auth.Role != ERole.ADMIN)
+            throw new Exception("You are not authorized");
+
+        // Geçmiş iade isteklerini görmek istediğimiz
+        // kullanıcı sistemde kayıtlı bir kullanıcı mı?
+        User user = _userService.GetByUsername(username);
+
+        return _repository.GetListByUsername(username);
+    }
+
+    public List<Rent> GetListByRequestedAll(long peopleId)
+    {
+        // Bu işlemi yapmak isteyen kullanıcı sistemde kayıtlı mı
+        Admin admin = _adminService.GetById(peopleId);
+
+        // Kullanıcı admin rolüne sahip mi
+        if (admin.Auth.Role != ERole.ADMIN)
+            throw new Exception("You are not authorized");
+
+        return _repository.GetListByRequestedAll();
     }
 }

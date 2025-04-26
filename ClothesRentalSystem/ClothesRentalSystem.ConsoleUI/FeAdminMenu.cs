@@ -175,8 +175,28 @@ public static class FeAdminMenu
                     giveBackController.RejectRequest(rentId, FeAdminLogin.PeopleId);
                     break;
                 case 9:
+                    Console.WriteLine($"{hr}\nWhich user's give back history do you want to see (username)");
+
+                    username = Console.ReadLine();
+
+                    if (username is null)
+                    {
+                        Console.WriteLine($"{hr}\nInvalid input");
+                        continue;
+                    }
+
+                    List<Rent> giveBacks = giveBackController.GetListByUsername(username, FeAdminLogin.PeopleId);
+                    foreach (Rent rent in giveBacks)
+                    {
+                        Console.WriteLine(rent);
+                    }
                     break;
                 case 10:
+                    List<Rent> pendingGiveBacks = giveBackController.GetListByRequestedAll(FeAdminLogin.PeopleId);
+                    foreach (Rent rent in pendingGiveBacks)
+                    {
+                        Console.WriteLine(rent);
+                    }
                     break;
                 case 11:
                     adminAuthController.SignOut(FeAdminLogin.PeopleId);

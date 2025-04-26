@@ -11,4 +11,6 @@ public interface IGiveBackService
     List<Rent> GetListByRequested(long peopleId);
     List<Rent> GetListByRejected(long peopleId);
     List<Rent> GetListByApprovedOrRejected(long peopleId);
+    List<Rent> GetListByUsername(string username, long peopleId);
+    List<Rent> GetListByRequestedAll(long peopleId);
 }
