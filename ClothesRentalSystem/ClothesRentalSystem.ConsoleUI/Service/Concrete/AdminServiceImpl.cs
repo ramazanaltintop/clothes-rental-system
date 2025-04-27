@@ -1,5 +1,6 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Entity.Enum;
+using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -19,7 +20,7 @@ public class AdminServiceImpl : IAdminService
     {
         if (_repository.HasUsername(username)
             || _repository.HasEmail(email))
-            throw new Exception("This admin already exists");
+            throw new AdminAlreadyExistsException();
 
         Admin admin = new Admin();
         admin.Id = GenerateId.GenerateAdminId();
@@ -34,18 +35,18 @@ public class AdminServiceImpl : IAdminService
     public Admin GetById(long id)
     {
         return _repository.GetById(id)
-            ?? throw new Exception("Admin not found");
+            ?? throw new AdminNotFoundException($"Id {id}");
     }
 
     public Admin GetByUsername(string username)
     {
         return _repository.GetByUsername(username)
-            ?? throw new Exception("Please check your information");
+            ?? throw new AdminNotFoundException($"Username {username}");
     }
 
     public Admin GetByEmail(string email)
     {
         return _repository.GetByEmail(email)
-            ?? throw new Exception("Please check your information");
+            ?? throw new AdminNotFoundException($"Email {email}");
     }
 }

@@ -1,5 +1,8 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Entity.Enum;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Repository.RentingRepository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -29,14 +32,14 @@ public class RentServiceImpl : IRentService
 
         // Sadece USER rolüne sahipse kiralama talebinde bulunabilir
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         // kiralanacak kıyafet var mı
         Clothes clothes = _clothesService.GetById(clothesId);
 
         // kıyafetin stok adedi yeterli mi
         if (clothes.StockCount - quantity < 0)
-            throw new Exception("Clothes stock is finished");
+            throw new OutOfStockException();
 
         // nesne oluşturduk
         Rent rent = new Rent();
@@ -64,11 +67,11 @@ public class RentServiceImpl : IRentService
 
         // kullanıcının rolü doğru mu
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         // zaten kiralama talebi onaylandı mı
         if (rent.IsApproved == ECondition.APPROVED)
-            throw new Exception("Rent request already approved.");
+            throw new RentalRequestAlreadyApprovedException();
 
         // kiralama talebi onaylandı
         rent.IsApproved = ECondition.APPROVED;
@@ -93,11 +96,11 @@ public class RentServiceImpl : IRentService
 
         // kullanıcının rolü doğru mu
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         // zaten kiralama talebi reddedildi mi
         if (rent.IsApproved == ECondition.REJECTED)
-            throw new Exception("Rent request already rejected.");
+            throw new RentalRequestAlreadyRejectedException();
 
         // kiralama talebi reddedildi
         rent.IsApproved = ECondition.REJECTED;
@@ -109,7 +112,7 @@ public class RentServiceImpl : IRentService
     public Rent GetById(long id)
     {
         return _repository.GetById(id)
-            ?? throw new Exception("Rented clothes not found");
+            ?? throw new RentNotFoundException();
     }
 
     // Onaylanan Kiralama İstekleri
@@ -124,7 +127,7 @@ public class RentServiceImpl : IRentService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByApproved(peopleId);
     }
@@ -141,7 +144,7 @@ public class RentServiceImpl : IRentService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByRequested(peopleId);
     }
@@ -157,7 +160,7 @@ public class RentServiceImpl : IRentService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByRejected(peopleId);
     }
@@ -173,7 +176,7 @@ public class RentServiceImpl : IRentService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByApprovedOrRejected(peopleId);
     }
@@ -188,7 +191,7 @@ public class RentServiceImpl : IRentService
 
         // Kullanıcı sistemde varsa rolü uygun mu?
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         // Geçmiş kiralama isteklerini görmek istediğimiz
         // kullanıcı sistemde kayıtlı bir kullanıcı mı?
@@ -205,7 +208,7 @@ public class RentServiceImpl : IRentService
 
         // Kullanıcı admin rolüne sahip mi
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         return _repository.GetListByRequestedAll();
     }

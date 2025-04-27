@@ -1,4 +1,11 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
+using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
 using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
@@ -15,7 +22,7 @@ public static class FeAdminMenu
         AdminAuthController adminAuthController = new AdminAuthController();
         RentController rentController = new RentController();
         GiveBackController giveBackController = new GiveBackController();
-        
+
         Console.WriteLine($"{hr}\nAdmin Menu");
 
         int choice = 0;
@@ -88,7 +95,31 @@ public static class FeAdminMenu
                         continue;
                     }
 
-                    clothesController.Save(name, price, stockCount, categoryId, FeAdminLogin.PeopleId);
+                    try
+                    {
+                        clothesController.Save(name, price, stockCount, categoryId, FeAdminLogin.PeopleId);
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (ClothesAlreadyExistsException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (CategoryNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 2:
                     Console.WriteLine($"{hr}\nWhich clothes do you want to delete (clothesId)");
@@ -100,7 +131,27 @@ public static class FeAdminMenu
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
-                    clothesController.Remove(clothesId, FeAdminLogin.PeopleId);
+
+                    try
+                    {
+                        clothesController.Remove(clothesId, FeAdminLogin.PeopleId);
+                    }
+                    catch (ClothesNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 3:
                     Console.WriteLine($"{hr}\nWhich user's rentals history do you want to see (username)");
@@ -113,18 +164,51 @@ public static class FeAdminMenu
                         continue;
                     }
 
-                    List<Rent> rents = rentController.GetListByUsername(username, FeAdminLogin.PeopleId);
-                    foreach (Rent rent in rents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> rents = rentController.GetListByUsername(username, FeAdminLogin.PeopleId);
+                        foreach (Rent rent in rents)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 4:
-                    List<Rent> requestedRents = rentController.GetListByRequestedAll(FeAdminLogin.PeopleId);
-                    foreach (Rent rent in requestedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> requestedRents = rentController.GetListByRequestedAll(FeAdminLogin.PeopleId);
+                        foreach (Rent rent in requestedRents)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 5:
                     Console.WriteLine($"{hr}\nWhich rental request do you want to approve (rentId)");
@@ -136,7 +220,37 @@ public static class FeAdminMenu
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
-                    rentController.ApproveRequest(rentId, FeAdminLogin.PeopleId);
+
+                    try
+                    {
+                        rentController.ApproveRequest(rentId, FeAdminLogin.PeopleId);
+                    }
+                    catch (RentNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (RentalRequestAlreadyApprovedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (ClothesNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 6:
                     Console.WriteLine($"{hr}\nWhich rental request do you want to reject (rentId)");
@@ -148,7 +262,32 @@ public static class FeAdminMenu
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
-                    rentController.RejectRequest(rentId, FeAdminLogin.PeopleId);
+
+                    try
+                    {
+                        rentController.RejectRequest(rentId, FeAdminLogin.PeopleId);
+                    }
+                    catch (RentNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (RentalRequestAlreadyRejectedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 7:
                     Console.WriteLine($"{hr}\nWhich give back request do you want to approve (rentId)");
@@ -160,7 +299,37 @@ public static class FeAdminMenu
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
-                    giveBackController.ApproveRequest(rentId, FeAdminLogin.PeopleId);
+
+                    try
+                    {
+                        giveBackController.ApproveRequest(rentId, FeAdminLogin.PeopleId);
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (RentNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (GiveBackRequestAlreadyApprovedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (ClothesNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 8:
                     Console.WriteLine($"{hr}\nWhich give back request do you want to reject (rentId)");
@@ -172,7 +341,37 @@ public static class FeAdminMenu
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
                     }
-                    giveBackController.RejectRequest(rentId, FeAdminLogin.PeopleId);
+
+                    try
+                    {
+                        giveBackController.RejectRequest(rentId, FeAdminLogin.PeopleId);
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (RentNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (GiveBackRequestAlreadyRejectedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (ClothesNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 9:
                     Console.WriteLine($"{hr}\nWhich user's give back history do you want to see (username)");
@@ -185,21 +384,63 @@ public static class FeAdminMenu
                         continue;
                     }
 
-                    List<Rent> giveBacks = giveBackController.GetListByUsername(username, FeAdminLogin.PeopleId);
-                    foreach (Rent rent in giveBacks)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> giveBacks = giveBackController.GetListByUsername(username, FeAdminLogin.PeopleId);
+                        foreach (Rent rent in giveBacks)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 10:
-                    List<Rent> pendingGiveBacks = giveBackController.GetListByRequestedAll(FeAdminLogin.PeopleId);
-                    foreach (Rent rent in pendingGiveBacks)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> pendingGiveBacks = giveBackController.GetListByRequestedAll(FeAdminLogin.PeopleId);
+                        foreach (Rent rent in pendingGiveBacks)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 11:
-                    adminAuthController.SignOut(FeAdminLogin.PeopleId);
+                    try
+                    {
+                        adminAuthController.SignOut(FeAdminLogin.PeopleId);
+                    }
+                    catch (NotAuthenticatedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
             }
         }

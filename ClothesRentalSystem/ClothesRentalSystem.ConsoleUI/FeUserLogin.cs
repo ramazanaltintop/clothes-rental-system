@@ -1,4 +1,6 @@
-﻿using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
+﻿using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
+using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -56,7 +58,26 @@ public static class FeUserLogin
                         continue;
                     }
 
-                    PeopleId = userAuthController.SignInWithUsername(username, password);
+                    try
+                    {
+                        PeopleId = userAuthController.SignInWithUsername(username, password);
+                    }
+                    catch (AlreadyAuthenticatedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (InvalidPasswordException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     FeUserMenu.OpenUserMenu();
                     break;
                 case 2:
@@ -78,7 +99,26 @@ public static class FeUserLogin
                         continue;
                     }
 
-                    PeopleId = userAuthController.SignInWithEmail(email, password);
+                    try
+                    {
+                        PeopleId = userAuthController.SignInWithEmail(email, password);
+                    }
+                    catch (AlreadyAuthenticatedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (InvalidPasswordException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     FeUserMenu.OpenUserMenu();
                     break;
                 case 3:

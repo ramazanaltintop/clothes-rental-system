@@ -1,4 +1,6 @@
-﻿using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
+﻿using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -55,7 +57,26 @@ public static class FeAdminLogin
                         continue;
                     }
 
-                    PeopleId = adminAuthController.SignInWithUsername(username, password);
+                    try
+                    {
+                        PeopleId = adminAuthController.SignInWithUsername(username, password);
+                    }
+                    catch (AlreadyAuthenticatedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (InvalidPasswordException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     FeAdminMenu.OpenAdminMenu();
                     break;
                 case 2:
@@ -77,7 +98,26 @@ public static class FeAdminLogin
                         continue;
                     }
 
-                    PeopleId = adminAuthController.SignInWithEmail(email, password);
+                    try
+                    {
+                        PeopleId = adminAuthController.SignInWithEmail(email, password);
+                    }
+                    catch (AlreadyAuthenticatedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (InvalidPasswordException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (AdminNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     FeAdminMenu.OpenAdminMenu();
                     break;
                 case 3:

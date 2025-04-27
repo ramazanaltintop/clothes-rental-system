@@ -1,4 +1,5 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -17,7 +18,7 @@ public class CategoryServiceImpl : ICategoryService
     public void Save(string name)
     {
         if (_repository.HasName(name.ToLower()))
-            throw new Exception("This category already added");
+            throw new CategoryAlreadyExistsException(name);
 
         Category category = new Category();
         category.Id = GenerateId.GenerateCategoryId();
@@ -29,6 +30,6 @@ public class CategoryServiceImpl : ICategoryService
     public Category GetById(short id)
     {
         return _repository.GetById(id)
-            ?? throw new Exception("Category not found");
+            ?? throw new CategoryNotFoundException($"Id {id}");
     }
 }

@@ -1,5 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Entity.Enum;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -26,10 +28,10 @@ public class ClothesServiceImpl : IClothesService
         Admin admin = _adminService.GetById(peopleId);
 
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         if (_repository.HasName(name))
-            throw new Exception("This clothes already registered to system");
+            throw new ClothesAlreadyExistsException(name);
 
         Category category = _categoryService.GetById(categoryId);
 
@@ -66,18 +68,17 @@ public class ClothesServiceImpl : IClothesService
     public Clothes GetById(long id)
     {
         return _repository.GetById(id)
-            ?? throw new Exception("Clothes not found");
+            ?? throw new ClothesNotFoundException($"Id {id}");
     }
 
     public void Remove(long clothesId, long peopleId)
     {
-        Clothes clothes = _repository.GetById(clothesId)
-            ?? throw new Exception("Clothes not found");
+        Clothes clothes = GetById(clothesId);
 
         Admin admin = _adminService.GetById(peopleId);
 
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         _repository.Remove(clothes);
     }

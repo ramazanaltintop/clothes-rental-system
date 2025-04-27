@@ -1,4 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
 
@@ -68,37 +71,116 @@ public static class FeRentMenu
                         continue;
                     }
 
-                    clothesController.GetById(clothesId);
+                    try
+                    {
+                        clothesController.GetById(clothesId);
+                        rentController.SendRequest(day, quantity, clothesId, FeUserLogin.PeopleId);
+                    }
+                    catch (ClothesNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (OutOfStockException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
 
-                    rentController.SendRequest(day, quantity, clothesId, FeUserLogin.PeopleId);
                     break;
                 case 2:
-                    List<Rent> approvedOrRejectedRents = rentController.GetListByApprovedOrRejected(FeUserLogin.PeopleId);
-                    foreach (Rent rent in approvedOrRejectedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> approvedOrRejectedRents = rentController.GetListByApprovedOrRejected(FeUserLogin.PeopleId);
+                        foreach (Rent rent in approvedOrRejectedRents)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 3:
-                    List<Rent> approvedRents = rentController.GetListByApproved(FeUserLogin.PeopleId);
-                    foreach (Rent rent in approvedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> approvedRents = rentController.GetListByApproved(FeUserLogin.PeopleId);
+                        foreach (Rent rent in approvedRents)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 4:
-                    List<Rent> rejectedRents = rentController.GetListByRejected(FeUserLogin.PeopleId);
-                    foreach (Rent rent in rejectedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> rejectedRents = rentController.GetListByRejected(FeUserLogin.PeopleId);
+                        foreach (Rent rent in rejectedRents)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 5:
-                    List<Rent> requestedRents = rentController.GetListByRequested(FeUserLogin.PeopleId);
-                    foreach (Rent rent in requestedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> requestedRents = rentController.GetListByRequested(FeUserLogin.PeopleId);
+                        foreach (Rent rent in requestedRents)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 6:
                     break;

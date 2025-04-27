@@ -2,6 +2,8 @@
 using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Repository.RentingRepository;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
 
 namespace ClothesRentalSystem.ConsoleUI.Service.Concrete.RentingServiceImpl;
 
@@ -31,7 +33,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü doğru rol mü
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         // iade talebi oluşturulan kıyafet sistemde var mı
         Rent rent = _rentService.GetById(rentId);
@@ -39,11 +41,11 @@ public class GiveBackServiceImpl : IGiveBackService
         // sadece kabul edilen kiralama talepleri
         // için iade talebi oluşturulabilir
         if (rent.IsApproved != ECondition.APPROVED)
-            throw new Exception("Give back request can only be created for accepted rental requests.");
+            throw new GiveBackRequestNotAllowedException();
 
         // zaten iade talebinde bulunuldu mu
         if (rent.GiveBack == ECondition.REQUESTED)
-            throw new Exception("Give back request already sent.");
+            throw new GiveBackRequestAlreadySentException();
 
         rent.GiveBack = ECondition.REQUESTED;
 
@@ -58,14 +60,14 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü doğru mu
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         // kiralanmak istenen böyle bir kıyafet var mı
         Rent rent = _rentService.GetById(rentId);
 
         // iade talebi zaten kabul edildi mi
         if (rent.GiveBack == ECondition.APPROVED)
-            throw new Exception("Give back request already approved");
+            throw new GiveBackRequestAlreadyApprovedException();
 
         rent.GiveBack = ECondition.APPROVED;
 
@@ -84,14 +86,14 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü doğru mu
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         // kiralanmak istenen böyle bir kıyafet var mı
         Rent rent = _rentService.GetById(rentId);
 
         // iade talebi zaten reddedildi mi
         if (rent.GiveBack == ECondition.REJECTED)
-            throw new Exception("Give back request already rejected");
+            throw new GiveBackRequestAlreadyRejectedException();
 
         rent.GiveBack = ECondition.REJECTED;
 
@@ -117,7 +119,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByApproved(peopleId);
     }
@@ -133,7 +135,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByRequested(peopleId);
     }
@@ -149,7 +151,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByRejected(peopleId);
     }
@@ -165,7 +167,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // kullanıcının rolü yetkili mi
         if (user.Auth.Role != ERole.USER)
-            throw new Exception("You are not authorized");
+            throw new UserOnlyAccessException();
 
         return _repository.GetListByApprovedOrRejected(peopleId);
     }
@@ -179,7 +181,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // Kullanıcı sistemde varsa rolü uygun mu?
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         // Geçmiş iade isteklerini görmek istediğimiz
         // kullanıcı sistemde kayıtlı bir kullanıcı mı?
@@ -195,7 +197,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         // Kullanıcı admin rolüne sahip mi
         if (admin.Auth.Role != ERole.ADMIN)
-            throw new Exception("You are not authorized");
+            throw new AdminOnlyAccessException();
 
         return _repository.GetListByRequestedAll();
     }

@@ -1,5 +1,6 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Entity.Enum;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -19,7 +20,7 @@ public class UserServiceImpl : IUserService
     {
         if (_repository.HasUsername(username)
             || _repository.HasEmail(email))
-            throw new Exception("This user already exists");
+            throw new UserAlreadyExistsException();
 
         User user = new User();
         user.Id = GenerateId.GenerateUserId();
@@ -39,18 +40,18 @@ public class UserServiceImpl : IUserService
     public User GetById(long id)
     {
         return _repository.GetById(id)
-            ?? throw new Exception("User not found");
+            ?? throw new UserNotFoundException($"Id {id}");
     }
     
     public User GetByUsername(string username)
     {
         return _repository.GetByUsername(username)
-            ?? throw new Exception("Please check your information");
+            ?? throw new UserNotFoundException($"Username {username}");
     }
 
     public User GetByEmail(string email)
     {
         return _repository.GetByEmail(email)
-            ?? throw new Exception("Please check your information");
+            ?? throw new UserNotFoundException($"Email {email}");
     }
 }

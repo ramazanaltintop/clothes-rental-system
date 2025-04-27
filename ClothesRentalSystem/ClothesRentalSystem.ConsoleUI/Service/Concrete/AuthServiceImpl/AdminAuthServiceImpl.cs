@@ -1,4 +1,5 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -21,11 +22,11 @@ public class AdminAuthServiceImpl : IAuthService
     public long SignInWithUsername(string username, string password)
     {
         if (_repository.HasUsernameSignedInBefore(username))
-            throw new Exception("You have already signed to system");
+            throw new AlreadyAuthenticatedException(username);
 
         Admin admin = _adminService.GetByUsername(username);
         if (!admin.Auth.Password.Equals(password))
-            throw new Exception("Incorrect password");
+            throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
@@ -40,12 +41,12 @@ public class AdminAuthServiceImpl : IAuthService
     public long SignInWithEmail(string email, string password)
     {
         if (_repository.HasEmailSignedInBefore(email))
-            throw new Exception("You have already signed to system");
+            throw new AlreadyAuthenticatedException("You have already signed to system");
 
         Admin admin = _adminService.GetByEmail(email);
 
         if (!admin.Auth.Password.Equals(password))
-            throw new Exception("Incorrect password");
+            throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
@@ -60,7 +61,7 @@ public class AdminAuthServiceImpl : IAuthService
     public bool SignOut(long peopleId)
     {
         Auth auth = _repository.GetByPeopleId(peopleId)
-            ?? throw new Exception("You have not already signed in the system");
+            ?? throw new NotAuthenticatedException();
 
         return _repository.SignOut(auth);
     }

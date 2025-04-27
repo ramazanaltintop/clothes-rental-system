@@ -1,4 +1,8 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
+using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
 
 namespace ClothesRentalSystem.ConsoleUI;
@@ -48,35 +52,121 @@ public static class FeGiveBackMenu
                         Console.WriteLine($"{hr}\nInvalidInput");
                         continue;
                     }
-                    giveBackController.SendRequest(rentId, FeUserLogin.PeopleId);
+
+                    try
+                    {
+                        giveBackController.SendRequest(rentId, FeUserLogin.PeopleId);
+                    }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (RentNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (GiveBackRequestNotAllowedException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (GiveBackRequestAlreadySentException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 2:
-                    List<Rent> approvedOrRejectedRents = giveBackController.GetListByApprovedOrRejected(FeUserLogin.PeopleId);
-                    foreach (Rent rent in approvedOrRejectedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> approvedOrRejectedGiveBacks = giveBackController.GetListByApprovedOrRejected(FeUserLogin.PeopleId);
+                        foreach (Rent rent in approvedOrRejectedGiveBacks)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 3:
-                    List<Rent> approvedRents = giveBackController.GetListByApproved(FeUserLogin.PeopleId);
-                    foreach (Rent rent in approvedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> approvedGiveBacks = giveBackController.GetListByApproved(FeUserLogin.PeopleId);
+                        foreach (Rent rent in approvedGiveBacks)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 4:
-                    List<Rent> rejectedRents = giveBackController.GetListByRejected(FeUserLogin.PeopleId);
-                    foreach (Rent rent in rejectedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> rejectedGiveBacks = giveBackController.GetListByRejected(FeUserLogin.PeopleId);
+                        foreach (Rent rent in rejectedGiveBacks)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 5:
-                    List<Rent> requestedRents = giveBackController.GetListByRequested(FeUserLogin.PeopleId);
-                    foreach (Rent rent in requestedRents)
+                    try
                     {
-                        Console.WriteLine(rent);
+                        List<Rent> requestedGiveBacks = giveBackController.GetListByRequested(FeUserLogin.PeopleId);
+                        foreach (Rent rent in requestedGiveBacks)
+                        {
+                            Console.WriteLine(rent);
+                        }
                     }
+                    catch (UserNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 6:
                     break;
