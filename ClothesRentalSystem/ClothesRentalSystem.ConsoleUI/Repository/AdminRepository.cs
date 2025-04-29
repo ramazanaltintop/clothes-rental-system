@@ -9,6 +9,11 @@ public class AdminRepository : List
         Admins.Add(admin);
     }
 
+    public List<Admin> GetList()
+    {
+        return Admins;
+    }
+
     public Admin? GetById(long id)
     {
         return Admins.FirstOrDefault(admin => admin.Id == id);
@@ -22,6 +27,11 @@ public class AdminRepository : List
     public Admin? GetByEmail(string email)
     {
         return Admins.FirstOrDefault(admin => admin.Auth.Email.Equals(email));
+    }
+
+    public void Remove(Admin admin)
+    {
+        Admins.Remove(admin);
     }
 
     public bool HasUsername(string username)

@@ -10,5 +10,6 @@ public interface IClothesService
     List<Clothes> GetListByCategoryName(string categoryName);
     List<Clothes> GetListByMostRented();
     Clothes GetById(long id);
+    void Update(long id, string name, decimal price, int stockCount, long peopleId);
     void Remove(long clothesId, long peopleId);
 }

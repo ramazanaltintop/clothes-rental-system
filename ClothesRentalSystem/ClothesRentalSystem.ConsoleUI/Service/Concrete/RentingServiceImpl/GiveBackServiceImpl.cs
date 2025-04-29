@@ -121,11 +121,16 @@ public class GiveBackServiceImpl : IGiveBackService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByApproved(peopleId);
+        List<Rent> rentals = _repository.GetListByApproved(peopleId);
+
+        if (rentals.Count == 0)
+            throw new NoApprovedGiveBackRequestsException();
+
+        return rentals;
     }
 
     // Iade İstekleri
-    public List<Rent> GetListByRequested(long peopleId)
+    public List<Rent> GetListByPending(long peopleId)
     {
         // sadece user rolüne sahip kullanıcılar
         // kendi kiralama isteklerini listeleyebilir
@@ -137,7 +142,12 @@ public class GiveBackServiceImpl : IGiveBackService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByRequested(peopleId);
+        List<Rent> rentals = _repository.GetListByPending(peopleId);
+
+        if (rentals.Count == 0)
+            throw new NoPendingGiveBackRequestsException();
+
+        return rentals;
     }
 
     // Reddedilen Iade Istekleri
@@ -153,7 +163,12 @@ public class GiveBackServiceImpl : IGiveBackService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByRejected(peopleId);
+        List<Rent> rentals = _repository.GetListByRejected(peopleId);
+
+        if (rentals.Count == 0)
+            throw new NoRejectedGiveBackRequestsException();
+
+        return rentals;
     }
 
     // Gecmis Iade İstekleri
@@ -169,7 +184,12 @@ public class GiveBackServiceImpl : IGiveBackService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByApprovedOrRejected(peopleId);
+        List<Rent> rentals = _repository.GetListByApprovedOrRejected(peopleId);
+
+        if (rentals.Count == 0)
+            throw new NoGiveBackHistoryFoundException();
+
+        return rentals;
     }
 
     public List<Rent> GetListByUsername(string username, long peopleId)
@@ -190,7 +210,7 @@ public class GiveBackServiceImpl : IGiveBackService
         return _repository.GetListByUsername(username);
     }
 
-    public List<Rent> GetListByRequestedAll(long peopleId)
+    public List<Rent> GetListByPendingAll(long peopleId)
     {
         // Bu işlemi yapmak isteyen kullanıcı sistemde kayıtlı mı
         Admin admin = _adminService.GetById(peopleId);
@@ -199,6 +219,6 @@ public class GiveBackServiceImpl : IGiveBackService
         if (admin.Auth.Role != ERole.ADMIN)
             throw new AdminOnlyAccessException();
 
-        return _repository.GetListByRequestedAll();
+        return _repository.GetListByPendingAll();
     }
 }

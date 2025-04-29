@@ -22,7 +22,7 @@ public class Clothes : BaseLongEntity
             $"Name : {Name}\n" +
             $"Stock Count : {StockCount}\n" +
             $"Rented Count : {RentedCount}\n" +
-            $"Price : {Price}\n" +
+            $"Price : ${Price}\n" +
             $"CreatedAt : {CreatedAt}\n" +
             $"\tCategory Id : {Category.Id}\n" +
             $"\tCategory Name : {Category.Name}\n";

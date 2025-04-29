@@ -1,6 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
@@ -9,7 +10,7 @@ namespace ClothesRentalSystem.ConsoleUI;
 
 public static class FeRentMenu
 {
-    public static void OpenRentMenu()
+    public static void Open()
     {
         string hr = Program.HR;
 
@@ -24,12 +25,12 @@ public static class FeRentMenu
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Create_Rental_Request\n" +
-                "2_View_Past_Rental_Requests\n" +
-                "3_View_Approved_Rental_Requests\n" +
-                "4_View_Rejected_Rental_Requests\n" +
-                "5_View_Pending_Rental_Requests\n" +
-                "6_Back_to_Previous_Menu\n");
+                "1. Create Rental Request\n" +
+                "2. View Past Rental Requests\n" +
+                "3. View Approved Rental Requests\n" +
+                "4. View Rejected Rental Requests\n" +
+                "5. View Pending Rental Requests\n" +
+                "6. Back to Previous Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
@@ -74,7 +75,7 @@ public static class FeRentMenu
                     try
                     {
                         clothesController.GetById(clothesId);
-                        rentController.SendRequest(day, quantity, clothesId, FeUserLogin.PeopleId);
+                        rentController.SendRequest(day, quantity, clothesId, FeUserSignInMenu.PeopleId);
                     }
                     catch (ClothesNotFoundException exception)
                     {
@@ -101,7 +102,7 @@ public static class FeRentMenu
                 case 2:
                     try
                     {
-                        List<Rent> approvedOrRejectedRents = rentController.GetListByApprovedOrRejected(FeUserLogin.PeopleId);
+                        List<Rent> approvedOrRejectedRents = rentController.GetListByApprovedOrRejected(FeUserSignInMenu.PeopleId);
                         foreach (Rent rent in approvedOrRejectedRents)
                         {
                             Console.WriteLine(rent);
@@ -117,12 +118,17 @@ public static class FeRentMenu
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
+                    catch (NoRentalHistoryFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
 
                     break;
                 case 3:
                     try
                     {
-                        List<Rent> approvedRents = rentController.GetListByApproved(FeUserLogin.PeopleId);
+                        List<Rent> approvedRents = rentController.GetListByApproved(FeUserSignInMenu.PeopleId);
                         foreach (Rent rent in approvedRents)
                         {
                             Console.WriteLine(rent);
@@ -138,12 +144,17 @@ public static class FeRentMenu
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
+                    catch (NoApprovedRentalRequestsException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
 
                     break;
                 case 4:
                     try
                     {
-                        List<Rent> rejectedRents = rentController.GetListByRejected(FeUserLogin.PeopleId);
+                        List<Rent> rejectedRents = rentController.GetListByRejected(FeUserSignInMenu.PeopleId);
                         foreach (Rent rent in rejectedRents)
                         {
                             Console.WriteLine(rent);
@@ -159,13 +170,18 @@ public static class FeRentMenu
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
+                    catch (NoRejectedRentalRequestsException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
 
                     break;
                 case 5:
                     try
                     {
-                        List<Rent> requestedRents = rentController.GetListByRequested(FeUserLogin.PeopleId);
-                        foreach (Rent rent in requestedRents)
+                        List<Rent> pendingRents = rentController.GetListByPending(FeUserSignInMenu.PeopleId);
+                        foreach (Rent rent in pendingRents)
                         {
                             Console.WriteLine(rent);
                         }
@@ -176,6 +192,11 @@ public static class FeRentMenu
                         continue;
                     }
                     catch (UserOnlyAccessException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+                    catch (NoPendingRentalRequestsException exception)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

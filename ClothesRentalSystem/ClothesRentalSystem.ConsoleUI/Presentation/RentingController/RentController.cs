@@ -18,8 +18,15 @@ public class RentController
             new UserServiceImpl(new UserRepository()),
             new ClothesServiceImpl(new ClothesRepository(),
                 new CategoryServiceImpl(new CategoryRepository()),
-                new AdminServiceImpl(new AdminRepository())),
-            new AdminServiceImpl(new AdminRepository()));
+                new AdminServiceImpl(new AdminRepository()
+                , new UserServiceImpl(new UserRepository()))),
+            new AdminServiceImpl(new AdminRepository()
+            , new UserServiceImpl(new UserRepository())));
+    }
+    // Toplam Kazanç
+    public decimal GetTotalEarnings()
+    {
+        return _rentService.GetTotalEarnings();
     }
 
     // Kiralama Talebinin Oluşturulması
@@ -52,9 +59,9 @@ public class RentController
     }
 
     // Kiralama İstekleri
-    public List<Rent> GetListByRequested(long peopleId)
+    public List<Rent> GetListByPending(long peopleId)
     {
-        return _rentService.GetListByRequested(peopleId);
+        return _rentService.GetListByPending(peopleId);
     }
 
     // Reddedilen Kiralama İstekleri
@@ -76,8 +83,8 @@ public class RentController
     }
 
     // Tüm kullanıcıların bekleyen kiralama istekleri
-    public List<Rent> GetListByRequestedAll(long peopleId)
+    public List<Rent> GetListByPendingAll(long peopleId)
     {
-        return _rentService.GetListByRequestedAll(peopleId);
+        return _rentService.GetListByPendingAll(peopleId);
     }
 }

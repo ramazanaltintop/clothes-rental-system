@@ -10,10 +10,12 @@ namespace ClothesRentalSystem.ConsoleUI.Service.Concrete;
 public class AdminServiceImpl : IAdminService
 {
     private readonly AdminRepository _repository;
+    private readonly IUserService _userService;
 
-    public AdminServiceImpl(AdminRepository repository)
+    public AdminServiceImpl(AdminRepository repository, IUserService userService)
     {
         _repository = repository;
+        _userService = userService;
     }
 
     public void Save(string username, string email, string password)
@@ -32,6 +34,11 @@ public class AdminServiceImpl : IAdminService
         _repository.Save(admin);
     }
 
+    public List<Admin> GetList()
+    {
+        return _repository.GetList();
+    }
+
     public Admin GetById(long id)
     {
         return _repository.GetById(id)
@@ -48,5 +55,42 @@ public class AdminServiceImpl : IAdminService
     {
         return _repository.GetByEmail(email)
             ?? throw new AdminNotFoundException($"Email {email}");
+    }
+
+    public void SaveSuperAdmin(string username, string email, string password)
+    {
+        if (_repository.HasUsername(username)
+            || _repository.HasEmail(email))
+            throw new AdminAlreadyExistsException();
+
+        Admin admin = new Admin();
+        admin.Id = GenerateId.GenerateAdminId();
+        admin.Auth.Username = username;
+        admin.Auth.Email = email;
+        admin.Auth.Password = password;
+        admin.Auth.Role = ERole.SUPERADMIN;
+
+        _repository.Save(admin);
+    }
+
+    public void PromoteUserToAdmin(string username)
+    {
+        User user = _userService.GetByUsername(username);
+
+        Save(user.Auth.Username, user.Auth.Email, user.Auth.Password);
+
+        _userService.Remove(user.Id);
+    }
+
+    public void DemoteAdminToUser(string username)
+    {
+        Admin admin = GetByUsername(username);
+
+        if (admin.Auth.Role == ERole.SUPERADMIN)
+            throw new CannotModifySuperAdminRoleException();
+
+        _userService.Save(admin.Auth.Username, admin.Auth.Email, admin.Auth.Password);
+
+        _repository.Remove(admin);
     }
 }

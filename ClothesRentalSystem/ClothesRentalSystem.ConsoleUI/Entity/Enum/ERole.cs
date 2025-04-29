@@ -3,5 +3,6 @@
 public enum ERole
 {
     ADMIN,
-    USER
+    USER,
+    SUPERADMIN
 }

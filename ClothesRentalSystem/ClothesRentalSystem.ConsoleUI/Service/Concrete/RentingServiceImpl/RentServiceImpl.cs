@@ -11,6 +11,16 @@ namespace ClothesRentalSystem.ConsoleUI.Service.Concrete.RentingServiceImpl;
 
 public class RentServiceImpl : IRentService
 {
+    private static decimal _totalEarnings = 0m;
+    public decimal GetTotalEarnings()
+    {
+        return _totalEarnings;
+    }
+    private static void SetTotalEarnings(decimal price)
+    {
+        _totalEarnings += price;
+    }
+
     private readonly RentRepository _repository;
     private readonly IUserService _userService;
     private readonly IClothesService _clothesService;
@@ -81,6 +91,9 @@ public class RentServiceImpl : IRentService
         cl.StockCount -= rent.Quantity;
         cl.RentedCount += rent.Quantity;
 
+        // ödeme; kiralama talebi kabul edilince alınır.
+        SetTotalEarnings(rent.TotalPrice);
+
         return _repository.ApproveRequest(rent);
     }
 
@@ -129,11 +142,16 @@ public class RentServiceImpl : IRentService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByApproved(peopleId);
+        List<Rent> approvedRentals = _repository.GetListByApproved(peopleId);
+
+        if (approvedRentals.Count == 0)
+            throw new NoApprovedRentalRequestsException();
+
+        return approvedRentals;
     }
 
     // Kiralama İstekleri
-    public List<Rent> GetListByRequested(long peopleId)
+    public List<Rent> GetListByPending(long peopleId)
     {
         // sadece user rolüne sahip kullanıcılar
         // kendi kiralama isteklerini
@@ -146,7 +164,12 @@ public class RentServiceImpl : IRentService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByRequested(peopleId);
+        List<Rent> pendingRents = _repository.GetListByPending(peopleId);
+
+        if (pendingRents.Count == 0)
+            throw new NoPendingRentalRequestsException();
+
+        return pendingRents;
     }
 
     // Reddedilen Kiralama İstekleri
@@ -162,7 +185,12 @@ public class RentServiceImpl : IRentService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByRejected(peopleId);
+        List<Rent> rejectedRents = _repository.GetListByRejected(peopleId);
+
+        if (rejectedRents.Count == 0)
+            throw new NoRejectedRentalRequestsException();
+
+        return rejectedRents;
     }
 
     // Geçmiş Kiralama İstekleri
@@ -178,7 +206,12 @@ public class RentServiceImpl : IRentService
         if (user.Auth.Role != ERole.USER)
             throw new UserOnlyAccessException();
 
-        return _repository.GetListByApprovedOrRejected(peopleId);
+        List<Rent> rentals = _repository.GetListByApprovedOrRejected(peopleId);
+
+        if (rentals.Count == 0)
+            throw new NoRentalHistoryFoundException();
+
+        return rentals;
     }
 
     // Herhangi bir kullanıcının Geçmiş Kiralama İstekleri
@@ -201,7 +234,7 @@ public class RentServiceImpl : IRentService
     }
 
     // Tüm kullanıcıların bekleyen kiralama istekleri
-    public List<Rent> GetListByRequestedAll(long peopleId)
+    public List<Rent> GetListByPendingAll(long peopleId)
     {
         // Bu işlemi yapmak isteyen kullanıcı sistemde kayıtlı mı
         Admin admin = _adminService.GetById(peopleId);
@@ -210,6 +243,6 @@ public class RentServiceImpl : IRentService
         if (admin.Auth.Role != ERole.ADMIN)
             throw new AdminOnlyAccessException();
 
-        return _repository.GetListByRequestedAll();
+        return _repository.GetListByPendingAll();
     }
 }

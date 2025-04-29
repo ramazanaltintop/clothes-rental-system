@@ -16,17 +16,21 @@ public class GiveBackController
         _giveBackService = new GiveBackServiceImpl(
             new GiveBackRepository(),
             new UserServiceImpl(new UserRepository()),
-            new AdminServiceImpl(new AdminRepository()),
+            new AdminServiceImpl(new AdminRepository(),
+            new UserServiceImpl(new UserRepository())),
             new ClothesServiceImpl(new ClothesRepository(),
                 new CategoryServiceImpl(new CategoryRepository()),
-                new AdminServiceImpl(new AdminRepository())),
+                new AdminServiceImpl(new AdminRepository(),
+                new UserServiceImpl(new UserRepository()))),
             new RentServiceImpl(new RentRepository(),
                 new UserServiceImpl(new UserRepository()),
                 new ClothesServiceImpl(
                     new ClothesRepository(),
                     new CategoryServiceImpl(new CategoryRepository()),
-                    new AdminServiceImpl(new AdminRepository())),
-                new AdminServiceImpl(new AdminRepository())));
+                    new AdminServiceImpl(new AdminRepository(),
+                    new UserServiceImpl(new UserRepository()))),
+                new AdminServiceImpl(new AdminRepository(),
+                new UserServiceImpl(new UserRepository()))));
     }
 
     // İade Talebinin Oluşturulması
@@ -54,9 +58,9 @@ public class GiveBackController
     }
 
     // Iade İstekleri
-    public List<Rent> GetListByRequested(long peopleId)
+    public List<Rent> GetListByPending(long peopleId)
     {
-        return _giveBackService.GetListByRequested(peopleId);
+        return _giveBackService.GetListByPending(peopleId);
     }
 
     // Reddedilen Iade İstekleri
@@ -78,8 +82,8 @@ public class GiveBackController
     }
 
     // Tüm kullanıcıların bekleyen iade istekleri
-    public List<Rent> GetListByRequestedAll(long peopleId)
+    public List<Rent> GetListByPendingAll(long peopleId)
     {
-        return _giveBackService.GetListByRequestedAll(peopleId);
+        return _giveBackService.GetListByPendingAll(peopleId);
     }
 }

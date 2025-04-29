@@ -9,4 +9,5 @@ public interface IUserService
     User GetById(long id);
     User GetByUsername(string username);
     User GetByEmail(string email);
+    void Remove(long id);
 }

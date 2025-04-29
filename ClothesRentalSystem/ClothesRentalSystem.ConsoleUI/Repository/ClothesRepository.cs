@@ -38,6 +38,11 @@ public class ClothesRepository : List
         return Clothes.FirstOrDefault(cl => cl.Id == id);
     }
 
+    public void Update(Clothes clothes)
+    {
+        Console.WriteLine($"{clothes.Name} has been successfully updated.");
+    }
+
     public void Remove(Clothes clothes)
     {
         Clothes.Remove(clothes);
@@ -47,4 +52,6 @@ public class ClothesRepository : List
     {
         return Clothes.Any(cl => cl.Name.Equals(name));
     }
+
+
 }

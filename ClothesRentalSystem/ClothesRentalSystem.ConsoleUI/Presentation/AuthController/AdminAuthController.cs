@@ -8,12 +8,19 @@ namespace ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
 public class AdminAuthController
 {
     private readonly IAuthService _authService;
+    private readonly ISuperAdminAuthService _superAdminService;
 
     public AdminAuthController()
     {
         _authService = new AdminAuthServiceImpl(
             new AuthRepository(),
-            new AdminServiceImpl(new AdminRepository()),
+            new AdminServiceImpl(new AdminRepository(),
+                new UserServiceImpl(new UserRepository())),
+            new UserServiceImpl(new UserRepository()));
+        _superAdminService = new AdminAuthServiceImpl(
+            new AuthRepository(),
+            new AdminServiceImpl(new AdminRepository(),
+                new UserServiceImpl(new UserRepository())),
             new UserServiceImpl(new UserRepository()));
     }
 
@@ -30,5 +37,10 @@ public class AdminAuthController
     public bool SignOut(long peopleId)
     {
         return _authService.SignOut(peopleId);
+    }
+
+    public bool HasSuperAdmin(long peopleId)
+    {
+        return _superAdminService.HasSuperAdmin(peopleId);
     }
 }

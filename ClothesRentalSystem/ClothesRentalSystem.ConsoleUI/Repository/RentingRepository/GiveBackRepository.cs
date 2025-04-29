@@ -32,7 +32,7 @@ public class GiveBackRepository : List
             .ToList();
     }
 
-    public List<Rent> GetListByRequested(long peopleId)
+    public List<Rent> GetListByPending(long peopleId)
     {
         return Rents
             .Where(rent =>
@@ -67,7 +67,7 @@ public class GiveBackRepository : List
             .ToList();
     }
 
-    public List<Rent> GetListByRequestedAll()
+    public List<Rent> GetListByPendingAll()
     {
         return Rents
             .Where(rent => rent.GiveBack == ECondition.REQUESTED)

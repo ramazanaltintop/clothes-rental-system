@@ -14,7 +14,8 @@ public class ClothesController
         _clothesService = new ClothesServiceImpl(
             new ClothesRepository(),
             new CategoryServiceImpl(new CategoryRepository()),
-            new AdminServiceImpl(new AdminRepository()));
+            new AdminServiceImpl(new AdminRepository()
+            , new UserServiceImpl(new UserRepository())));
     }
 
     public void Save(string name, decimal price, int stockCount, short categoryId, long peopleId)
@@ -45,6 +46,11 @@ public class ClothesController
     public Clothes GetById(long id)
     {
         return _clothesService.GetById(id);
+    }
+
+    public void Update(long id, string name, decimal price, int stockCount, long peopleId)
+    {
+        _clothesService.Update(id, name, price, stockCount, peopleId);
     }
 
     public void Remove(long clothesId, long peopleId)

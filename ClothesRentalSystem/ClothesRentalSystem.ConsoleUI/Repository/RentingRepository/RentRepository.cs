@@ -36,7 +36,7 @@ public class RentRepository : List
             .ToList();
     }
 
-    public List<Rent> GetListByRequested(long peopleId)
+    public List<Rent> GetListByPending(long peopleId)
     {
         return Rents
             .Where(rent =>
@@ -68,7 +68,7 @@ public class RentRepository : List
         return Rents.Where(rent => rent.User.Auth.Username.Equals(username)).ToList();
     }
 
-    public List<Rent> GetListByRequestedAll()
+    public List<Rent> GetListByPendingAll()
     {
         return Rents
             .Where(rent => rent.IsApproved == ECondition.REQUESTED)

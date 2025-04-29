@@ -1,11 +1,12 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
 public static class FeClothingMenu
 {
-    public static void OpenClothingMenu()
+    public static void Open()
     {
         string hr = Program.HR;
 
@@ -19,11 +20,11 @@ public static class FeClothingMenu
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_View_All_Clothes\n" +
-                "2_View_Clothes_by_Category\n" +
-                "3_View_Available_Clothes\n" +
-                "4_View_Most_Rented_Clothes\n" +
-                "5_Back_to_Previous_Menu\n");
+                "1. View All Clothes\n" +
+                "2. View Clothes by Category\n" +
+                "3. View Available Clothes\n" +
+                "4. View Most Rented Clothes\n" +
+                "5. Back to Previous Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
@@ -55,11 +56,20 @@ public static class FeClothingMenu
                         continue;
                     }
 
-                    List<Clothes> clothesByCategoryName = clothesController.GetListByCategoryName(categoryName);
-                    foreach (Clothes cl in clothesByCategoryName)
+                    try
                     {
-                        Console.WriteLine(cl);
+                        List<Clothes> clothesByCategoryName = clothesController.GetListByCategoryName(categoryName);
+                        foreach (Clothes cl in clothesByCategoryName)
+                        {
+                            Console.WriteLine(cl);
+                        }
                     }
+                    catch (NoClothesInCategoryException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 3:
                     List<Clothes> rentableClothes = clothesController.GetListByRentable();
@@ -69,11 +79,20 @@ public static class FeClothingMenu
                     }
                     break;
                 case 4:
-                    List<Clothes> mostRentedClothes = clothesController.GetListByMostRented();
-                    foreach (Clothes cl in mostRentedClothes)
+                    try
                     {
-                        Console.WriteLine(cl);
+                        List<Clothes> mostRentedClothes = clothesController.GetListByMostRented();
+                        foreach (Clothes cl in mostRentedClothes)
+                        {
+                            Console.WriteLine(cl);
+                        }
                     }
+                    catch (NoRentedClothesFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
                     break;
                 case 5:
                     break;

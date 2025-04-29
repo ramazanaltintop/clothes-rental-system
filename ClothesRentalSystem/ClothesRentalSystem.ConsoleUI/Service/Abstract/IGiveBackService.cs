@@ -8,9 +8,9 @@ public interface IGiveBackService
     bool ApproveRequest(long id, long peopleId);
     bool RejectRequest(long id, long peopleId);
     List<Rent> GetListByApproved(long peopleId);
-    List<Rent> GetListByRequested(long peopleId);
+    List<Rent> GetListByPending(long peopleId);
     List<Rent> GetListByRejected(long peopleId);
     List<Rent> GetListByApprovedOrRejected(long peopleId);
     List<Rent> GetListByUsername(string username, long peopleId);
-    List<Rent> GetListByRequestedAll(long peopleId);
+    List<Rent> GetListByPendingAll(long peopleId);
 }

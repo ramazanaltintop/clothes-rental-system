@@ -57,18 +57,44 @@ public class ClothesServiceImpl : IClothesService
 
     public List<Clothes> GetListByCategoryName(string categoryName)
     {
-        return _repository.GetListByCategoryName(categoryName.ToLower());
+        List<Clothes> clothes = _repository.GetListByCategoryName(categoryName.ToLower());
+
+        if (clothes.Count == 0)
+            throw new NoClothesInCategoryException(categoryName);
+
+        return clothes;
     }
     
     public List<Clothes> GetListByMostRented()
     {
-        return _repository.GetListByMostRented();
+        List<Clothes> clothes = _repository.GetListByMostRented();
+
+        if (clothes.Count == 0)
+            throw new NoRentedClothesFoundException();
+
+        return clothes;
     }
 
     public Clothes GetById(long id)
     {
         return _repository.GetById(id)
             ?? throw new ClothesNotFoundException($"Id {id}");
+    }
+
+    public void Update(long id, string name, decimal price, int stockCount, long peopleId)
+    {
+        Clothes clothes = GetById(id);
+
+        Admin admin = _adminService.GetById(peopleId);
+
+        if (admin.Auth.Role != ERole.ADMIN)
+            throw new AdminOnlyAccessException();
+
+        clothes.Name = name;
+        clothes.Price = price;
+        clothes.StockCount = stockCount;
+
+        _repository.Update(clothes);
     }
 
     public void Remove(long clothesId, long peopleId)

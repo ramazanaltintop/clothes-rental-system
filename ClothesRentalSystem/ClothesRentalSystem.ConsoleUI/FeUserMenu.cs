@@ -5,22 +5,22 @@ namespace ClothesRentalSystem.ConsoleUI;
 
 public static class FeUserMenu
 {
-    public static void OpenUserMenu()
+    public static void Open()
     {
         string hr = Program.HR;
 
         UserAuthController userAuthController = new UserAuthController();
 
-        Console.WriteLine($"Welcome");
+        Console.WriteLine($"User Menu");
         int choice = 0;
         while (choice != 4)
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Clothing_Menu\n" +
-                "2_Rental_Menu\n" +
-                "3_Give_Back_Menu\n" +
-                "4_Sign_Out\n");
+                "1. Clothing Menu\n" +
+                "2. Rental Menu\n" +
+                "3. Give Back Menu\n" +
+                "4. Sign Out\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
@@ -35,18 +35,18 @@ public static class FeUserMenu
             switch (choice)
             {
                 case 1:
-                    FeClothingMenu.OpenClothingMenu();
+                    FeClothingMenu.Open();
                     break;
                 case 2:
-                    FeRentMenu.OpenRentMenu();
+                    FeRentMenu.Open();
                     break;
                 case 3:
-                    FeGiveBackMenu.OpenGiveBackMenu();
+                    FeGiveBackMenu.Open();
                     break;
                 case 4:
                     try
                     {
-                        userAuthController.SignOut(FeUserLogin.PeopleId);
+                        userAuthController.SignOut(FeUserSignInMenu.PeopleId);
                     }
                     catch (NotAuthenticatedException exception)
                     {

@@ -38,4 +38,9 @@ public class UserRepository : List
     {
         return Users.Any(user => user.Auth.Email.Equals(email));
     }
+
+    public void Remove(User user)
+    {
+        Users.Remove(user);
+    }
 }

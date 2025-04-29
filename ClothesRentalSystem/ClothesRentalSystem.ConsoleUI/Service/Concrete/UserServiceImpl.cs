@@ -54,4 +54,12 @@ public class UserServiceImpl : IUserService
         return _repository.GetByEmail(email)
             ?? throw new UserNotFoundException($"Email {email}");
     }
+
+    public void Remove(long id)
+    {
+        User user = _repository.GetById(id)
+            ?? throw new UserNotFoundException($"Id {id}");
+
+        _repository.Remove(user);
+    }
 }

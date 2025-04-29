@@ -25,6 +25,7 @@ public static class SeedData
         AdminController adminController = new AdminController();
         adminController.Save("admin1", "admin1@hotmail.com", "1");
         adminController.Save("admin2", "admin2@hotmail.com", "2");
+        adminController.SaveSuperAdmin("super1", "super1@hotmail.com", "1");
     }
 
     private static void CreateUsers()

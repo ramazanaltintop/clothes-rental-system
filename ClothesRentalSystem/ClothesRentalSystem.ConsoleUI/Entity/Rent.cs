@@ -20,7 +20,7 @@ public class Rent : BaseLongEntity
             $"Clothes : {Clothes.Name}\n" +
             $"Quantity : {Quantity}\n" +
             $"Day : {Day}\n" +
-            $"Price : {Clothes.Price}\n" +
+            $"Price : ${Clothes.Price}\n" +
             $"Total Price : {TotalPrice}\n" +
             $"GiveBack : {GiveBack.ToString()}\n" +
             $"IsApproved : {IsApproved.ToString()}\n";

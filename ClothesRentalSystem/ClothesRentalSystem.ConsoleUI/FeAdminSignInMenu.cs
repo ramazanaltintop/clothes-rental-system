@@ -4,15 +4,15 @@ using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
-public static class FeAdminLogin
+public static class FeAdminSignInMenu
 {
     public static long PeopleId { get; set; }
 
-    public static void OpenAdminMenu()
+    public static void Open()
     {
         string hr = Program.HR;
 
-        Console.WriteLine($"{hr}\nAdmin Login");
+        Console.WriteLine($"{hr}\nAdmin Sign In");
 
         int choice = 0;
 
@@ -20,9 +20,9 @@ public static class FeAdminLogin
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1_Sign_In_with_Username\n" +
-                "2_Sign_In_with_Email\n" +
-                "3_Return_to_Main_Menu\n");
+                "1. Sign In with Username\n" +
+                "2. Sign In with Email\n" +
+                "3. Return to Main Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
@@ -77,7 +77,7 @@ public static class FeAdminLogin
                         continue;
                     }
 
-                    FeAdminMenu.OpenAdminMenu();
+                    FeAdminMenu.Open();
                     break;
                 case 2:
                     Console.WriteLine($"{hr}\nEmail : ");
@@ -118,7 +118,7 @@ public static class FeAdminLogin
                         continue;
                     }
 
-                    FeAdminMenu.OpenAdminMenu();
+                    FeAdminMenu.Open();
                     break;
                 case 3:
                     break;

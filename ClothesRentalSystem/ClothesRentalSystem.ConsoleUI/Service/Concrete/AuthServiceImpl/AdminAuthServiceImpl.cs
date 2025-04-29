@@ -1,4 +1,5 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Entity.Enum;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
@@ -6,7 +7,7 @@ using ClothesRentalSystem.ConsoleUI.Util;
 
 namespace ClothesRentalSystem.ConsoleUI.Service.Concrete.AuthServiceImpl;
 
-public class AdminAuthServiceImpl : IAuthService
+public class AdminAuthServiceImpl : IAuthService, ISuperAdminAuthService
 {
     private readonly AuthRepository _repository;
     private readonly IAdminService _adminService;
@@ -64,5 +65,14 @@ public class AdminAuthServiceImpl : IAuthService
             ?? throw new NotAuthenticatedException();
 
         return _repository.SignOut(auth);
+    }
+
+    public bool HasSuperAdmin(long peopleId)
+    {
+        Admin admin = _adminService.GetById(peopleId);
+
+        if (admin.Auth.Role != ERole.SUPERADMIN)
+            throw new RequireSuperAdminRoleException();
+        return true;
     }
 }
