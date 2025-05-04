@@ -1,20 +1,22 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Entity.Enum;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
 
-namespace ClothesRentalSystem.ConsoleUI.Service.Concrete.AuthServiceImpl;
+namespace ClothesRentalSystem.ConsoleUI.Service.Concrete;
 
-public class UserAuthServiceImpl : IAuthService
+public class AdminAuthServiceImpl : IAdminAuthService
 {
     private readonly AuthRepository _repository;
-    private readonly IUserService _userService;
+    private readonly IAdminService _adminService;
 
-    public UserAuthServiceImpl(AuthRepository repository, IUserService userService)
+    public AdminAuthServiceImpl(AuthRepository repository,
+        IAdminService adminService)
     {
         _repository = repository;
-        _userService = userService;
+        _adminService = adminService;
     }
 
     public long SignInWithUsername(string username, string password)
@@ -22,15 +24,15 @@ public class UserAuthServiceImpl : IAuthService
         if (_repository.HasUsernameSignedInBefore(username))
             throw new AlreadyAuthenticatedException(username);
 
-        User user = _userService.GetByUsername(username);
-        if (!user.Auth.Password.Equals(password))
+        Admin admin = _adminService.GetByUsername(username);
+        if (!admin.Auth.Password.Equals(password))
             throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.PeopleId = user.Id;
+        auth.personId = admin.Id;
         auth.Username = username;
-        auth.Role = user.Auth.Role;
+        auth.Role = admin.Auth.Role;
         auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
@@ -41,25 +43,36 @@ public class UserAuthServiceImpl : IAuthService
         if (_repository.HasEmailSignedInBefore(email))
             throw new AlreadyAuthenticatedException(email);
 
-        User user = _userService.GetByEmail(email);
-        if (!user.Auth.Password.Equals(password))
+        Admin admin = _adminService.GetByEmail(email);
+
+        if (!admin.Auth.Password.Equals(password))
             throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.PeopleId = user.Id;
+        auth.personId = admin.Id;
         auth.Email = email;
-        auth.Role = user.Auth.Role;
+        auth.Role = admin.Auth.Role;
         auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
 
-    public bool SignOut(long peopleId)
+    public bool SignOut()
     {
-        Auth auth = _repository.GetByPeopleId(peopleId)
+        Auth auth = _repository.GetBypersonId(FeAdminSignInMenu.personId)
             ?? throw new NotAuthenticatedException();
 
         return _repository.SignOut(auth);
+    }
+
+    public bool HasSuperAdmin()
+    {
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+
+        if (admin.Auth.Role != ERole.SUPERADMIN)
+            throw new RequireSuperAdminRoleException();
+
+        return true;
     }
 }

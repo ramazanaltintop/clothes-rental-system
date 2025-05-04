@@ -3,9 +3,9 @@ using ClothesRentalSystem.ConsoleUI.Entity.Enum;
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
-public class Auth : BaseLongEntity
+public class Auth : BaseEntity<long>
 {
-    public long PeopleId { get; set; }
+    public long personId { get; set; }
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; }

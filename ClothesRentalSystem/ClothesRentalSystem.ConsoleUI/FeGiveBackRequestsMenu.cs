@@ -5,7 +5,7 @@ using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
 using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
+using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -56,29 +56,15 @@ public static class FeGiveBackRequestsMenu
 
                     try
                     {
-                        giveBackController.ApproveRequest(rentId, FeAdminSignInMenu.PeopleId);
+                        giveBackController.ApproveRequest(rentId);
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (RentNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (GiveBackRequestAlreadyApprovedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (ClothesNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is RentalRequestNotFoundException ||
+                        exception is GiveBackRequestNotFoundException ||
+                        exception is GiveBackRequestAlreadyApprovedException ||
+                        exception is ClothesNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -98,29 +84,15 @@ public static class FeGiveBackRequestsMenu
 
                     try
                     {
-                        giveBackController.RejectRequest(rentId, FeAdminSignInMenu.PeopleId);
+                        giveBackController.RejectRequest(rentId);
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (RentNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (GiveBackRequestAlreadyRejectedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (ClothesNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is RentalRequestNotFoundException ||
+                        exception is GiveBackRequestNotFoundException ||
+                        exception is GiveBackRequestAlreadyRejectedException ||
+                        exception is ClothesNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -140,23 +112,17 @@ public static class FeGiveBackRequestsMenu
 
                     try
                     {
-                        List<Rent> giveBacks = giveBackController.GetListByUsername(username, FeAdminSignInMenu.PeopleId);
+                        List<Rent> giveBacks = giveBackController.GetListByUsername(username);
                         foreach (Rent rent in giveBacks)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is UserNotFoundException ||
+                        exception is GiveBackNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -166,18 +132,16 @@ public static class FeGiveBackRequestsMenu
                 case 4:
                     try
                     {
-                        List<Rent> pendingGiveBacks = giveBackController.GetListByPendingAll(FeAdminSignInMenu.PeopleId);
+                        List<Rent> pendingGiveBacks = giveBackController.GetListByPendingAll();
                         foreach (Rent rent in pendingGiveBacks)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is NoPendingGiveBackRequestsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

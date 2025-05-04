@@ -1,5 +1,4 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Repository;
+﻿using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Service.Concrete;
 
@@ -17,10 +16,5 @@ public class UserController
     public void Save(string username, string email, string password)
     {
         _userService.Save(username, email, password);
-    }
-
-    public List<User> GetList()
-    {
-        return _userService.GetList();
     }
 }

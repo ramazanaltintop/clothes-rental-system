@@ -1,8 +1,8 @@
 ﻿namespace ClothesRentalSystem.ConsoleUI.Entity.Base;
 
-public class BaseIntEntity
+public abstract class BaseEntity<T>
 {
-    public int Id { get; set; }
+    public T Id { get; set; }
 
     public override string ToString()
     {

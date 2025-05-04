@@ -1,8 +1,9 @@
 ﻿namespace ClothesRentalSystem.ConsoleUI.Service.Abstract;
 
-public interface IAuthService
+public interface IAdminAuthService
 {
     long SignInWithUsername(string username, string password);
     long SignInWithEmail(string email, string password);
-    bool SignOut(long peopleId);
+    bool SignOut();
+    bool HasSuperAdmin();
 }

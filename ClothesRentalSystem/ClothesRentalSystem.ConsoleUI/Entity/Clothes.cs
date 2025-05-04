@@ -2,11 +2,11 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
-public class Clothes : BaseLongEntity
+public class Clothes : BaseEntity<long>
 {
     public string Name { get; set; }
     public int StockCount { get; set; }
-    public int RentedCount { get; set; }
+    public long RentedCount { get; set; }
     public decimal Price { get; set; }
     public Category Category { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -22,7 +22,7 @@ public class Clothes : BaseLongEntity
             $"Name : {Name}\n" +
             $"Stock Count : {StockCount}\n" +
             $"Rented Count : {RentedCount}\n" +
-            $"Price : ${Price}\n" +
+            $"Unit Price : ${Price}\n" +
             $"CreatedAt : {CreatedAt}\n" +
             $"\tCategory Id : {Category.Id}\n" +
             $"\tCategory Name : {Category.Name}\n";

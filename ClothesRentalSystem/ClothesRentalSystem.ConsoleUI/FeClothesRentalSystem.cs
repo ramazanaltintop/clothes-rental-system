@@ -77,12 +77,15 @@ public static class FeClothesRentalSystem
                     break;
                 case 2:
                     FeUserSignInMenu.Open();
+
                     break;
                 case 3:
                     FeAdminSignInMenu.Open();
+
                     break;
                 case 4:
                     controller = false;
+
                     break;
             }
         }

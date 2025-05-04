@@ -3,7 +3,7 @@ using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
+using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -55,29 +55,14 @@ public static class FeGiveBackMenu
 
                     try
                     {
-                        giveBackController.SendRequest(rentId, FeUserSignInMenu.PeopleId);
+                        giveBackController.SendRequest(rentId);
                     }
-                    catch (UserNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (RentNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (GiveBackRequestNotAllowedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (GiveBackRequestAlreadySentException exception)
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is UserOnlyAccessException ||
+                        exception is RentalRequestNotFoundException ||
+                        exception is GiveBackRequestNotAllowedException ||
+                        exception is GiveBackRequestAlreadySentException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -87,23 +72,16 @@ public static class FeGiveBackMenu
                 case 2:
                     try
                     {
-                        List<Rent> approvedOrRejectedGiveBacks = giveBackController.GetListByApprovedOrRejected(FeUserSignInMenu.PeopleId);
+                        List<Rent> approvedOrRejectedGiveBacks = giveBackController.GetListByApprovedOrRejected();
                         foreach (Rent rent in approvedOrRejectedGiveBacks)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (UserNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (NoGiveBackHistoryFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is UserOnlyAccessException ||
+                        exception is NoGiveBackHistoryFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -113,23 +91,16 @@ public static class FeGiveBackMenu
                 case 3:
                     try
                     {
-                        List<Rent> approvedGiveBacks = giveBackController.GetListByApproved(FeUserSignInMenu.PeopleId);
+                        List<Rent> approvedGiveBacks = giveBackController.GetListByApproved();
                         foreach (Rent rent in approvedGiveBacks)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (UserNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (NoApprovedGiveBackRequestsException exception)
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is UserOnlyAccessException ||
+                        exception is NoApprovedGiveBackRequestsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -139,23 +110,16 @@ public static class FeGiveBackMenu
                 case 4:
                     try
                     {
-                        List<Rent> rejectedGiveBacks = giveBackController.GetListByRejected(FeUserSignInMenu.PeopleId);
+                        List<Rent> rejectedGiveBacks = giveBackController.GetListByRejected();
                         foreach (Rent rent in rejectedGiveBacks)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (UserNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (NoRejectedGiveBackRequestsException exception)
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is UserOnlyAccessException ||
+                        exception is NoRejectedGiveBackRequestsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -165,23 +129,16 @@ public static class FeGiveBackMenu
                 case 5:
                     try
                     {
-                        List<Rent> pendingGiveBacks = giveBackController.GetListByPending(FeUserSignInMenu.PeopleId);
+                        List<Rent> pendingGiveBacks = giveBackController.GetListByPending();
                         foreach (Rent rent in pendingGiveBacks)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (UserNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (NoPendingGiveBackRequestsException exception)
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is UserOnlyAccessException ||
+                        exception is NoPendingGiveBackRequestsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

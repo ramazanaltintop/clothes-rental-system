@@ -1,12 +1,12 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
+using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
 public static class FeAdminSignInMenu
 {
-    public static long PeopleId { get; set; }
+    public static long personId { get; set; }
 
     public static void Open()
     {
@@ -59,25 +59,19 @@ public static class FeAdminSignInMenu
 
                     try
                     {
-                        PeopleId = adminAuthController.SignInWithUsername(username, password);
+                        personId = adminAuthController.SignInWithUsername(username, password);
                     }
-                    catch (AlreadyAuthenticatedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (InvalidPasswordException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AlreadyAuthenticatedException ||
+                        exception is InvalidPasswordException ||
+                        exception is AdminNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     FeAdminMenu.Open();
+
                     break;
                 case 2:
                     Console.WriteLine($"{hr}\nEmail : ");
@@ -100,25 +94,19 @@ public static class FeAdminSignInMenu
 
                     try
                     {
-                        PeopleId = adminAuthController.SignInWithEmail(email, password);
+                        personId = adminAuthController.SignInWithEmail(email, password);
                     }
-                    catch (AlreadyAuthenticatedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (InvalidPasswordException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AlreadyAuthenticatedException ||
+                        exception is InvalidPasswordException ||
+                        exception is AdminNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     FeAdminMenu.Open();
+
                     break;
                 case 3:
                     break;

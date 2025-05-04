@@ -1,4 +1,5 @@
-﻿using ClothesRentalSystem.ConsoleUI.Repository;
+﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Service.Concrete;
 
@@ -10,12 +11,28 @@ public class CategoryController
 
     public CategoryController()
     {
-        _categoryService = new CategoryServiceImpl(new CategoryRepository());
+        _categoryService = new CategoryServiceImpl(new CategoryRepository(),
+            new AdminServiceImpl(new AdminRepository(),
+                new UserServiceImpl(new UserRepository())));
     }
 
-    // Kategori Kayit Islemi
     public void Save(string name)
     {
         _categoryService.Save(name);
+    }
+
+    public List<Category> GetList()
+    {
+        return _categoryService.GetList();
+    }
+
+    public void Update(string oldCategoryName, string newCategoryName)
+    {
+        _categoryService.Update(oldCategoryName, newCategoryName);
+    }
+
+    public void Remove(string name)
+    {
+        _categoryService.Remove(name);
     }
 }

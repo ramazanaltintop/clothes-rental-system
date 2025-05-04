@@ -1,23 +1,20 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Entity.Enum;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
 
-namespace ClothesRentalSystem.ConsoleUI.Service.Concrete.AuthServiceImpl;
+namespace ClothesRentalSystem.ConsoleUI.Service.Concrete;
 
-public class AdminAuthServiceImpl : IAuthService, ISuperAdminAuthService
+public class UserAuthServiceImpl : IUserAuthService
 {
     private readonly AuthRepository _repository;
-    private readonly IAdminService _adminService;
+    private readonly IUserService _userService;
 
-    public AdminAuthServiceImpl(AuthRepository repository,
-        IAdminService adminService,
-        IUserService userService)
+    public UserAuthServiceImpl(AuthRepository repository, IUserService userService)
     {
         _repository = repository;
-        _adminService = adminService;
+        _userService = userService;
     }
 
     public long SignInWithUsername(string username, string password)
@@ -25,15 +22,16 @@ public class AdminAuthServiceImpl : IAuthService, ISuperAdminAuthService
         if (_repository.HasUsernameSignedInBefore(username))
             throw new AlreadyAuthenticatedException(username);
 
-        Admin admin = _adminService.GetByUsername(username);
-        if (!admin.Auth.Password.Equals(password))
+        User user = _userService.GetByUsername(username);
+
+        if (!user.Auth.Password.Equals(password))
             throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.PeopleId = admin.Id;
+        auth.personId = user.Id;
         auth.Username = username;
-        auth.Role = admin.Auth.Role;
+        auth.Role = user.Auth.Role;
         auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
@@ -42,37 +40,28 @@ public class AdminAuthServiceImpl : IAuthService, ISuperAdminAuthService
     public long SignInWithEmail(string email, string password)
     {
         if (_repository.HasEmailSignedInBefore(email))
-            throw new AlreadyAuthenticatedException("You have already signed to system");
+            throw new AlreadyAuthenticatedException(email);
 
-        Admin admin = _adminService.GetByEmail(email);
+        User user = _userService.GetByEmail(email);
 
-        if (!admin.Auth.Password.Equals(password))
+        if (!user.Auth.Password.Equals(password))
             throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.PeopleId = admin.Id;
+        auth.personId = user.Id;
         auth.Email = email;
-        auth.Role = admin.Auth.Role;
+        auth.Role = user.Auth.Role;
         auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
 
-    public bool SignOut(long peopleId)
+    public bool SignOut()
     {
-        Auth auth = _repository.GetByPeopleId(peopleId)
+        Auth auth = _repository.GetBypersonId(FeUserSignInMenu.personId)
             ?? throw new NotAuthenticatedException();
 
         return _repository.SignOut(auth);
-    }
-
-    public bool HasSuperAdmin(long peopleId)
-    {
-        Admin admin = _adminService.GetById(peopleId);
-
-        if (admin.Auth.Role != ERole.SUPERADMIN)
-            throw new RequireSuperAdminRoleException();
-        return true;
     }
 }

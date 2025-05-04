@@ -1,12 +1,13 @@
-﻿using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+﻿using System;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
+using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
 public static class FeUserSignInMenu
 {
-    public static long PeopleId { get; set; }
+    public static long personId { get; set; }
 
     public static void Open()
     {
@@ -60,25 +61,19 @@ public static class FeUserSignInMenu
 
                     try
                     {
-                        PeopleId = userAuthController.SignInWithUsername(username, password);
+                        personId = userAuthController.SignInWithUsername(username, password);
                     }
-                    catch (AlreadyAuthenticatedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (InvalidPasswordException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AlreadyAuthenticatedException ||
+                        exception is InvalidPasswordException ||
+                        exception is UserNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     FeUserMenu.Open();
+
                     break;
                 case 2:
                     Console.WriteLine($"{hr}\nEmail : ");
@@ -101,25 +96,19 @@ public static class FeUserSignInMenu
 
                     try
                     {
-                        PeopleId = userAuthController.SignInWithEmail(email, password);
+                        personId = userAuthController.SignInWithEmail(email, password);
                     }
-                    catch (AlreadyAuthenticatedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (InvalidPasswordException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AlreadyAuthenticatedException ||
+                        exception is InvalidPasswordException ||
+                        exception is UserNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     FeUserMenu.Open();
+
                     break;
                 case 3:
                     break;

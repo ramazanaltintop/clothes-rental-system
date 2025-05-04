@@ -11,7 +11,7 @@ public class AuthRepository : List
         string identity = string.IsNullOrEmpty(auth.Username) ? auth.Email : auth.Username;
         Console.WriteLine($"{identity} successfully signed in\n");
 
-        return auth.PeopleId;
+        return auth.personId;
     }
 
     public bool SignOut(Auth auth)
@@ -24,9 +24,9 @@ public class AuthRepository : List
         return true;
     }
 
-    public Auth? GetByPeopleId(long peopleId)
+    public Auth? GetBypersonId(long personId)
     {
-        return Auths.FirstOrDefault(auth => auth.PeopleId == peopleId);
+        return Auths.FirstOrDefault(auth => auth.personId == personId);
     }
 
     public bool HasUsernameSignedInBefore(string username)

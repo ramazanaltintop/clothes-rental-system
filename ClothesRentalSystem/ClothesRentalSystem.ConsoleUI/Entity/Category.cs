@@ -2,7 +2,7 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
-public class Category : BaseShortEntity
+public class Category : BaseEntity<short>
 {
     public string Name { get; set; }
 

@@ -2,8 +2,8 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 
-public class RentNotFoundException : ClothesRentalSystemException
+public class RentalRequestNotFoundException : ClothesRentalSystemException
 {
-    public RentNotFoundException()
+    public RentalRequestNotFoundException()
         : base("Rental request not found.") { }
 }

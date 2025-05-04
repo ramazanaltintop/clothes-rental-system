@@ -29,13 +29,23 @@ public class ClothesRepository : List
         return Clothes
             .Where(cl => cl.RentedCount > 0)
             .OrderByDescending(cl => cl.RentedCount)
-            .Take(2)
+            .Take(5)
             .ToList();
     }
 
     public Clothes? GetById(long id)
     {
         return Clothes.FirstOrDefault(cl => cl.Id == id);
+    }
+
+    public Clothes? GetByName(string name)
+    {
+        return Clothes.FirstOrDefault(cl => cl.Name.Equals(name.ToLower()));
+    }
+
+    public bool HasName(string name)
+    {
+        return Clothes.Any(cl => cl.Name.Equals(name.ToLower()));
     }
 
     public void Update(Clothes clothes)
@@ -47,11 +57,4 @@ public class ClothesRepository : List
     {
         Clothes.Remove(clothes);
     }
-
-    public bool HasName(string name)
-    {
-        return Clothes.Any(cl => cl.Name.Equals(name));
-    }
-
-
 }

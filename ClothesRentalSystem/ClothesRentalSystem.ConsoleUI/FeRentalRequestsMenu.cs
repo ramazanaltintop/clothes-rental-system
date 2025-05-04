@@ -4,7 +4,7 @@ using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
+using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -55,23 +55,17 @@ public static class FeRentalRequestsMenu
 
                     try
                     {
-                        List<Rent> rents = rentController.GetListByUsername(username, FeAdminSignInMenu.PeopleId);
+                        List<Rent> rents = rentController.GetListByUsername(username);
                         foreach (Rent rent in rents)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (UserNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is UserNotFoundException ||
+                        exception is RentalNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -81,18 +75,16 @@ public static class FeRentalRequestsMenu
                 case 2:
                     try
                     {
-                        List<Rent> requestedRents = rentController.GetListByPendingAll(FeAdminSignInMenu.PeopleId);
+                        List<Rent> requestedRents = rentController.GetListByPendingAll();
                         foreach (Rent rent in requestedRents)
                         {
                             Console.WriteLine(rent);
                         }
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is NoPendingRentalRequestsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -112,29 +104,15 @@ public static class FeRentalRequestsMenu
 
                     try
                     {
-                        rentController.ApproveRequest(rentId, FeAdminSignInMenu.PeopleId);
+                        rentController.ApproveRequest(rentId);
                     }
-                    catch (RentNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (RentalRequestAlreadyApprovedException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (ClothesNotFoundException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is RentalRequestNotFoundException ||
+                        exception is RentalRequestAlreadyApprovedException ||
+                        exception is RentalRequestAlreadyRejectedException ||
+                        exception is ClothesNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -154,24 +132,14 @@ public static class FeRentalRequestsMenu
 
                     try
                     {
-                        rentController.RejectRequest(rentId, FeAdminSignInMenu.PeopleId);
+                        rentController.RejectRequest(rentId);
                     }
-                    catch (RentNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminOnlyAccessException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (RentalRequestAlreadyRejectedException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is RentalRequestNotFoundException ||
+                        exception is RentalRequestAlreadyApprovedException ||
+                        exception is RentalRequestAlreadyRejectedException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

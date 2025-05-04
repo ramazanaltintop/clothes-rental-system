@@ -2,7 +2,7 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
-public class Admin : BaseLongEntity
+public class Admin : BaseEntity<short>
 {
     public Auth Auth { get; set; }
     public DateTime CreatedAt { get; set; }

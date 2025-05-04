@@ -9,11 +9,6 @@ public class UserRepository : List
         Users.Add(user);
     }
 
-    public List<User> GetList()
-    {
-        return Users;
-    }
-
     public User? GetById(long id)
     {
         return Users.FirstOrDefault(user => user.Id == id);
@@ -29,6 +24,11 @@ public class UserRepository : List
         return Users.FirstOrDefault(user => user.Auth.Email.Equals(email));
     }
 
+    public void Remove(User user)
+    {
+        Users.Remove(user);
+    }
+
     public bool HasUsername(string username)
     {
         return Users.Any(user => user.Auth.Username.Equals(username));
@@ -37,10 +37,5 @@ public class UserRepository : List
     public bool HasEmail(string email)
     {
         return Users.Any(user => user.Auth.Email.Equals(email));
-    }
-
-    public void Remove(User user)
-    {
-        Users.Remove(user);
     }
 }

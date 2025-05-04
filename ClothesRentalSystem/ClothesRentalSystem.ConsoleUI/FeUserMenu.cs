@@ -1,5 +1,5 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Presentation.AuthController;
+using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -36,23 +36,27 @@ public static class FeUserMenu
             {
                 case 1:
                     FeClothingMenu.Open();
+
                     break;
                 case 2:
                     FeRentMenu.Open();
+
                     break;
                 case 3:
                     FeGiveBackMenu.Open();
+
                     break;
                 case 4:
                     try
                     {
-                        userAuthController.SignOut(FeUserSignInMenu.PeopleId);
+                        userAuthController.SignOut();
                     }
                     catch (NotAuthenticatedException exception)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
+
                     break;
             }
         }

@@ -3,7 +3,7 @@
 public static class GenerateId
 {
     private static short _adminId = 0;
-    private static int _authId = 0;
+    private static long _authId = 0;
     private static long _userId = 0;
     private static short _categoryId = 0;
     private static long _clothesId = 0;
@@ -15,7 +15,7 @@ public static class GenerateId
         return _adminId;
     }
 
-    public static int GenerateAuthId()
+    public static long GenerateAuthId()
     {
         _authId = _authId + 1;
         return _authId;

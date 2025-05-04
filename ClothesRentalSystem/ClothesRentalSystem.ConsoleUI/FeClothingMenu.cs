@@ -1,4 +1,5 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
 using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
@@ -11,26 +12,28 @@ public static class FeClothingMenu
         string hr = Program.HR;
 
         ClothesController clothesController = new ClothesController();
+        CategoryController categoryController = new CategoryController();
 
         Console.WriteLine($"{hr}\nClothing Menu");
 
         int choice = 0;
 
-        while (choice != 5)
+        while (choice != 6)
         {
             Console.WriteLine(
                 $"{hr}\n" +
                 "1. View All Clothes\n" +
-                "2. View Clothes by Category\n" +
-                "3. View Available Clothes\n" +
-                "4. View Most Rented Clothes\n" +
-                "5. Back to Previous Menu\n");
+                "2. View All Categories\n" +
+                "3. View Clothes by Category\n" +
+                "4. View Available Clothes\n" +
+                "5. View Most Rented Clothes\n" +
+                "6. Back to Previous Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValid || choice < 1 || choice > 5)
+            if (!isValid || choice < 1 || choice > 6)
             {
                 Console.WriteLine($"{hr}\nInvalid input");
                 continue;
@@ -44,8 +47,17 @@ public static class FeClothingMenu
                     {
                         Console.WriteLine(cl);
                     }
+
                     break;
                 case 2:
+                    List<Category> categories = categoryController.GetList();
+                    foreach (Category category in categories)
+                    {
+                        Console.WriteLine(category);
+                    }
+
+                    break;
+                case 3:
                     Console.WriteLine($"{hr}\nWhich category of clothes do you want to see(categoryName)");
 
                     string? categoryName = Console.ReadLine();
@@ -64,21 +76,24 @@ public static class FeClothingMenu
                             Console.WriteLine(cl);
                         }
                     }
-                    catch (NoClothesInCategoryException exception)
+                    catch (System.Exception exception) when (
+                        exception is CategoryNotFoundException ||
+                        exception is NoClothesInCategoryException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     break;
-                case 3:
+                case 4:
                     List<Clothes> rentableClothes = clothesController.GetListByRentable();
                     foreach (Clothes cl in rentableClothes)
                     {
                         Console.WriteLine(cl);
                     }
+
                     break;
-                case 4:
+                case 5:
                     try
                     {
                         List<Clothes> mostRentedClothes = clothesController.GetListByMostRented();
@@ -94,7 +109,7 @@ public static class FeClothingMenu
                     }
 
                     break;
-                case 5:
+                case 6:
                     break;
             }
         }

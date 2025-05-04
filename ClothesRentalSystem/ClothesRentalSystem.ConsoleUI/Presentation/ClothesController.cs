@@ -13,14 +13,16 @@ public class ClothesController
     {
         _clothesService = new ClothesServiceImpl(
             new ClothesRepository(),
-            new CategoryServiceImpl(new CategoryRepository()),
+            new CategoryServiceImpl(new CategoryRepository(),
+                new AdminServiceImpl(new AdminRepository(),
+                    new UserServiceImpl(new UserRepository()))),
             new AdminServiceImpl(new AdminRepository()
             , new UserServiceImpl(new UserRepository())));
     }
 
-    public void Save(string name, decimal price, int stockCount, short categoryId, long peopleId)
+    public void Save(string name, decimal price, int stockCount, string categoryName)
     {
-        _clothesService.Save(name, price, stockCount, categoryId, peopleId);
+        _clothesService.Save(name, price, stockCount, categoryName);
     }
 
     public List<Clothes> GetList()
@@ -48,13 +50,23 @@ public class ClothesController
         return _clothesService.GetById(id);
     }
 
-    public void Update(long id, string name, decimal price, int stockCount, long peopleId)
+    public void Update(string name, string newName, decimal price)
     {
-        _clothesService.Update(id, name, price, stockCount, peopleId);
+        _clothesService.Update(name, newName, price);
     }
 
-    public void Remove(long clothesId, long peopleId)
+    public void Update(string name, string categoryName)
     {
-        _clothesService.Remove(clothesId, peopleId);
+        _clothesService.Update(name, categoryName);
+    }
+
+    public void Update(string name, int stockCount)
+    {
+        _clothesService.Update(name, stockCount);
+    }
+
+    public void Remove(string name)
+    {
+        _clothesService.Remove(name);
     }
 }

@@ -1,8 +1,9 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
-using ClothesRentalSystem.ConsoleUI.Presentation.RentingController;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -14,10 +15,11 @@ public static class FePrivateMenu
 
         AdminController adminController = new AdminController();
         RentController rentController = new RentController();
+        GiveBackController giveBackController = new GiveBackController();
 
         Console.WriteLine($"Private Menu");
         int choice = 0;
-        while (choice != 5)
+        while (choice != 8)
         {
             Console.WriteLine(
                 $"{hr}\n" +
@@ -25,13 +27,16 @@ public static class FePrivateMenu
                 "2. Demote Admin to User\n" +
                 "3. View All Admins\n" +
                 "4. View Total Earnings\n" +
-                "5. Return to Main Menu\n");
+                "5. View Total Sales\n" +
+                "6. View Admin Rental Decisions\n" +
+                "7. View Admin Give Back Decisions\n" +
+                "8. Return to Main Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValid || choice < 1 || choice > 5)
+            if (!isValid || choice < 1 || choice > 8)
             {
                 Console.WriteLine($"{hr}\nInvalid input");
                 continue;
@@ -54,12 +59,9 @@ public static class FePrivateMenu
                     {
                         adminController.PromoteUserToAdmin(username);
                     }
-                    catch (UserNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (AdminAlreadyExistsException exception)
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is AdminAlreadyExistsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -83,17 +85,10 @@ public static class FePrivateMenu
                     {
                         adminController.DemoteAdminToUser(username);
                     }
-                    catch (AdminNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch (CannotModifySuperAdminRoleException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-                    catch(UserAlreadyExistsException exception)
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is CannotModifySuperAdminRoleException ||
+                        exception is UserAlreadyExistsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -108,6 +103,7 @@ public static class FePrivateMenu
                     {
                         Console.WriteLine(admin);
                     }
+
                     break;
                 case 4:
                     decimal totalEarnings = rentController.GetTotalEarnings();
@@ -115,6 +111,49 @@ public static class FePrivateMenu
 
                     break;
                 case 5:
+                    long totalSales = rentController.GetTotalSales();
+                    Console.WriteLine($"Total Sales : {totalSales}");
+
+                    break;
+                case 6:
+                    try
+                    {
+                        List<Rent> rentals = rentController.GetListByAdminDecision();
+                        foreach (Rent rental in rentals)
+                        {
+                            Console.WriteLine(rental);
+                        }
+                    }
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is NoRentalHistoryFoundException)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
+                    break;
+                case 7:
+                    try
+                    {
+                        List<Rent> rentals = giveBackController.GetListByAdminDecision();
+                        foreach (Rent rental in rentals)
+                        {
+                            Console.WriteLine(rental);
+                        }
+                    }
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is AdminOnlyAccessException ||
+                        exception is NoRentalHistoryFoundException)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
+                    break;
+                case 8:
                     break;
             }
         }

@@ -18,7 +18,7 @@ public class UserServiceImpl : IUserService
 
     public void Save(string username, string email, string password)
     {
-        if (_repository.HasUsername(username)
+        if (HasUsername(username)
             || _repository.HasEmail(email))
             throw new UserAlreadyExistsException();
 
@@ -30,11 +30,6 @@ public class UserServiceImpl : IUserService
         user.Auth.Role = ERole.USER;
 
         _repository.Save(user);
-    }
-    
-    public List<User> GetList()
-    {
-        return _repository.GetList();
     }
     
     public User GetById(long id)
@@ -61,5 +56,10 @@ public class UserServiceImpl : IUserService
             ?? throw new UserNotFoundException($"Id {id}");
 
         _repository.Remove(user);
+    }
+
+    public bool HasUsername(string username)
+    {
+        return _repository.HasUsername(username);
     }
 }

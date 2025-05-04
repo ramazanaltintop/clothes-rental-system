@@ -1,6 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Entity.Enum;
 using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
 using ClothesRentalSystem.ConsoleUI.Util;
@@ -36,6 +37,11 @@ public class AdminServiceImpl : IAdminService
 
     public List<Admin> GetList()
     {
+        Admin admin = GetById(FeAdminSignInMenu.personId);
+
+        if (admin.Auth.Role != ERole.SUPERADMIN)
+            throw new AdminOnlyAccessException();
+
         return _repository.GetList();
     }
 
@@ -75,6 +81,11 @@ public class AdminServiceImpl : IAdminService
 
     public void PromoteUserToAdmin(string username)
     {
+        Admin admin = GetById(FeAdminSignInMenu.personId);
+
+        if (admin.Auth.Role != ERole.SUPERADMIN)
+            throw new AdminOnlyAccessException();
+
         User user = _userService.GetByUsername(username);
 
         Save(user.Auth.Username, user.Auth.Email, user.Auth.Password);
@@ -84,7 +95,12 @@ public class AdminServiceImpl : IAdminService
 
     public void DemoteAdminToUser(string username)
     {
-        Admin admin = GetByUsername(username);
+        Admin admin = GetById(FeAdminSignInMenu.personId);
+
+        if (admin.Auth.Role != ERole.SUPERADMIN)
+            throw new AdminOnlyAccessException();
+
+        admin = GetByUsername(username);
 
         if (admin.Auth.Role == ERole.SUPERADMIN)
             throw new CannotModifySuperAdminRoleException();

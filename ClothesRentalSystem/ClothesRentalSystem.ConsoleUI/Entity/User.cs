@@ -2,7 +2,7 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
-public class User : BasePeopleEntity
+public class User : BasePersonEntity
 {
     public Auth Auth { get; set; }
     public DateTime CreatedAt { get; set; }

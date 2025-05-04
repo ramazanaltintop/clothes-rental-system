@@ -4,15 +4,21 @@ namespace ClothesRentalSystem.ConsoleUI.Service.Abstract;
 
 public interface IRentService
 {
-    decimal GetTotalEarnings();
-    void SendRequest(byte day, byte quantity, long clothesId, long peopleId);
-    bool ApproveRequest(long id, long peopleId);
-    bool RejectRequest(long id, long peopleId);
+    void AddToCart(byte day, byte quantity, string clothesName);
+
+    List<Rent> GetListByUsername(string username);
+    List<Rent> GetListByApproved();
+    List<Rent> GetListByPending();
+    List<Rent> GetListByRejected();
+    List<Rent> GetListByApprovedOrRejected();
+    List<Rent> GetListByPendingAll();
+    List<Rent> GetListByAdminDecision();
     Rent GetById(long id);
-    List<Rent> GetListByApproved(long peopleId);
-    List<Rent> GetListByPending(long peopleId);
-    List<Rent> GetListByRejected(long peopleId);
-    List<Rent> GetListByApprovedOrRejected(long peopleId);
-    List<Rent> GetListByUsername(string username, long peopleId);
-    List<Rent> GetListByPendingAll(long peopleId);
+    List<CartItem> GetCart();
+    decimal GetTotalEarnings();
+    long GetTotalSales();
+
+    void SendRequest();
+    void ApproveRequest(long id);
+    void RejectRequest(long id);
 }
