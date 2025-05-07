@@ -3,7 +3,7 @@
 public class CartItem
 {
     public Rent? Rent { get; set; }
-    public Clothes Clothes { get; set; }
+    public ClothingItem ClothingItem { get; set; } = default!;
     public byte Quantity { get; set; }
     public byte Day { get; set; }
     public decimal TotalPrice { get; set; }
@@ -12,10 +12,10 @@ public class CartItem
     {
         return $"\t{Program.HR}\n" +
             (Rent is not null ? $"\tRent Id : {Rent.Id}\n" : "") +
-            $"\tClothes Name : {Clothes.Name}\n" +
+            $"\tClothing Item's Name : {ClothingItem.Name}\n" +
             $"\tQuantity : {Quantity}\n" +
             $"\tDay : {Day}\n" +
-            $"\tUnit Price : ${Clothes.Price}\n" +
+            $"\tUnit Price : ${ClothingItem.Price}\n" +
             $"\tTotal Price : ${TotalPrice}\n";
     }
 }

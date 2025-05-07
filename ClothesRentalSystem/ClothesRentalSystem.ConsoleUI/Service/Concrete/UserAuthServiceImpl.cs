@@ -29,10 +29,9 @@ public class UserAuthServiceImpl : IUserAuthService
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.personId = user.Id;
+        auth.PersonId = user.Id;
         auth.Username = username;
         auth.Role = user.Auth.Role;
-        auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
@@ -49,17 +48,16 @@ public class UserAuthServiceImpl : IUserAuthService
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.personId = user.Id;
+        auth.PersonId = user.Id;
         auth.Email = email;
         auth.Role = user.Auth.Role;
-        auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
 
     public bool SignOut()
     {
-        Auth auth = _repository.GetBypersonId(FeUserSignInMenu.personId)
+        Auth auth = _repository.GetByPersonId(FeUserSignInMenu.personId)
             ?? throw new NotAuthenticatedException();
 
         return _repository.SignOut(auth);

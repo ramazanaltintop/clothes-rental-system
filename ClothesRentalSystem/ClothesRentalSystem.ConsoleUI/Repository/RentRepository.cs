@@ -73,9 +73,9 @@ public class RentRepository : List
         return Cart;
     }
 
-    public CartItem? GetCartItemByClothesName(string clothesName)
+    public CartItem? GetCartItemByClothingItemName(string clothingItemName)
     {
-        return Cart.FirstOrDefault(item => item.Clothes.Name.Equals(clothesName));
+        return Cart.FirstOrDefault(item => item.ClothingItem.Name.Equals(clothingItemName));
     }
 
     public decimal GetTotalEarnings() => TotalEarnings;
@@ -90,9 +90,9 @@ public class RentRepository : List
         TotalSales += quantity;
     }
 
-    public bool HasCartItem(string clothesName)
+    public bool HasCartItem(string clothingItemName)
     {
-        return Cart.Any(item => item.Clothes.Name.Equals(clothesName));
+        return Cart.Any(item => item.ClothingItem.Name.Equals(clothingItemName));
     }
 
     public void SendRequest(Rent rent)
@@ -114,5 +114,6 @@ public class RentRepository : List
     public void ClearCart()
     {
         Cart.Clear();
+        Console.WriteLine("Your cart successfully cleared.");
     }
 }

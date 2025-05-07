@@ -2,7 +2,7 @@
 using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
@@ -13,7 +13,7 @@ public static class FeClothingManagementMenu
     {
         string hr = Program.HR;
 
-        ClothesController clothesController = new ClothesController();
+        ClothingItemController clothingItemController = new ClothingItemController();
 
         Console.WriteLine($"{hr}\nClothing Menu");
 
@@ -85,12 +85,12 @@ public static class FeClothingManagementMenu
 
                     try
                     {
-                        clothesController.Save(name, price, stockCount, categoryName);
+                        clothingItemController.Save(name, price, stockCount, categoryName);
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
-                        exception is ClothesAlreadyExistsException ||
+                        exception is AdminAccessOnlyException ||
+                        exception is ClothingItemAlreadyExistsException ||
                         exception is NegativeStockValueException ||
                         exception is NegativePriceException ||
                         exception is CategoryNotFoundException)
@@ -101,7 +101,7 @@ public static class FeClothingManagementMenu
 
                     break;
                 case 2:
-                    Console.WriteLine($"{hr}\nWhich clothes do you want to delete (clothesName)");
+                    Console.WriteLine($"{hr}\nWhich clothing item do you want to delete (clothingItemName)");
 
                     name = Console.ReadLine();
 
@@ -113,12 +113,12 @@ public static class FeClothingManagementMenu
 
                     try
                     {
-                        clothesController.Remove(name);
+                        clothingItemController.Remove(name);
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
-                        exception is ClothesNotFoundException)
+                        exception is AdminAccessOnlyException ||
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -126,7 +126,7 @@ public static class FeClothingManagementMenu
 
                     break;
                 case 3:
-                    Console.WriteLine($"{hr}\nWhich clothes do you want to update (clothesName)");
+                    Console.WriteLine($"{hr}\nWhich clothing item do you want to update (clothingItemName)");
 
                     name = Console.ReadLine();
 
@@ -157,13 +157,13 @@ public static class FeClothingManagementMenu
 
                     try
                     {
-                        clothesController.Update(name, newName, price);
+                        clothingItemController.Update(name, newName, price);
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is NegativePriceException ||
-                        exception is ClothesNotFoundException)
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -171,7 +171,7 @@ public static class FeClothingManagementMenu
 
                     break;
                 case 4:
-                    Console.WriteLine($"{hr}\nWhich clothes do you want to update (clothesName)");
+                    Console.WriteLine($"{hr}\nWhich clothing item do you want to update (clothingItemName)");
 
                     name = Console.ReadLine();
 
@@ -193,13 +193,13 @@ public static class FeClothingManagementMenu
 
                     try
                     {
-                        clothesController.Update(name, categoryName);
+                        clothingItemController.Update(name, categoryName);
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is CategoryNotFoundException ||
-                        exception is ClothesNotFoundException)
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -207,7 +207,7 @@ public static class FeClothingManagementMenu
 
                     break;
                 case 5:
-                    Console.WriteLine($"{hr}\nWhich clothes do you want to update (clothesName)");
+                    Console.WriteLine($"{hr}\nWhich clothing item do you want to update (clothingItemName)");
 
                     name = Console.ReadLine();
 
@@ -229,13 +229,13 @@ public static class FeClothingManagementMenu
 
                     try
                     {
-                        clothesController.Update(name, stockCount);
+                        clothingItemController.Update(name, stockCount);
                     }
-                    catch (System.Exception exception) when(
+                    catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is NegativeStockValueException ||
-                        exception is ClothesNotFoundException)
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -243,10 +243,18 @@ public static class FeClothingManagementMenu
 
                     break;
                 case 6:
-                    List<Clothes> clothes = clothesController.GetList();
-                    foreach (Clothes cl in clothes)
+                    try
                     {
-                        Console.WriteLine(cl);
+                        List<ClothingItem> clothes = clothingItemController.GetList();
+                        foreach (ClothingItem cl in clothes)
+                        {
+                            Console.WriteLine(cl);
+                        }
+                    }
+                    catch (ClothingItemsNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
                     }
 
                     break;

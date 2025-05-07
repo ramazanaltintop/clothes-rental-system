@@ -9,7 +9,7 @@ public class Rent : BaseEntity<long>
     public ECondition GiveBack { get; set; } = ECondition.FALSE;
     public ECondition IsApproved { get; set; } = ECondition.FALSE;
     public List<CartItem> CartItems { get; set; } = new List<CartItem>();
-    public User User { get; set; }
+    public User User { get; set; } = default!;
     public Admin? RentalAdmin { get; set; }
     public Admin? GiveBackAdmin { get; set; }
     public decimal NetPrice { get; set; }

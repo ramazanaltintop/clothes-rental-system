@@ -2,29 +2,29 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Repository;
 
-public class ClothesRepository : List
+public class ClothingItemRepository : List
 {
-    public void Save(Clothes clothes)
+    public void Save(ClothingItem clothingItem)
     {
-        Clothes.Add(clothes);
+        Clothes.Add(clothingItem);
     }
 
-    public List<Clothes> GetList()
+    public List<ClothingItem> GetList()
     {
         return Clothes;
     }
 
-    public List<Clothes> GetListByRentable()
+    public List<ClothingItem> GetListByRentable()
     {
         return Clothes.Where(cl => cl.StockCount > 0).ToList();
     }
 
-    public List<Clothes> GetListByCategoryName(string categoryName)
+    public List<ClothingItem> GetListByCategoryName(string categoryName)
     {
         return Clothes.Where(cl => cl.Category.Name.Equals(categoryName)).ToList();
     }
 
-    public List<Clothes> GetListByMostRented()
+    public List<ClothingItem> GetListByMostRented()
     {
         return Clothes
             .Where(cl => cl.RentedCount > 0)
@@ -33,12 +33,12 @@ public class ClothesRepository : List
             .ToList();
     }
 
-    public Clothes? GetById(long id)
+    public ClothingItem? GetById(long id)
     {
         return Clothes.FirstOrDefault(cl => cl.Id == id);
     }
 
-    public Clothes? GetByName(string name)
+    public ClothingItem? GetByName(string name)
     {
         return Clothes.FirstOrDefault(cl => cl.Name.Equals(name.ToLower()));
     }
@@ -48,13 +48,13 @@ public class ClothesRepository : List
         return Clothes.Any(cl => cl.Name.Equals(name.ToLower()));
     }
 
-    public void Update(Clothes clothes)
+    public void Update(ClothingItem clothingItem)
     {
-        Console.WriteLine($"{clothes.Name} has been successfully updated.");
+        Console.WriteLine($"{clothingItem.Name} has been successfully updated.");
     }
 
-    public void Remove(Clothes clothes)
+    public void Remove(ClothingItem clothingItem)
     {
-        Clothes.Remove(clothes);
+        Clothes.Remove(clothingItem);
     }
 }

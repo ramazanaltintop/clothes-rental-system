@@ -2,16 +2,16 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Service.Abstract;
 
-public interface IClothesService
+public interface IClothingItemService
 {
     void Save(string name, decimal price, int stockCount, string categoryName);
 
-    List<Clothes> GetList();
-    List<Clothes> GetListByRentable();
-    List<Clothes> GetListByCategoryName(string categoryName);
-    List<Clothes> GetListByMostRented();
-    Clothes GetById(long id);
-    Clothes GetByName(string name);
+    List<ClothingItem> GetList();
+    List<ClothingItem> GetListByRentable();
+    List<ClothingItem> GetListByCategoryName(string categoryName);
+    List<ClothingItem> GetListByMostRented();
+    ClothingItem GetById(long id);
+    ClothingItem GetByName(string name);
 
     void Update(string name, string newName, decimal price);
     void Update(string name, string categoryName);

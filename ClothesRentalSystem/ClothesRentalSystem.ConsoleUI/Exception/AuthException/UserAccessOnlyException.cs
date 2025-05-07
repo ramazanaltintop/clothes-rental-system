@@ -2,8 +2,8 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 
-public class UserOnlyAccessException : ClothesRentalSystemException
+public class UserAccessOnlyException : ClothesRentalSystemException
 {
-    public UserOnlyAccessException()
+    public UserAccessOnlyException()
         : base("You are not authorized to perform this action.") { }
 }

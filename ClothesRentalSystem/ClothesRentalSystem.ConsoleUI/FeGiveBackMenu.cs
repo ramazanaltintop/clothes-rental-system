@@ -59,7 +59,7 @@ public static class FeGiveBackMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
+                        exception is UserAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is GiveBackRequestNotAllowedException ||
                         exception is GiveBackRequestAlreadySentException)
@@ -80,8 +80,8 @@ public static class FeGiveBackMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoGiveBackHistoryFoundException)
+                        exception is UserAccessOnlyException ||
+                        exception is GiveBackHistoryNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -99,8 +99,8 @@ public static class FeGiveBackMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoApprovedGiveBackRequestsException)
+                        exception is UserAccessOnlyException ||
+                        exception is ApprovedGiveBackRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -118,8 +118,8 @@ public static class FeGiveBackMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoRejectedGiveBackRequestsException)
+                        exception is UserAccessOnlyException ||
+                        exception is RejectedGiveBackRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -137,8 +137,8 @@ public static class FeGiveBackMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoPendingGiveBackRequestsException)
+                        exception is UserAccessOnlyException ||
+                        exception is PendingGiveBackRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

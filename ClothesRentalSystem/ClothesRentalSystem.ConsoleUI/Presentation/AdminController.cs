@@ -15,19 +15,19 @@ public class AdminController
             new UserServiceImpl(new UserRepository()));
     }
 
-    public void Save(string username, string email, string password)
-    {
-        _adminService.Save(username, email, password);
-    }
-
     public List<Admin> GetList()
     {
         return _adminService.GetList();
     }
 
-    public void SaveSuperAdmin(string username, string email, string password)
+    public void ChangePasswordWithUsername(string username, string oldPassword, string newPassword)
     {
-        _adminService.SaveSuperAdmin(username, email, password);
+        _adminService.ChangePasswordWithUsername(username, oldPassword, newPassword);
+    }
+
+    public void ChangePasswordWithEmail(string email, string oldPassword, string newPassword)
+    {
+        _adminService.ChangePasswordWithEmail(email, oldPassword, newPassword);
     }
 
     public void PromoteUserToAdmin(string username)

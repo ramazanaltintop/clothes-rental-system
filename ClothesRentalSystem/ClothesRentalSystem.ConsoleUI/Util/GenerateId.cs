@@ -6,7 +6,7 @@ public static class GenerateId
     private static long _authId = 0;
     private static long _userId = 0;
     private static short _categoryId = 0;
-    private static long _clothesId = 0;
+    private static long _clothingItemId = 0;
     private static long _rentId = 0;
 
     public static short GenerateAdminId()
@@ -33,10 +33,10 @@ public static class GenerateId
         return _categoryId;
     }
 
-    public static long GenerateClothesId()
+    public static long GenerateClothingItemId()
     {
-        _clothesId = _clothesId + 1;
-        return _clothesId;
+        _clothingItemId = _clothingItemId + 1;
+        return _clothingItemId;
     }
 
     public static long GenerateRentId()

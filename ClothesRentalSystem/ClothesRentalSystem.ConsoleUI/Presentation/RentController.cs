@@ -14,7 +14,7 @@ public class RentController
         _rentService = new RentServiceImpl(
             new RentRepository(),
             new UserServiceImpl(new UserRepository()),
-            new ClothesServiceImpl(new ClothesRepository(),
+            new ClothingItemServiceImpl(new ClothingItemRepository(),
                 new CategoryServiceImpl(new CategoryRepository(),
                     new AdminServiceImpl(new AdminRepository(),
                         new UserServiceImpl(new UserRepository()))),
@@ -24,9 +24,9 @@ public class RentController
             , new UserServiceImpl(new UserRepository())));
     }
 
-    public void AddToCart(byte day, byte quantity, string clothesName)
+    public void AddToCart(byte day, byte quantity, string clothingItemName)
     {
-        _rentService.AddToCart(day, quantity, clothesName);
+        _rentService.AddToCart(day, quantity, clothingItemName);
     }
 
     public List<Rent> GetListByUsername(string username)
@@ -87,5 +87,10 @@ public class RentController
     public void RejectRequest(long id)
     {
         _rentService.RejectRequest(id);
+    }
+
+    public void ClearCart()
+    {
+        _rentService.ClearCart();
     }
 }

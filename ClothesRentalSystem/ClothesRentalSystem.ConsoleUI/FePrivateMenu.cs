@@ -16,8 +16,9 @@ public static class FePrivateMenu
         AdminController adminController = new AdminController();
         RentController rentController = new RentController();
         GiveBackController giveBackController = new GiveBackController();
+        UserController userController = new UserController();
 
-        Console.WriteLine($"Private Menu");
+        Console.WriteLine($"{hr}\nPrivate Menu");
         int choice = 0;
         while (choice != 8)
         {
@@ -60,6 +61,8 @@ public static class FePrivateMenu
                         adminController.PromoteUserToAdmin(username);
                     }
                     catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is SuperAdminAccessOnlyException ||
                         exception is UserNotFoundException ||
                         exception is AdminAlreadyExistsException)
                     {
@@ -87,6 +90,7 @@ public static class FePrivateMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
+                        exception is SuperAdminAccessOnlyException ||
                         exception is CannotModifySuperAdminRoleException ||
                         exception is UserAlreadyExistsException)
                     {
@@ -98,10 +102,21 @@ public static class FePrivateMenu
 
                     break;
                 case 3:
-                    List<Admin> admins = adminController.GetList();
-                    foreach (Admin admin in admins)
+                    try
                     {
-                        Console.WriteLine(admin);
+                        List<Admin> admins = adminController.GetList();
+                        foreach (Admin admin in admins)
+                        {
+                            Console.WriteLine(admin);
+                        }
+                    }
+                    catch (System.Exception exception) when (
+                        exception is AdminNotFoundException ||
+                        exception is SuperAdminAccessOnlyException ||
+                        exception is AdminsNotFoundException)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
                     }
 
                     break;
@@ -126,8 +141,8 @@ public static class FePrivateMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
-                        exception is NoRentalHistoryFoundException)
+                        exception is SuperAdminAccessOnlyException ||
+                        exception is RentalHistoryNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -145,8 +160,8 @@ public static class FePrivateMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
-                        exception is NoRentalHistoryFoundException)
+                        exception is SuperAdminAccessOnlyException ||
+                        exception is RentalHistoryNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

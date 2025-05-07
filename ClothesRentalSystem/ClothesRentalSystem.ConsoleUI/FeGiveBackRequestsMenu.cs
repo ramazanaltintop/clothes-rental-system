@@ -1,7 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
 using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
@@ -60,11 +60,11 @@ public static class FeGiveBackRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is GiveBackRequestNotFoundException ||
                         exception is GiveBackRequestAlreadyApprovedException ||
-                        exception is ClothesNotFoundException)
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -88,11 +88,11 @@ public static class FeGiveBackRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is GiveBackRequestNotFoundException ||
                         exception is GiveBackRequestAlreadyRejectedException ||
-                        exception is ClothesNotFoundException)
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -120,7 +120,7 @@ public static class FeGiveBackRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is UserNotFoundException ||
                         exception is GiveBackNotFoundException)
                     {
@@ -140,8 +140,8 @@ public static class FeGiveBackRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
-                        exception is NoPendingGiveBackRequestsException)
+                        exception is AdminAccessOnlyException ||
+                        exception is PendingGiveBackRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

@@ -2,8 +2,8 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 
-public class RequireSuperAdminRoleException : ClothesRentalSystemException
+public class SuperAdminAccessOnlyException : ClothesRentalSystemException
 {
-    public RequireSuperAdminRoleException()
+    public SuperAdminAccessOnlyException()
         : base("Only SuperAdmin can perform this action.") { }
 }

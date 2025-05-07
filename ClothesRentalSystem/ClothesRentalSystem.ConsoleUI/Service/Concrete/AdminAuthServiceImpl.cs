@@ -25,15 +25,15 @@ public class AdminAuthServiceImpl : IAdminAuthService
             throw new AlreadyAuthenticatedException(username);
 
         Admin admin = _adminService.GetByUsername(username);
+
         if (!admin.Auth.Password.Equals(password))
             throw new InvalidPasswordException();
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.personId = admin.Id;
+        auth.PersonId = admin.Id;
         auth.Username = username;
         auth.Role = admin.Auth.Role;
-        auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
@@ -50,17 +50,16 @@ public class AdminAuthServiceImpl : IAdminAuthService
 
         Auth auth = new Auth();
         auth.Id = GenerateId.GenerateAuthId();
-        auth.personId = admin.Id;
+        auth.PersonId = admin.Id;
         auth.Email = email;
         auth.Role = admin.Auth.Role;
-        auth.SignInDate = DateTime.UtcNow;
 
         return _repository.SignIn(auth);
     }
 
     public bool SignOut()
     {
-        Auth auth = _repository.GetBypersonId(FeAdminSignInMenu.personId)
+        Auth auth = _repository.GetByPersonId(FeAdminSignInMenu.PersonId)
             ?? throw new NotAuthenticatedException();
 
         return _repository.SignOut(auth);
@@ -68,10 +67,10 @@ public class AdminAuthServiceImpl : IAdminAuthService
 
     public bool HasSuperAdmin()
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role != ERole.SUPERADMIN)
-            throw new RequireSuperAdminRoleException();
+            throw new SuperAdminAccessOnlyException();
 
         return true;
     }

@@ -29,6 +29,11 @@ public class AdminRepository : List
         return Admins.FirstOrDefault(admin => admin.Auth.Email.Equals(email));
     }
 
+    public void Update(Admin admin)
+    {
+        Console.WriteLine($"{admin.Auth.Username} has been updated");
+    }
+
     public void Remove(Admin admin)
     {
         Admins.Remove(admin);

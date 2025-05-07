@@ -24,6 +24,11 @@ public class UserRepository : List
         return Users.FirstOrDefault(user => user.Auth.Email.Equals(email));
     }
 
+    public void Update(User user)
+    {
+        Console.WriteLine($"{user.Auth.Username} has been updated");
+    }
+
     public void Remove(User user)
     {
         Users.Remove(user);

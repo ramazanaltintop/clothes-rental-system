@@ -13,24 +13,24 @@ public class GiveBackServiceImpl : IGiveBackService
     private readonly GiveBackRepository _repository;
     private readonly IUserService _userService;
     private readonly IAdminService _adminService;
-    private readonly IClothesService _clothesService;
+    private readonly IClothingItemService _clothingItemService;
     private readonly IRentService _rentService;
 
-    public GiveBackServiceImpl(GiveBackRepository repository, IUserService userService, IAdminService adminService, IClothesService clothesService, IRentService rentService)
+    public GiveBackServiceImpl(GiveBackRepository repository, IUserService userService, IAdminService adminService, IClothingItemService clothingItemService, IRentService rentService)
     {
         _repository = repository;
         _userService = userService;
         _adminService = adminService;
-        _clothesService = clothesService;
+        _clothingItemService = clothingItemService;
         _rentService = rentService;
     }
 
     public List<Rent> GetListByUsername(string username)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
         _userService.HasUsername(username);
 
@@ -47,14 +47,14 @@ public class GiveBackServiceImpl : IGiveBackService
         User user = _userService.GetById(FeUserSignInMenu.personId);
 
         if (user.Auth.Role != ERole.USER)
-            throw new UserOnlyAccessException();
+            throw new UserAccessOnlyException();
 
-        List<Rent> approvedRentals = _repository.GetListByApproved(user.Id);
+        List<Rent> giveBacks = _repository.GetListByApproved(user.Id);
 
-        if (approvedRentals.Count == 0)
-            throw new NoApprovedGiveBackRequestsException();
+        if (giveBacks.Count == 0)
+            throw new ApprovedGiveBackRequestsNotFoundException();
 
-        return approvedRentals;
+        return giveBacks;
     }
 
     public List<Rent> GetListByPending()
@@ -62,14 +62,14 @@ public class GiveBackServiceImpl : IGiveBackService
         User user = _userService.GetById(FeUserSignInMenu.personId);
 
         if (user.Auth.Role != ERole.USER)
-            throw new UserOnlyAccessException();
+            throw new UserAccessOnlyException();
 
-        List<Rent> pendingRentals = _repository.GetListByPending(user.Id);
+        List<Rent> giveBacks = _repository.GetListByPending(user.Id);
 
-        if (pendingRentals.Count == 0)
-            throw new NoPendingGiveBackRequestsException();
+        if (giveBacks.Count == 0)
+            throw new PendingGiveBackRequestsNotFoundException();
 
-        return pendingRentals;
+        return giveBacks;
     }
 
     public List<Rent> GetListByRejected()
@@ -77,14 +77,14 @@ public class GiveBackServiceImpl : IGiveBackService
         User user = _userService.GetById(FeUserSignInMenu.personId);
 
         if (user.Auth.Role != ERole.USER)
-            throw new UserOnlyAccessException();
+            throw new UserAccessOnlyException();
 
-        List<Rent> rejectedRentals = _repository.GetListByRejected(user.Id);
+        List<Rent> giveBacks = _repository.GetListByRejected(user.Id);
 
-        if (rejectedRentals.Count == 0)
-            throw new NoRejectedGiveBackRequestsException();
+        if (giveBacks.Count == 0)
+            throw new RejectedGiveBackRequestsNotFoundException();
 
-        return rejectedRentals;
+        return giveBacks;
     }
 
     public List<Rent> GetListByApprovedOrRejected()
@@ -92,44 +92,44 @@ public class GiveBackServiceImpl : IGiveBackService
         User user = _userService.GetById(FeUserSignInMenu.personId);
 
         if (user.Auth.Role != ERole.USER)
-            throw new UserOnlyAccessException();
+            throw new UserAccessOnlyException();
 
-        List<Rent> pastRentals = _repository.GetListByApprovedOrRejected(user.Id);
+        List<Rent> giveBacks = _repository.GetListByApprovedOrRejected(user.Id);
 
-        if (pastRentals.Count == 0)
-            throw new NoGiveBackHistoryFoundException();
+        if (giveBacks.Count == 0)
+            throw new GiveBackHistoryNotFoundException();
 
-        return pastRentals;
+        return giveBacks;
     }
 
     public List<Rent> GetListByPendingAll()
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
         List<Rent> giveBacks = _repository.GetListByPendingAll();
 
         if (giveBacks.Count == 0)
-            throw new NoPendingGiveBackRequestsException();
+            throw new PendingGiveBackRequestsNotFoundException();
 
         return giveBacks;
     }
 
     public List<Rent> GetListByAdminDecision()
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role != ERole.SUPERADMIN)
-            throw new RequireSuperAdminRoleException();
+            throw new SuperAdminAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByAdminDecision();
+        List<Rent> giveBacks = _repository.GetListByAdminDecision();
 
-        if (rentals.Count == 0)
-            throw new NoRentalHistoryFoundException();
+        if (giveBacks.Count == 0)
+            throw new RentalHistoryNotFoundException();
 
-        return rentals;
+        return giveBacks;
     }
 
     public void SendRequest(long rentId)
@@ -137,7 +137,7 @@ public class GiveBackServiceImpl : IGiveBackService
         User user = _userService.GetById(FeUserSignInMenu.personId);
 
         if (user.Auth.Role != ERole.USER)
-            throw new UserOnlyAccessException();
+            throw new UserAccessOnlyException();
 
         Rent rent = _rentService.GetById(rentId);
 
@@ -154,10 +154,10 @@ public class GiveBackServiceImpl : IGiveBackService
 
     public void ApproveRequest(long rentId)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
         Rent rent = _rentService.GetById(rentId);
 
@@ -174,7 +174,7 @@ public class GiveBackServiceImpl : IGiveBackService
 
         foreach (CartItem item in items)
         {
-            Clothes cl = _clothesService.GetById(item.Clothes.Id);
+            ClothingItem cl = _clothingItemService.GetById(item.ClothingItem.Id);
             cl.StockCount += item.Quantity;
         }
 
@@ -183,10 +183,10 @@ public class GiveBackServiceImpl : IGiveBackService
 
     public void RejectRequest(long rentId)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
         Rent rent = _rentService.GetById(rentId);
 

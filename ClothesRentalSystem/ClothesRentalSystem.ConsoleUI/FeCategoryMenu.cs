@@ -56,7 +56,7 @@ public static class FeCategoryMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is CategoryAlreadyExistsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -81,7 +81,7 @@ public static class FeCategoryMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is CategoryNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -116,7 +116,7 @@ public static class FeCategoryMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is CategoryNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -125,10 +125,18 @@ public static class FeCategoryMenu
 
                     break;
                 case 4:
-                    List<Category> categories = categoryController.GetList();
-                    foreach (Category category in categories)
+                    try
                     {
-                        Console.WriteLine(category);
+                        List<Category> categories = categoryController.GetList();
+                        foreach (Category category in categories)
+                        {
+                            Console.WriteLine(category);
+                        }
+                    }
+                    catch (CategoriesNotFoundException exception)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
                     }
 
                     break;

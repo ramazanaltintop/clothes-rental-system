@@ -88,75 +88,72 @@ public class List
     };
     protected static List<Category> Categories = new List<Category>()
     {
-        new Category()
+        new Category("takim elbise")
         {
             Id = GenerateId.GenerateCategoryId(),
-            Name = "takim elbise",
         },
-        new Category()
+        new Category("gomlek")
         {
             Id = GenerateId.GenerateCategoryId(),
-            Name = "gomlek"
         },
-        new Category()
+        new Category("pantolon")
         {
             Id = GenerateId.GenerateCategoryId(),
-            Name = "pantolon"
         },
     };
-    protected static List<Clothes> Clothes = new List<Clothes>()
+    protected static List<ClothingItem> Clothes = new List<ClothingItem>()
     {
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "beyaz takim elbise",
             Price = 500,
             StockCount = 13,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("takim elbise"))!
         },
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "siyah takim elbise",
             Price = 400,
             StockCount = 25,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("takim elbise"))!
         },
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "mavi takim elbise",
             Price = 300, 
             StockCount = 36,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("takim elbise"))!
         },
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "beyaz gomlek",
             Price = 100,
             StockCount = 45,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("gomlek"))!
         },
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "siyah gomlek",
             Price = 100,
             StockCount = 45,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("gomlek"))!
         },
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "beyaz pantolon",
             Price = 200,
             StockCount = 0,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("pantolon"))!
         },
-        new Clothes()
+        new ClothingItem()
         {
-            Id = GenerateId.GenerateClothesId(),
+            Id = GenerateId.GenerateClothingItemId(),
             Name = "siyah pantolon",
             Price = 200,
             StockCount = 0,

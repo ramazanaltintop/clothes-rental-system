@@ -1,6 +1,6 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Exception.Base;
 
-namespace ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+namespace ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
 
 public class NegativePriceException : ClothesRentalSystemException
 {

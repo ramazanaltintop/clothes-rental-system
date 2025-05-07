@@ -7,6 +7,7 @@ public class CategoryRepository : List
     public void Save(Category category)
     {
         Categories.Add(category);
+        Console.WriteLine($"{category.Name} has been successfully added.");
     }
 
     public List<Category> GetList()
@@ -32,10 +33,11 @@ public class CategoryRepository : List
     public void Remove(Category category)
     {
         Categories.Remove(category);
+        Console.WriteLine($"{category.Name} has been successfully removed.");
     }
 
     public bool HasName(string name)
     {
-        return Categories.Any(category => category.Name.Equals(name));
+        return Categories.Any(category => category.Name.Equals(name.ToLower()));
     }
 }

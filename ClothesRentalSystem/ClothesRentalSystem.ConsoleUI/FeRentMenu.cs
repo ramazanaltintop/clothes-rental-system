@@ -1,6 +1,6 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
@@ -14,30 +14,31 @@ public static class FeRentMenu
         string hr = Program.HR;
 
         RentController rentController = new RentController();
-        ClothesController clothesController = new ClothesController();
+        ClothingItemController clothingItemController = new ClothingItemController();
 
         Console.WriteLine($"{hr}\nRental Menu");
 
         int choice = 0;
 
-        while (choice != 8)
+        while (choice != 9)
         {
             Console.WriteLine(
                 $"{hr}\n" +
                 "1. Add to Cart\n" +
                 "2. View Cart\n" +
-                "3. Create Rental Request\n" +
-                "4. View Past Rental Requests\n" +
-                "5. View Approved Rental Requests\n" +
-                "6. View Rejected Rental Requests\n" +
-                "7. View Pending Rental Requests\n" +
-                "8. Back to Previous Menu\n");
+                "3. Clear Cart\n" +
+                "4. Create Rental Request\n" +
+                "5. View Past Rental Requests\n" +
+                "6. View Approved Rental Requests\n" +
+                "7. View Rejected Rental Requests\n" +
+                "8. View Pending Rental Requests\n" +
+                "9. Back to Previous Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValid || choice < 1 || choice > 8)
+            if (!isValid || choice < 1 || choice > 9)
             {
                 Console.WriteLine($"{hr}\nInvalid input");
                 continue;
@@ -64,7 +65,7 @@ public static class FeRentMenu
                         continue;
                     }
 
-                    Console.WriteLine($"{hr}\nWhich clothes would you like to rent : (clothesName)");
+                    Console.WriteLine($"{hr}\nWhich clothing item would you like to rent : (clothingItemName)");
                     string? name = Console.ReadLine();
 
                     if (name is null)
@@ -79,8 +80,8 @@ public static class FeRentMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is ClothesNotFoundException ||
+                        exception is UserAccessOnlyException ||
+                        exception is ClothingItemNotFoundException ||
                         exception is OutOfStockException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -99,7 +100,7 @@ public static class FeRentMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
+                        exception is UserAccessOnlyException ||
                         exception is EmptyCartException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -110,14 +111,11 @@ public static class FeRentMenu
                 case 3:
                     try
                     {
-                        rentController.SendRequest();
+                        rentController.ClearCart();
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is EmptyCartException ||
-                        exception is ClothesNotFoundException ||
-                        exception is OutOfStockException)
+                        exception is UserAccessOnlyException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -125,6 +123,23 @@ public static class FeRentMenu
 
                     break;
                 case 4:
+                    try
+                    {
+                        rentController.SendRequest();
+                    }
+                    catch (System.Exception exception) when (
+                        exception is UserNotFoundException ||
+                        exception is UserAccessOnlyException ||
+                        exception is EmptyCartException ||
+                        exception is ClothingItemNotFoundException ||
+                        exception is OutOfStockException)
+                    {
+                        Console.WriteLine($"{hr}\n{exception.Message}");
+                        continue;
+                    }
+
+                    break;
+                case 5:
                     try
                     {
                         List<Rent> approvedOrRejectedRents = rentController.GetListByApprovedOrRejected();
@@ -135,15 +150,15 @@ public static class FeRentMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoRentalHistoryFoundException)
+                        exception is UserAccessOnlyException ||
+                        exception is RentalHistoryNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     break;
-                case 5:
+                case 6:
                     try
                     {
                         List<Rent> approvedRents = rentController.GetListByApproved();
@@ -154,15 +169,15 @@ public static class FeRentMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoApprovedRentalRequestsException)
+                        exception is UserAccessOnlyException ||
+                        exception is ApprovedRentalRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     break;
-                case 6:
+                case 7:
                     try
                     {
                         List<Rent> rejectedRents = rentController.GetListByRejected();
@@ -173,15 +188,15 @@ public static class FeRentMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoRejectedRentalRequestsException)
+                        exception is UserAccessOnlyException ||
+                        exception is RejectedRentalRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     break;
-                case 7:
+                case 8:
                     try
                     {
                         List<Rent> pendingRents = rentController.GetListByPending();
@@ -192,15 +207,15 @@ public static class FeRentMenu
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
-                        exception is UserOnlyAccessException ||
-                        exception is NoPendingRentalRequestsException)
+                        exception is UserAccessOnlyException ||
+                        exception is PendingRentalRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
                     }
 
                     break;
-                case 8:
+                case 9:
                     break;
             }
         }

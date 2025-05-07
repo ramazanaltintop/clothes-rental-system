@@ -2,16 +2,16 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Entity;
 
-public class Clothes : BaseEntity<long>
+public class ClothingItem : BaseEntity<long>
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
     public int StockCount { get; set; }
     public long RentedCount { get; set; }
     public decimal Price { get; set; }
-    public Category Category { get; set; }
+    public Category Category { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
 
-    public Clothes()
+    public ClothingItem()
     {
         CreatedAt = DateTime.UtcNow;
     }

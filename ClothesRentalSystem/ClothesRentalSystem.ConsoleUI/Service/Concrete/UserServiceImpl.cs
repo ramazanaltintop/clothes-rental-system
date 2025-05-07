@@ -1,5 +1,6 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Entity.Enum;
+using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Repository;
 using ClothesRentalSystem.ConsoleUI.Service.Abstract;
@@ -18,8 +19,8 @@ public class UserServiceImpl : IUserService
 
     public void Save(string username, string email, string password)
     {
-        if (HasUsername(username)
-            || _repository.HasEmail(email))
+        if (HasUsername(username) ||
+            _repository.HasEmail(email))
             throw new UserAlreadyExistsException();
 
         User user = new User();
@@ -31,7 +32,7 @@ public class UserServiceImpl : IUserService
 
         _repository.Save(user);
     }
-    
+
     public User GetById(long id)
     {
         return _repository.GetById(id)
@@ -48,6 +49,30 @@ public class UserServiceImpl : IUserService
     {
         return _repository.GetByEmail(email)
             ?? throw new UserNotFoundException($"Email {email}");
+    }
+
+    public void ChangePasswordWithUsername(string username, string oldPassword, string newPassword)
+    {
+        User user = GetByUsername(username);
+
+        if (!user.Auth.Password.Equals(oldPassword))
+            throw new InvalidPasswordException();
+
+        user.Auth.Password = newPassword;
+
+        _repository.Update(user);
+    }
+
+    public void ChangePasswordWithEmail(string email, string oldPassword, string newPassword)
+    {
+        User user = GetByEmail(email);
+
+        if (!user.Auth.Password.Equals(oldPassword))
+            throw new InvalidPasswordException();
+
+        user.Auth.Password = newPassword;
+
+        _repository.Update(user);
     }
 
     public void Remove(long id)

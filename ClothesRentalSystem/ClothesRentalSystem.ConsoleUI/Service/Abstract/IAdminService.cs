@@ -11,7 +11,9 @@ public interface IAdminService
     Admin GetByUsername(string username);
     Admin GetByEmail(string email);
 
-    void SaveSuperAdmin(string username, string email, string password);
+    void ChangePasswordWithUsername(string username, string oldPassword, string newPassword);
+    void ChangePasswordWithEmail(string email, string oldPassword, string newPassword);
+
     void PromoteUserToAdmin(string username);
     void DemoteAdminToUser(string username);
 }

@@ -21,8 +21,8 @@ public class AdminServiceImpl : IAdminService
 
     public void Save(string username, string email, string password)
     {
-        if (_repository.HasUsername(username)
-            || _repository.HasEmail(email))
+        if (_repository.HasUsername(username) ||
+            _repository.HasEmail(email))
             throw new AdminAlreadyExistsException();
 
         Admin admin = new Admin();
@@ -37,12 +37,17 @@ public class AdminServiceImpl : IAdminService
 
     public List<Admin> GetList()
     {
-        Admin admin = GetById(FeAdminSignInMenu.personId);
+        Admin admin = GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role != ERole.SUPERADMIN)
-            throw new AdminOnlyAccessException();
+            throw new SuperAdminAccessOnlyException();
 
-        return _repository.GetList();
+        List<Admin> admins = _repository.GetList();
+
+        if (admins.Count == 0)
+            throw new AdminsNotFoundException();
+
+        return admins;
     }
 
     public Admin GetById(long id)
@@ -63,28 +68,36 @@ public class AdminServiceImpl : IAdminService
             ?? throw new AdminNotFoundException($"Email {email}");
     }
 
-    public void SaveSuperAdmin(string username, string email, string password)
+    public void ChangePasswordWithUsername(string username, string oldPassword, string newPassword)
     {
-        if (_repository.HasUsername(username)
-            || _repository.HasEmail(email))
-            throw new AdminAlreadyExistsException();
+        Admin admin = GetByUsername(username);
 
-        Admin admin = new Admin();
-        admin.Id = GenerateId.GenerateAdminId();
-        admin.Auth.Username = username;
-        admin.Auth.Email = email;
-        admin.Auth.Password = password;
-        admin.Auth.Role = ERole.SUPERADMIN;
+        if (!admin.Auth.Password.Equals(oldPassword))
+            throw new InvalidPasswordException();
 
-        _repository.Save(admin);
+        admin.Auth.Password = newPassword;
+
+        _repository.Update(admin);
+    }
+
+    public void ChangePasswordWithEmail(string email, string oldPassword, string newPassword)
+    {
+        Admin admin = GetByEmail(email);
+
+        if (!admin.Auth.Password.Equals(oldPassword))
+            throw new InvalidPasswordException();
+
+        admin.Auth.Password = newPassword;
+
+        _repository.Update(admin);
     }
 
     public void PromoteUserToAdmin(string username)
     {
-        Admin admin = GetById(FeAdminSignInMenu.personId);
+        Admin admin = GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role != ERole.SUPERADMIN)
-            throw new AdminOnlyAccessException();
+            throw new SuperAdminAccessOnlyException();
 
         User user = _userService.GetByUsername(username);
 
@@ -95,10 +108,10 @@ public class AdminServiceImpl : IAdminService
 
     public void DemoteAdminToUser(string username)
     {
-        Admin admin = GetById(FeAdminSignInMenu.personId);
+        Admin admin = GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role != ERole.SUPERADMIN)
-            throw new AdminOnlyAccessException();
+            throw new SuperAdminAccessOnlyException();
 
         admin = GetByUsername(username);
 

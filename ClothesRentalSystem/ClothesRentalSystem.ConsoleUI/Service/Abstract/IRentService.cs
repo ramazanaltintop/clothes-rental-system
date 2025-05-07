@@ -4,7 +4,7 @@ namespace ClothesRentalSystem.ConsoleUI.Service.Abstract;
 
 public interface IRentService
 {
-    void AddToCart(byte day, byte quantity, string clothesName);
+    void AddToCart(byte day, byte quantity, string clothingItemName);
 
     List<Rent> GetListByUsername(string username);
     List<Rent> GetListByApproved();
@@ -21,4 +21,6 @@ public interface IRentService
     void SendRequest();
     void ApproveRequest(long id);
     void RejectRequest(long id);
+
+    void ClearCart();
 }

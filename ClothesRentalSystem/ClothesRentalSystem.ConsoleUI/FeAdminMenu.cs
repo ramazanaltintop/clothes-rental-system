@@ -63,7 +63,7 @@ public static class FeAdminMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is RequireSuperAdminRoleException)
+                        exception is SuperAdminAccessOnlyException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

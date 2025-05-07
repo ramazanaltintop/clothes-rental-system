@@ -1,7 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
 using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothesException;
+using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
@@ -63,7 +63,7 @@ public static class FeRentalRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is UserNotFoundException ||
                         exception is RentalNotFoundException)
                     {
@@ -83,8 +83,8 @@ public static class FeRentalRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
-                        exception is NoPendingRentalRequestsException)
+                        exception is AdminAccessOnlyException ||
+                        exception is PendingRentalRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -108,11 +108,11 @@ public static class FeRentalRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is RentalRequestAlreadyApprovedException ||
                         exception is RentalRequestAlreadyRejectedException ||
-                        exception is ClothesNotFoundException)
+                        exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -136,7 +136,7 @@ public static class FeRentalRequestsMenu
                     }
                     catch (System.Exception exception) when (
                         exception is AdminNotFoundException ||
-                        exception is AdminOnlyAccessException ||
+                        exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is RentalRequestAlreadyApprovedException ||
                         exception is RentalRequestAlreadyRejectedException)

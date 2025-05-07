@@ -21,30 +21,28 @@ public class CategoryServiceImpl : ICategoryService
 
     public void Save(string name)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
-        if (_repository.HasName(name.ToLower()))
+        if (_repository.HasName(name))
             throw new CategoryAlreadyExistsException(name);
 
-        Category category = new Category();
+        Category category = new Category(name.ToLower());
         category.Id = GenerateId.GenerateCategoryId();
-        category.Name = name.ToLower();
 
         _repository.Save(category);
     }
 
     public List<Category> GetList()
     {
-        return _repository.GetList();
-    }
+        List<Category> categories = _repository.GetList();
 
-    public Category GetById(short id)
-    {
-        return _repository.GetById(id)
-            ?? throw new CategoryNotFoundException($"Id {id}");
+        if (categories.Count == 0)
+            throw new CategoriesNotFoundException();
+
+        return categories;
     }
 
     public Category GetByName(string name)
@@ -55,10 +53,10 @@ public class CategoryServiceImpl : ICategoryService
 
     public void Update(string oldCategoryName, string newCategoryName)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
         Category category = GetByName(oldCategoryName);
 
@@ -69,10 +67,10 @@ public class CategoryServiceImpl : ICategoryService
 
     public void Remove(string name)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.personId);
+        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
 
         if (admin.Auth.Role == ERole.USER)
-            throw new AdminOnlyAccessException();
+            throw new AdminAccessOnlyException();
 
         Category category = GetByName(name.ToLower());
 
