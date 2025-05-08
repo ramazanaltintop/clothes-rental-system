@@ -1,4 +1,5 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
+using ClothesRentalSystem.ConsoleUI.Entity.Enum;
 
 namespace ClothesRentalSystem.ConsoleUI.Repository;
 
@@ -11,7 +12,7 @@ public class AuthRepository : List
         string identity = string.IsNullOrEmpty(auth.Username) ? auth.Email : auth.Username;
         Console.WriteLine($"{identity} successfully signed in\n");
 
-        return auth.PersonId;
+        return auth.UserId;
     }
 
     public bool SignOut(Auth auth)
@@ -24,9 +25,9 @@ public class AuthRepository : List
         return true;
     }
 
-    public Auth? GetByPersonId(long personId)
+    public Auth? GetByUserId(long userId)
     {
-        return Auths.FirstOrDefault(auth => auth.PersonId == personId);
+        return Auths.FirstOrDefault(auth => auth.UserId == userId);
     }
 
     public bool HasUsernameSignedInBefore(string username)

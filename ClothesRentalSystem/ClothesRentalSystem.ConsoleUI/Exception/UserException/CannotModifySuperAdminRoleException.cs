@@ -1,6 +1,6 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Exception.Base;
 
-namespace ClothesRentalSystem.ConsoleUI.Exception.AdminException;
+namespace ClothesRentalSystem.ConsoleUI.Exception.UserException;
 
 public class CannotModifySuperAdminRoleException : ClothesRentalSystemException
 {

@@ -9,7 +9,7 @@ public static class FeUserMenu
     {
         string hr = Program.HR;
 
-        UserAuthController userAuthController = new UserAuthController();
+        AuthController authController = new AuthController();
 
         Console.WriteLine($"User Menu");
         int choice = 0;
@@ -19,7 +19,7 @@ public static class FeUserMenu
                 $"{hr}\n" +
                 "1. Clothing Menu\n" +
                 "2. Rental Menu\n" +
-                "3. Give Back Menu\n" +
+                "3. Manage Returns\n" +
                 "4. Sign Out\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
@@ -43,13 +43,13 @@ public static class FeUserMenu
 
                     break;
                 case 3:
-                    FeGiveBackMenu.Open();
+                    FeReturnMenu.Open();
 
                     break;
                 case 4:
                     try
                     {
-                        userAuthController.SignOut();
+                        authController.SignOut();
                     }
                     catch (NotAuthenticatedException exception)
                     {

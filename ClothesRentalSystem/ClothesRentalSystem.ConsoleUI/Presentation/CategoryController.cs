@@ -12,8 +12,7 @@ public class CategoryController
     public CategoryController()
     {
         _categoryService = new CategoryServiceImpl(new CategoryRepository(),
-            new AdminServiceImpl(new AdminRepository(),
-                new UserServiceImpl(new UserRepository())));
+            new UserServiceImpl(new UserRepository()));
     }
 
     public void Save(string name)

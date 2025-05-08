@@ -12,22 +12,22 @@ public class ClothingItemServiceImpl : IClothingItemService
 {
     private readonly ClothingItemRepository _repository;
     private readonly ICategoryService _categoryService;
-    private readonly IAdminService _adminService;
+    private readonly IUserService _userService;
 
     public ClothingItemServiceImpl(ClothingItemRepository repository,
         ICategoryService categoryService,
-        IAdminService adminService)
+        IUserService userService)
     {
         _repository = repository;
         _categoryService = categoryService;
-        _adminService = adminService;
+        _userService = userService;
     }
 
     public void Save(string name, decimal price, int stockCount, string categoryName)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         if (_repository.HasName(name))
@@ -107,9 +107,9 @@ public class ClothingItemServiceImpl : IClothingItemService
 
     public void Update(string name, string newName, decimal price)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         if (price < 0)
@@ -125,9 +125,9 @@ public class ClothingItemServiceImpl : IClothingItemService
 
     public void Update(string name, string categoryName)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         Category category = _categoryService.GetByName(categoryName);
@@ -141,9 +141,9 @@ public class ClothingItemServiceImpl : IClothingItemService
 
     public void Update(string name, int stockCount)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         if (stockCount < 0)
@@ -158,9 +158,9 @@ public class ClothingItemServiceImpl : IClothingItemService
 
     public void Remove(string name)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         ClothingItem clothingItem = GetByName(name);

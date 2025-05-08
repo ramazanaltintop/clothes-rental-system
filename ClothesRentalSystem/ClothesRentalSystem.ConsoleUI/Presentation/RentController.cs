@@ -16,12 +16,8 @@ public class RentController
             new UserServiceImpl(new UserRepository()),
             new ClothingItemServiceImpl(new ClothingItemRepository(),
                 new CategoryServiceImpl(new CategoryRepository(),
-                    new AdminServiceImpl(new AdminRepository(),
-                        new UserServiceImpl(new UserRepository()))),
-                new AdminServiceImpl(new AdminRepository()
-                , new UserServiceImpl(new UserRepository()))),
-            new AdminServiceImpl(new AdminRepository()
-            , new UserServiceImpl(new UserRepository())));
+                    new UserServiceImpl(new UserRepository())),
+                new UserServiceImpl(new UserRepository())));
     }
 
     public void AddToCart(byte day, byte quantity, string clothingItemName)
@@ -79,14 +75,14 @@ public class RentController
         _rentService.SendRequest();
     }
 
-    public void ApproveRequest(long id)
+    public void ApproveRequest(string ficheName)
     {
-        _rentService.ApproveRequest(id);
+        _rentService.ApproveRequest(ficheName);
     }
 
-    public void RejectRequest(long id)
+    public void RejectRequest(string ficheName)
     {
-        _rentService.RejectRequest(id);
+        _rentService.RejectRequest(ficheName);
     }
 
     public void ClearCart()

@@ -4,6 +4,6 @@ namespace ClothesRentalSystem.ConsoleUI.Exception.UserException;
 
 public class UserNotFoundException : ClothesRentalSystemException
 {
-    public UserNotFoundException(string detail)
-        : base($"User not found: {detail}") { }
+    public UserNotFoundException()
+        : base($"User not found.") { }
 }

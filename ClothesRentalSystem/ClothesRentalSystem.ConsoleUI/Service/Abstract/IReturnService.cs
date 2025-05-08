@@ -2,7 +2,7 @@
 
 namespace ClothesRentalSystem.ConsoleUI.Service.Abstract;
 
-public interface IGiveBackService
+public interface IReturnService
 {
     List<Rent> GetListByUsername(string username);
     List<Rent> GetListByApproved();
@@ -12,7 +12,7 @@ public interface IGiveBackService
     List<Rent> GetListByPendingAll();
     List<Rent> GetListByAdminDecision();
 
-    void SendRequest(long id);
-    void ApproveRequest(long id);
-    void RejectRequest(long id);
+    void SendRequest(string ficheName);
+    void ApproveRequest(string ficheName);
+    void RejectRequest(string ficheName);
 }

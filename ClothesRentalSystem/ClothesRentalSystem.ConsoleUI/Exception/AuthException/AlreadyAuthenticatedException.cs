@@ -4,6 +4,6 @@ namespace ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 
 public class AlreadyAuthenticatedException : ClothesRentalSystemException
 {
-    public AlreadyAuthenticatedException(string usernameOrEmail)
-        : base($"{usernameOrEmail} already logged in.") { }
+    public AlreadyAuthenticatedException()
+        : base($"You are already logged in.") { }
 }

@@ -1,8 +1,8 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
 using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
@@ -88,7 +88,7 @@ public static class FeClothingManagementMenu
                         clothingItemController.Save(name, price, stockCount, categoryName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is ClothingItemAlreadyExistsException ||
                         exception is NegativeStockValueException ||
@@ -116,7 +116,7 @@ public static class FeClothingManagementMenu
                         clothingItemController.Remove(name);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is ClothingItemNotFoundException)
                     {
@@ -160,7 +160,7 @@ public static class FeClothingManagementMenu
                         clothingItemController.Update(name, newName, price);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is NegativePriceException ||
                         exception is ClothingItemNotFoundException)
@@ -196,7 +196,7 @@ public static class FeClothingManagementMenu
                         clothingItemController.Update(name, categoryName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is CategoryNotFoundException ||
                         exception is ClothingItemNotFoundException)
@@ -232,7 +232,7 @@ public static class FeClothingManagementMenu
                         clothingItemController.Update(name, stockCount);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is NegativeStockValueException ||
                         exception is ClothingItemNotFoundException)

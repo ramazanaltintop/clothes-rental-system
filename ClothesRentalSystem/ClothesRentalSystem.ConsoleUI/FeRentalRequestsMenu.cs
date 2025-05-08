@@ -1,5 +1,4 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
@@ -62,9 +61,8 @@ public static class FeRentalRequestsMenu
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
-                        exception is AdminAccessOnlyException ||
                         exception is UserNotFoundException ||
+                        exception is AdminAccessOnlyException ||
                         exception is RentalNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -82,7 +80,7 @@ public static class FeRentalRequestsMenu
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is PendingRentalRequestsNotFoundException)
                     {
@@ -92,11 +90,11 @@ public static class FeRentalRequestsMenu
 
                     break;
                 case 3:
-                    Console.WriteLine($"{hr}\nWhich rental request do you want to approve (rentId)");
+                    Console.WriteLine($"{hr}\nWhich rental request do you want to approve (ficheName)");
 
-                    isValid = int.TryParse(Console.ReadLine(), out int rentId);
+                    string? ficheName = Console.ReadLine();
 
-                    if (!isValid)
+                    if (ficheName is null)
                     {
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
@@ -104,10 +102,10 @@ public static class FeRentalRequestsMenu
 
                     try
                     {
-                        rentController.ApproveRequest(rentId);
+                        rentController.ApproveRequest(ficheName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is RentalRequestAlreadyApprovedException ||
@@ -120,11 +118,11 @@ public static class FeRentalRequestsMenu
 
                     break;
                 case 4:
-                    Console.WriteLine($"{hr}\nWhich rental request do you want to reject (rentId)");
+                    Console.WriteLine($"{hr}\nWhich rental request do you want to reject (ficheName)");
 
-                    isValid = int.TryParse(Console.ReadLine(), out rentId);
+                    ficheName = Console.ReadLine();
 
-                    if (!isValid)
+                    if (ficheName is null)
                     {
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
@@ -132,10 +130,10 @@ public static class FeRentalRequestsMenu
 
                     try
                     {
-                        rentController.RejectRequest(rentId);
+                        rentController.RejectRequest(ficheName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
                         exception is RentalRequestAlreadyApprovedException ||

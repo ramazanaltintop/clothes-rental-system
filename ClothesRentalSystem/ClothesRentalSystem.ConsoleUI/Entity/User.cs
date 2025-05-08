@@ -15,13 +15,11 @@ public class User : BaseEntity<long>
 
     public override string ToString()
     {
-        string message = base.ToString() +
+        return base.ToString() +
             $"Username : {Auth.Username}\n" +
             $"Email : {Auth.Email}\n" +
             $"Password : {Auth.Password}\n" +
             $"Role : {Auth.Role.ToString()}\n" +
             $"CreatedAt : {CreatedAt}\n";
-
-        return message;
     }
 }

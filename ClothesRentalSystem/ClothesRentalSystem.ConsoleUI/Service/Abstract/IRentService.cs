@@ -14,13 +14,14 @@ public interface IRentService
     List<Rent> GetListByPendingAll();
     List<Rent> GetListByAdminDecision();
     Rent GetById(long id);
+    Rent GetByFicheName(string ficheName);
     List<CartItem> GetCart();
     decimal GetTotalEarnings();
     long GetTotalSales();
 
     void SendRequest();
-    void ApproveRequest(long id);
-    void RejectRequest(long id);
+    void ApproveRequest(string ficheName);
+    void RejectRequest(string ficheName);
 
     void ClearCart();
 }

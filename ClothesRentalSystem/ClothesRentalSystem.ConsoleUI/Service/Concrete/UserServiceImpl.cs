@@ -33,27 +33,45 @@ public class UserServiceImpl : IUserService
         _repository.Save(user);
     }
 
+    public List<User> GetListByRole(string role)
+    {
+        bool isValid = Enum.TryParse(role, out ERole result);
+
+        if (!isValid) throw new RoleNotFoundException();
+
+        User user = GetById(Program.UserId);
+
+        if (user.Auth.Role != ERole.SUPERADMIN)
+            throw new SuperAdminAccessOnlyException();
+
+        return _repository.GetListByRole(result);
+    }
+
     public User GetById(long id)
     {
         return _repository.GetById(id)
-            ?? throw new UserNotFoundException($"Id {id}");
+            ?? throw new UserNotFoundException();
     }
     
-    public User GetByUsername(string username)
+    public User? GetByUsername(string username)
     {
-        return _repository.GetByUsername(username)
-            ?? throw new UserNotFoundException($"Username {username}");
+        return _repository.GetByUsername(username);
     }
 
-    public User GetByEmail(string email)
+    public User? GetByEmail(string email)
     {
-        return _repository.GetByEmail(email)
-            ?? throw new UserNotFoundException($"Email {email}");
+        return _repository.GetByEmail(email);
     }
 
-    public void ChangePasswordWithUsername(string username, string oldPassword, string newPassword)
+    public void ChangePassword(string usernameOrEmail, string oldPassword, string newPassword)
     {
-        User user = GetByUsername(username);
+        User? user = GetByUsername(usernameOrEmail);
+
+        if (user is null)
+            user = GetByEmail(usernameOrEmail);
+
+        if (user is null)
+            throw new UserNotFoundException();
 
         if (!user.Auth.Password.Equals(oldPassword))
             throw new InvalidPasswordException();
@@ -61,30 +79,43 @@ public class UserServiceImpl : IUserService
         user.Auth.Password = newPassword;
 
         _repository.Update(user);
-    }
-
-    public void ChangePasswordWithEmail(string email, string oldPassword, string newPassword)
-    {
-        User user = GetByEmail(email);
-
-        if (!user.Auth.Password.Equals(oldPassword))
-            throw new InvalidPasswordException();
-
-        user.Auth.Password = newPassword;
-
-        _repository.Update(user);
-    }
-
-    public void Remove(long id)
-    {
-        User user = _repository.GetById(id)
-            ?? throw new UserNotFoundException($"Id {id}");
-
-        _repository.Remove(user);
     }
 
     public bool HasUsername(string username)
     {
         return _repository.HasUsername(username);
+    }
+
+    public void PromoteUserToAdmin(string username)
+    {
+        User user = GetById(Program.UserId);
+
+        if (user.Auth.Role != ERole.SUPERADMIN)
+            throw new SuperAdminAccessOnlyException();
+
+        User? targetUser = GetByUsername(username);
+
+        if (targetUser is null)
+            throw new UserNotFoundException();
+
+        targetUser.Auth.Role = ERole.ADMIN;
+    }
+
+    public void DemoteAdminToUser(string username)
+    {
+        User user = GetById(Program.UserId);
+
+        if (user.Auth.Role != ERole.SUPERADMIN)
+            throw new SuperAdminAccessOnlyException();
+
+        User? targetUser = GetByUsername(username);
+
+        if (targetUser is null)
+            throw new UserNotFoundException();
+
+        if (targetUser.Auth.Role == ERole.SUPERADMIN)
+            throw new CannotModifySuperAdminRoleException();
+
+        targetUser.Auth.Role = ERole.USER;
     }
 }

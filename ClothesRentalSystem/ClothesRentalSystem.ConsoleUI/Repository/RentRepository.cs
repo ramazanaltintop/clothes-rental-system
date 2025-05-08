@@ -15,57 +15,59 @@ public class RentRepository : List
         return Rents.Where(rent => rent.User.Auth.Username.Equals(username)).ToList();
     }
 
-    public List<Rent> GetListByApproved(long personId)
+    public List<Rent> GetListByApproved(long userId)
     {
         return Rents
             .Where(rent =>
-                rent.User.Id == personId &&
-                rent.IsApproved == ECondition.APPROVED)
+                rent.User.Id == userId &&
+                rent.ApprovalStatus == ECondition.APPROVED)
             .ToList();
     }
 
-    public List<Rent> GetListByPending(long personId)
+    public List<Rent> GetListByPending(long? userId = null)
+    {
+        var query = Rents.Where(rent =>
+            rent.ApprovalStatus == ECondition.REQUESTED);
+
+        if (userId.HasValue)
+        {
+            query = query.Where(rent => rent.User.Id == userId);
+        }
+
+        return query.ToList();
+    }
+
+    public List<Rent> GetListByRejected(long userId)
     {
         return Rents
             .Where(rent =>
-                rent.User.Id == personId &&
-                rent.IsApproved == ECondition.REQUESTED)
+                rent.User.Id == userId &&
+                rent.ApprovalStatus == ECondition.REJECTED)
             .ToList();
     }
 
-    public List<Rent> GetListByRejected(long personId)
-    {
-        return Rents
-            .Where(rent =>
-                rent.User.Id == personId &&
-                rent.IsApproved == ECondition.REJECTED)
-            .ToList();
-    }
-
-    public List<Rent> GetListByApprovedOrRejected(long personId)
+    public List<Rent> GetListByApprovedOrRejected(long userId)
     {
         return Rents.Where(rent =>
-            rent.User.Id == personId &&
-            (rent.IsApproved == ECondition.APPROVED ||
-            rent.IsApproved == ECondition.REJECTED))
-            .ToList();
-    }
-
-    public List<Rent> GetListByPendingAll()
-    {
-        return Rents
-            .Where(rent => rent.IsApproved == ECondition.REQUESTED)
+            rent.User.Id == userId &&
+            (rent.ApprovalStatus == ECondition.APPROVED ||
+            rent.ApprovalStatus == ECondition.REJECTED))
             .ToList();
     }
 
     public List<Rent> GetListByAdminDecision()
     {
-        return Rents.Where(rent => rent.RentalAdmin is not null).ToList();
+        return Rents.Where(rent => rent.RentalApprovedBy is not null).ToList();
     }
 
     public Rent? GetById(long id)
     {
         return Rents.FirstOrDefault(rent => rent.Id == id);
+    }
+
+    public Rent? GetByFicheName(string ficheName)
+    {
+        return Rents.FirstOrDefault(rent => rent.FicheName.Equals(ficheName));
     }
 
     public List<CartItem> GetCart()

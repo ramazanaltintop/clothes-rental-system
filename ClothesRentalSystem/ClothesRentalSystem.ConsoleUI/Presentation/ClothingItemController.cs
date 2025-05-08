@@ -14,10 +14,8 @@ public class ClothingItemController
         _clothingItemService = new ClothingItemServiceImpl(
             new ClothingItemRepository(),
             new CategoryServiceImpl(new CategoryRepository(),
-                new AdminServiceImpl(new AdminRepository(),
-                    new UserServiceImpl(new UserRepository()))),
-            new AdminServiceImpl(new AdminRepository()
-            , new UserServiceImpl(new UserRepository())));
+                new UserServiceImpl(new UserRepository())),
+            new UserServiceImpl(new UserRepository()));
     }
 
     public void Save(string name, decimal price, int stockCount, string categoryName)

@@ -1,5 +1,4 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
@@ -13,10 +12,9 @@ public static class FePrivateMenu
     {
         string hr = Program.HR;
 
-        AdminController adminController = new AdminController();
-        RentController rentController = new RentController();
-        GiveBackController giveBackController = new GiveBackController();
         UserController userController = new UserController();
+        RentController rentController = new RentController();
+        ReturnController returnController = new ReturnController();
 
         Console.WriteLine($"{hr}\nPrivate Menu");
         int choice = 0;
@@ -30,7 +28,7 @@ public static class FePrivateMenu
                 "4. View Total Earnings\n" +
                 "5. View Total Sales\n" +
                 "6. View Admin Rental Decisions\n" +
-                "7. View Admin Give Back Decisions\n" +
+                "7. View Admin Return Decisions\n" +
                 "8. Return to Main Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
@@ -58,13 +56,12 @@ public static class FePrivateMenu
 
                     try
                     {
-                        adminController.PromoteUserToAdmin(username);
+                        userController.PromoteUserToAdmin(username);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
-                        exception is SuperAdminAccessOnlyException ||
                         exception is UserNotFoundException ||
-                        exception is AdminAlreadyExistsException)
+                        exception is SuperAdminAccessOnlyException ||
+                        exception is UserAlreadyExistsException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -86,10 +83,10 @@ public static class FePrivateMenu
 
                     try
                     {
-                        adminController.DemoteAdminToUser(username);
+                        userController.DemoteAdminToUser(username);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is SuperAdminAccessOnlyException ||
                         exception is CannotModifySuperAdminRoleException ||
                         exception is UserAlreadyExistsException)
@@ -104,16 +101,16 @@ public static class FePrivateMenu
                 case 3:
                     try
                     {
-                        List<Admin> admins = adminController.GetList();
-                        foreach (Admin admin in admins)
+                        List<User> users = userController.GetListByRole("ADMIN");
+                        foreach (User user in users)
                         {
-                            Console.WriteLine(admin);
+                            Console.WriteLine(user);
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is SuperAdminAccessOnlyException ||
-                        exception is AdminsNotFoundException)
+                        exception is UsersNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -140,7 +137,7 @@ public static class FePrivateMenu
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is SuperAdminAccessOnlyException ||
                         exception is RentalHistoryNotFoundException)
                     {
@@ -152,14 +149,14 @@ public static class FePrivateMenu
                 case 7:
                     try
                     {
-                        List<Rent> rentals = giveBackController.GetListByAdminDecision();
+                        List<Rent> rentals = returnController.GetListByAdminDecision();
                         foreach (Rent rental in rentals)
                         {
                             Console.WriteLine(rental);
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is SuperAdminAccessOnlyException ||
                         exception is RentalHistoryNotFoundException)
                     {

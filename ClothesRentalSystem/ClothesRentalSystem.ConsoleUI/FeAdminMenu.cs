@@ -1,5 +1,5 @@
-﻿using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
-using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+﻿using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
@@ -10,7 +10,7 @@ public static class FeAdminMenu
     {
         string hr = Program.HR;
 
-        AdminAuthController adminAuthController = new AdminAuthController();
+        AuthController authController = new AuthController();
 
         Console.WriteLine($"{hr}\nAdmin Menu");
 
@@ -23,7 +23,7 @@ public static class FeAdminMenu
                 "1. Categories Menu\n" +
                 "2. Clothing Menu\n" +
                 "3. Rental Requests Menu\n" +
-                "4. Give Back Requests Menu\n" +
+                "4. Return Requests Menu\n" +
                 "5. Private Menu\n" +
                 "6. Sign Out\n");
 
@@ -52,17 +52,17 @@ public static class FeAdminMenu
 
                     break;
                 case 4:
-                    FeGiveBackRequestsMenu.Open();
+                    FeReturnRequestsMenu.Open();
 
                     break;
                 case 5:
                     try
                     {
-                        adminAuthController.HasSuperAdmin();
+                        authController.HasSuperAdmin();
                         FePrivateMenu.Open();
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is SuperAdminAccessOnlyException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -73,7 +73,7 @@ public static class FeAdminMenu
                 case 6:
                     try
                     {
-                        adminAuthController.SignOut();
+                        authController.SignOut();
                     }
                     catch (NotAuthenticatedException exception)
                     {

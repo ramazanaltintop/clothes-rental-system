@@ -7,35 +7,12 @@ namespace ClothesRentalSystem.ConsoleUI.Repository;
 // Database Simulation
 public class List
 {
-    protected static List<Admin> Admins = new List<Admin>()
+    protected static List<Auth> Auths = new List<Auth>();
+    protected static List<User> Users = new List<User>()
     {
-        new Admin()
+        new User()
         {
-            Id = GenerateId.GenerateAdminId(),
-            Auth = new Auth()
-            {
-                Id = GenerateId.GenerateAuthId(),
-                Email = "admin1@hotmail.com",
-                Username = "admin1",
-                Password = "1",
-                Role = ERole.ADMIN,
-            }
-        },
-        new Admin()
-        {
-            Id = GenerateId.GenerateAdminId(),
-            Auth = new Auth()
-            {
-                Id = GenerateId.GenerateAuthId(),
-                Email = "admin2@hotmail.com",
-                Username = "admin2",
-                Password = "2",
-                Role = ERole.ADMIN,
-            }
-        },
-        new Admin()
-        {
-            Id = GenerateId.GenerateAdminId(),
+            Id = GenerateId.GenerateUserId(),
             Auth = new Auth()
             {
                 Id = GenerateId.GenerateAuthId(),
@@ -45,10 +22,30 @@ public class List
                 Role = ERole.SUPERADMIN,
             }
         },
-    };
-    protected static List<Auth> Auths = new List<Auth>();
-    protected static List<User> Users = new List<User>()
-    {
+        new User()
+        {
+            Id = GenerateId.GenerateUserId(),
+            Auth = new Auth()
+            {
+                Id = GenerateId.GenerateAuthId(),
+                Email = "admin1@hotmail.com",
+                Username = "admin1",
+                Password = "1",
+                Role = ERole.ADMIN,
+            }
+        },
+        new User()
+        {
+            Id = GenerateId.GenerateUserId(),
+            Auth = new Auth()
+            {
+                Id = GenerateId.GenerateAuthId(),
+                Email = "admin2@hotmail.com",
+                Username = "admin2",
+                Password = "2",
+                Role = ERole.ADMIN,
+            }
+        },
         new User()
         {
             Id = GenerateId.GenerateUserId(),
@@ -123,7 +120,7 @@ public class List
         {
             Id = GenerateId.GenerateClothingItemId(),
             Name = "mavi takim elbise",
-            Price = 300, 
+            Price = 300,
             StockCount = 36,
             Category = Categories.FirstOrDefault(category => category.Name.Equals("takim elbise"))!
         },

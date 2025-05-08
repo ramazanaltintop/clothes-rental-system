@@ -1,7 +1,7 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
+using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
@@ -55,7 +55,7 @@ public static class FeCategoryMenu
                         categoryController.Save(name);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is CategoryAlreadyExistsException)
                     {
@@ -80,7 +80,7 @@ public static class FeCategoryMenu
                         categoryController.Remove(name);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is CategoryNotFoundException)
                     {
@@ -115,7 +115,7 @@ public static class FeCategoryMenu
                         categoryController.Update(oldCategoryName, newCategoryName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is CategoryNotFoundException)
                     {

@@ -11,19 +11,19 @@ namespace ClothesRentalSystem.ConsoleUI.Service.Concrete;
 public class CategoryServiceImpl : ICategoryService
 {
     private readonly CategoryRepository _repository;
-    private readonly IAdminService _adminService;
+    private readonly IUserService _userService;
 
-    public CategoryServiceImpl(CategoryRepository repository, IAdminService adminService)
+    public CategoryServiceImpl(CategoryRepository repository, IUserService userService)
     {
         _repository = repository;
-        _adminService = adminService;
+        _userService = userService;
     }
 
     public void Save(string name)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         if (_repository.HasName(name))
@@ -53,9 +53,9 @@ public class CategoryServiceImpl : ICategoryService
 
     public void Update(string oldCategoryName, string newCategoryName)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         Category category = GetByName(oldCategoryName);
@@ -67,9 +67,9 @@ public class CategoryServiceImpl : ICategoryService
 
     public void Remove(string name)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         Category category = GetByName(name.ToLower());

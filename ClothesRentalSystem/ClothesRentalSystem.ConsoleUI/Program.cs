@@ -1,9 +1,9 @@
 ﻿namespace ClothesRentalSystem.ConsoleUI;
 
-// Frontend Simulation
 public static class Program
 {
     public static readonly string HR = "----------------------------";
+    public static long UserId { get; set; }
 
     static void Main(string[] args)
     {

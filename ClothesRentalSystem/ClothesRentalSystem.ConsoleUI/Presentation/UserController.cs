@@ -19,13 +19,23 @@ public class UserController
         _userService.Save(username, email, password);
     }
 
-    public void ChangePasswordWithUsername(string username, string oldPassword, string newPassword)
+    public List<User> GetListByRole(string role)
     {
-        _userService.ChangePasswordWithUsername(username, oldPassword, newPassword);
+        return _userService.GetListByRole(role);
     }
 
-    public void ChangePasswordWithEmail(string email, string oldPassword, string newPassword)
+    public void ChangePassword(string username, string oldPassword, string newPassword)
     {
-        _userService.ChangePasswordWithEmail(email, oldPassword, newPassword);
+        _userService.ChangePassword(username, oldPassword, newPassword);
+    }
+
+    public void PromoteUserToAdmin(string username)
+    {
+        _userService.PromoteUserToAdmin(username);
+    }
+
+    public void DemoteAdminToUser(string username)
+    {
+        _userService.DemoteAdminToUser(username);
     }
 }

@@ -1,23 +1,22 @@
 ﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AdminException;
 using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
 using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
-using ClothesRentalSystem.ConsoleUI.Exception.GiveBackException;
+using ClothesRentalSystem.ConsoleUI.Exception.ReturnException;
 using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
 using ClothesRentalSystem.ConsoleUI.Exception.UserException;
 using ClothesRentalSystem.ConsoleUI.Presentation;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
-public static class FeGiveBackRequestsMenu
+public static class FeReturnRequestsMenu
 {
     public static void Open()
     {
         string hr = Program.HR;
 
-        GiveBackController giveBackController = new GiveBackController();
+        ReturnController returnController = new ReturnController();
 
-        Console.WriteLine($"{hr}\nGive Back Requests Menu");
+        Console.WriteLine($"{hr}\nReturn Requests Menu");
 
         int choice = 0;
 
@@ -25,10 +24,10 @@ public static class FeGiveBackRequestsMenu
         {
             Console.WriteLine(
                 $"{hr}\n" +
-                "1. Approve Give Back Requests\n" +
-                "2. Reject Give Back Requests\n" +
-                "3. View a User's Give Back History\n" +
-                "4. View Pending Give Back Requests\n" +
+                "1. Approve Return Requests\n" +
+                "2. Reject Return Requests\n" +
+                "3. View a User's Return History\n" +
+                "4. View Pending Return Requests\n" +
                 "5. Return to Main Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
@@ -44,11 +43,11 @@ public static class FeGiveBackRequestsMenu
             switch (choice)
             {
                 case 1:
-                    Console.WriteLine($"{hr}\nWhich give back request do you want to approve (rentId)");
+                    Console.WriteLine($"{hr}\nWhich return request do you want to approve (ficheName)");
 
-                    isValid = int.TryParse(Console.ReadLine(), out int rentId);
+                    string? ficheName = Console.ReadLine();
 
-                    if (!isValid)
+                    if (ficheName is null)
                     {
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
@@ -56,14 +55,14 @@ public static class FeGiveBackRequestsMenu
 
                     try
                     {
-                        giveBackController.ApproveRequest(rentId);
+                        returnController.ApproveRequest(ficheName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
-                        exception is GiveBackRequestNotFoundException ||
-                        exception is GiveBackRequestAlreadyApprovedException ||
+                        exception is ReturnRequestNotFoundException ||
+                        exception is ReturnRequestAlreadyApprovedException ||
                         exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -72,11 +71,11 @@ public static class FeGiveBackRequestsMenu
 
                     break;
                 case 2:
-                    Console.WriteLine($"{hr}\nWhich give back request do you want to reject (rentId)");
+                    Console.WriteLine($"{hr}\nWhich return request do you want to reject (ficheName)");
 
-                    isValid = int.TryParse(Console.ReadLine(), out rentId);
+                    ficheName = Console.ReadLine();
 
-                    if (!isValid)
+                    if (ficheName is null)
                     {
                         Console.WriteLine($"{hr}\nInvalid input");
                         continue;
@@ -84,14 +83,14 @@ public static class FeGiveBackRequestsMenu
 
                     try
                     {
-                        giveBackController.RejectRequest(rentId);
+                        returnController.RejectRequest(ficheName);
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is RentalRequestNotFoundException ||
-                        exception is GiveBackRequestNotFoundException ||
-                        exception is GiveBackRequestAlreadyRejectedException ||
+                        exception is ReturnRequestNotFoundException ||
+                        exception is ReturnRequestAlreadyRejectedException ||
                         exception is ClothingItemNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
@@ -100,7 +99,7 @@ public static class FeGiveBackRequestsMenu
 
                     break;
                 case 3:
-                    Console.WriteLine($"{hr}\nWhich user's give back history do you want to see (username)");
+                    Console.WriteLine($"{hr}\nWhich user's return history do you want to see (username)");
 
                     string? username = Console.ReadLine();
 
@@ -112,17 +111,17 @@ public static class FeGiveBackRequestsMenu
 
                     try
                     {
-                        List<Rent> giveBacks = giveBackController.GetListByUsername(username);
-                        foreach (Rent rent in giveBacks)
+                        List<Rent> userReturns = returnController.GetListByUsername(username);
+                        foreach (Rent rent in userReturns)
                         {
                             Console.WriteLine(rent);
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
                         exception is UserNotFoundException ||
-                        exception is GiveBackNotFoundException)
+                        exception is ReturnNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
@@ -132,16 +131,16 @@ public static class FeGiveBackRequestsMenu
                 case 4:
                     try
                     {
-                        List<Rent> pendingGiveBacks = giveBackController.GetListByPendingAll();
-                        foreach (Rent rent in pendingGiveBacks)
+                        List<Rent> pendingReturns = returnController.GetListByPendingAll();
+                        foreach (Rent rent in pendingReturns)
                         {
                             Console.WriteLine(rent);
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AdminNotFoundException ||
+                        exception is UserNotFoundException ||
                         exception is AdminAccessOnlyException ||
-                        exception is PendingGiveBackRequestsNotFoundException)
+                        exception is PendingReturnRequestsNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

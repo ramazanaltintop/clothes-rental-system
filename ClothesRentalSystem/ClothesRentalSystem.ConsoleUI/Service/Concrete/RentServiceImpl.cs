@@ -15,19 +15,17 @@ public class RentServiceImpl : IRentService
     private readonly RentRepository _repository;
     private readonly IUserService _userService;
     private readonly IClothingItemService _clothingItemService;
-    private readonly IAdminService _adminService;
 
-    public RentServiceImpl(RentRepository repository, IUserService userService, IClothingItemService clothingItemService, IAdminService adminService)
+    public RentServiceImpl(RentRepository repository, IUserService userService, IClothingItemService clothingItemService)
     {
         _repository = repository;
         _userService = userService;
         _clothingItemService = clothingItemService;
-        _adminService = adminService;
     }
 
     public void AddToCart(byte day, byte quantity, string clothingItemName)
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
@@ -59,110 +57,110 @@ public class RentServiceImpl : IRentService
 
     public List<Rent> GetListByUsername(string username)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
         if (!_userService.HasUsername(username))
-            throw new UserNotFoundException($"Username : {username}");
+            throw new UserNotFoundException();
 
-        List<Rent> rentals = _repository.GetListByUsername(username);
+        List<Rent> userRentals = _repository.GetListByUsername(username);
 
-        if (rentals.Count == 0)
+        if (userRentals.Count == 0)
             throw new RentalNotFoundException();
 
-        return rentals;
+        return userRentals;
     }
 
     public List<Rent> GetListByApproved()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByApproved(user.Id);
+        List<Rent> approvedRentals = _repository.GetListByApproved(user.Id);
 
-        if (rentals.Count == 0)
+        if (approvedRentals.Count == 0)
             throw new ApprovedRentalRequestsNotFoundException();
 
-        return rentals;
+        return approvedRentals;
     }
 
     public List<Rent> GetListByPending()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByPending(user.Id);
+        List<Rent> pendingRentals = _repository.GetListByPending(user.Id);
 
-        if (rentals.Count == 0)
+        if (pendingRentals.Count == 0)
             throw new PendingRentalRequestsNotFoundException();
 
-        return rentals;
+        return pendingRentals;
     }
 
     public List<Rent> GetListByRejected()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByRejected(user.Id);
+        List<Rent> rejectedRentals = _repository.GetListByRejected(user.Id);
 
-        if (rentals.Count == 0)
+        if (rejectedRentals.Count == 0)
             throw new RejectedRentalRequestsNotFoundException();
 
-        return rentals;
+        return rejectedRentals;
     }
 
     public List<Rent> GetListByApprovedOrRejected()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByApprovedOrRejected(user.Id);
+        List<Rent> pastRentals = _repository.GetListByApprovedOrRejected(user.Id);
 
-        if (rentals.Count == 0)
+        if (pastRentals.Count == 0)
             throw new RentalHistoryNotFoundException();
 
-        return rentals;
+        return pastRentals;
     }
 
     public List<Rent> GetListByPendingAll()
     {
-        Admin admin = _adminService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByPendingAll();
+        List<Rent> pendingRentals = _repository.GetListByPending();
 
-        if (rentals.Count == 0)
+        if (pendingRentals.Count == 0)
             throw new PendingRentalRequestsNotFoundException();
 
-        return rentals;
+        return pendingRentals;
     }
 
     public List<Rent> GetListByAdminDecision()
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role != ERole.SUPERADMIN)
+        if (user.Auth.Role != ERole.SUPERADMIN)
             throw new SuperAdminAccessOnlyException();
 
-        List<Rent> rentals = _repository.GetListByAdminDecision();
+        List<Rent> approvedRentals = _repository.GetListByAdminDecision();
 
-        if (rentals.Count == 0)
+        if (approvedRentals.Count == 0)
             throw new RentalHistoryNotFoundException();
 
-        return rentals;
+        return approvedRentals;
     }
 
     public Rent GetById(long id)
@@ -171,11 +169,17 @@ public class RentServiceImpl : IRentService
             ?? throw new RentalRequestNotFoundException();
     }
 
+    public Rent GetByFicheName(string ficheName)
+    {
+        return _repository.GetByFicheName(ficheName)
+            ?? throw new RentalRequestNotFoundException();
+    }
+
     public decimal GetTotalEarnings()
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role != ERole.SUPERADMIN)
+        if (user.Auth.Role != ERole.SUPERADMIN)
             throw new AdminAccessOnlyException();
 
         return _repository.GetTotalEarnings();
@@ -183,19 +187,17 @@ public class RentServiceImpl : IRentService
 
     public long GetTotalSales()
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role != ERole.SUPERADMIN)
+        if (user.Auth.Role != ERole.SUPERADMIN)
             throw new AdminAccessOnlyException();
 
         return _repository.GetTotalSales();
     }
-
-
     
     public List<CartItem> GetCart()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
@@ -210,7 +212,7 @@ public class RentServiceImpl : IRentService
 
     public void SendRequest()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
@@ -231,29 +233,29 @@ public class RentServiceImpl : IRentService
             cartItem.Rent = rent;
         }
 
-        rent.IsApproved = ECondition.REQUESTED;
+        rent.ApprovalStatus = ECondition.REQUESTED;
 
         _repository.ClearCart();
         _repository.SendRequest(rent);
     }
 
-    public void ApproveRequest(long id)
+    public void ApproveRequest(string ficheName)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
-        Rent rent = GetById(id);
+        Rent rent = GetByFicheName(ficheName);
 
-        if (rent.IsApproved == ECondition.APPROVED)
+        if (rent.ApprovalStatus == ECondition.APPROVED)
             throw new RentalRequestAlreadyApprovedException();
 
-        if (rent.IsApproved == ECondition.REJECTED)
+        if (rent.ApprovalStatus == ECondition.REJECTED)
             throw new RentalRequestAlreadyRejectedException();
 
-        rent.IsApproved = ECondition.APPROVED;
-        rent.RentalAdmin = admin;
+        rent.ApprovalStatus = ECondition.APPROVED;
+        rent.RentalApprovedBy = user;
 
         List<CartItem> items = rent.CartItems;
 
@@ -270,30 +272,33 @@ public class RentServiceImpl : IRentService
         _repository.ApproveRequest();
     }
 
-    public void RejectRequest(long id)
+    public void RejectRequest(string ficheName)
     {
-        Admin admin = _adminService.GetById(FeAdminSignInMenu.PersonId);
+        User user = _userService.GetById(Program.UserId);
 
-        if (admin.Auth.Role == ERole.USER)
+        if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
-        Rent rent = GetById(id);
+        Rent? rent = _repository.GetByFicheName(ficheName);
 
-        if (rent.IsApproved == ECondition.APPROVED)
+        if (rent is null)
+            throw new RentalRequestNotFoundException();
+
+        if (rent.ApprovalStatus == ECondition.APPROVED)
             throw new RentalRequestAlreadyApprovedException();
 
-        if (rent.IsApproved == ECondition.REJECTED)
+        if (rent.ApprovalStatus == ECondition.REJECTED)
             throw new RentalRequestAlreadyRejectedException();
 
-        rent.IsApproved = ECondition.REJECTED;
-        rent.RentalAdmin = admin;
+        rent.ApprovalStatus = ECondition.REJECTED;
+        rent.RentalApprovedBy = user;
 
         _repository.RejectRequest();
     }
 
     public void ClearCart()
     {
-        User user = _userService.GetById(FeUserSignInMenu.personId);
+        User user = _userService.GetById(Program.UserId);
 
         if (user.Auth.Role != ERole.USER)
             throw new UserAccessOnlyException();
