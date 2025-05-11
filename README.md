@@ -1,12 +1,14 @@
 # 👗 Clothes Rental System
 
-A console-based clothes rental management application built using **Layered Architecture** in C#. This system enables **users** to browse, rent, and give back clothes, while allowing **admins** to manage clothing inventory, rental requests, and user activity.
+A console-based clothes rental management application built using **Layered Architecture** in C#. This system enables **users** to browse, rent, and return clothes, while allowing **admins** to manage clothing inventory, rental requests, and user activity.
 
 ---
 
 ## 🙋‍♂️ User Menu
 
 ![User Menu](UserMenu0.png "User Menu")
+
+---
 
 ## 🧑‍💻 Admin Menu
 
