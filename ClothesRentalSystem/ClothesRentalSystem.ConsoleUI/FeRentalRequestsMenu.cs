@@ -1,9 +1,10 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
-using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
-using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Entity;
+using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Exception.ClothingItemException;
+using ClothesRentalSystem.Exception.RentalException;
+using ClothesRentalSystem.Exception.UserException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -11,7 +12,7 @@ public static class FeRentalRequestsMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         RentController rentController = new RentController();
 
@@ -103,6 +104,7 @@ public static class FeRentalRequestsMenu
                     try
                     {
                         rentController.ApproveRequest(ficheName);
+                        Console.WriteLine("Rental request approved.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -131,6 +133,7 @@ public static class FeRentalRequestsMenu
                     try
                     {
                         rentController.RejectRequest(ficheName);
+                        Console.WriteLine("Rental request rejected.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -145,6 +148,7 @@ public static class FeRentalRequestsMenu
 
                     break;
                 case 5:
+
                     break;
             }
         }

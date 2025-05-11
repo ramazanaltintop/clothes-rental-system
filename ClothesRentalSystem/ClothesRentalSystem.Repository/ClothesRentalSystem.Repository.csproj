@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClothesRentalSystem.Entity\ClothesRentalSystem.Entity.csproj" />
+    <ProjectReference Include="..\ClothesRentalSystem.Util\ClothesRentalSystem.Util.csproj" />
+  </ItemGroup>
+
+</Project>

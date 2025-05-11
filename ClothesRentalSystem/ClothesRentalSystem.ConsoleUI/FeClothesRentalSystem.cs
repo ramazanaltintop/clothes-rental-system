@@ -1,7 +1,9 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity.Enum;
-using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Entity.Enum;
+using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Exception.UserException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Repository;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -9,7 +11,7 @@ public static class FeClothesRentalSystem
 {
     public static void StartProgram()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         AuthController authController = new AuthController();
         UserController userController = new UserController();
@@ -70,6 +72,7 @@ public static class FeClothesRentalSystem
                     try
                     {
                         userController.Save(username, email, password);
+                        Console.WriteLine($"{username} has been registered.");
                     }
                     catch (UserAlreadyExistsException exception)
                     {
@@ -100,8 +103,11 @@ public static class FeClothesRentalSystem
 
                     try
                     {
-                        Program.UserId = authController.SignIn(usernameOrEmail, password);
-                        ERole role = authController.GetRole(Program.UserId);
+                        List.UserId = authController.SignIn(usernameOrEmail, password);
+
+                        Console.WriteLine($"{usernameOrEmail} successfully signed in.\n");
+
+                        ERole role = authController.GetRole(List.UserId);
                         if (role == ERole.USER)
                         {
                             FeUserMenu.Open();
@@ -155,6 +161,7 @@ public static class FeClothesRentalSystem
                     try
                     {
                         userController.ChangePassword(usernameOrEmail, oldPassword, newPassword);
+                        Console.WriteLine($"{usernameOrEmail} has been updated.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||

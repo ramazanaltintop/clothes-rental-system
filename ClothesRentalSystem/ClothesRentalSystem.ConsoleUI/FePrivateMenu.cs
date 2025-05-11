@@ -1,8 +1,9 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
-using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Entity;
+using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Exception.RentalException;
+using ClothesRentalSystem.Exception.UserException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -10,7 +11,7 @@ public static class FePrivateMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         UserController userController = new UserController();
         RentController rentController = new RentController();
@@ -166,6 +167,7 @@ public static class FePrivateMenu
 
                     break;
                 case 8:
+
                     break;
             }
         }

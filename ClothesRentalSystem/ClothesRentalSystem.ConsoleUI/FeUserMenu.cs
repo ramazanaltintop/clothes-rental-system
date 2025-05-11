@@ -1,5 +1,6 @@
-﻿using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -7,11 +8,11 @@ public static class FeUserMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         AuthController authController = new AuthController();
 
-        Console.WriteLine($"User Menu");
+        Console.WriteLine($"{hr}\nUser Menu");
         int choice = 0;
         while (choice != 4)
         {
@@ -50,6 +51,7 @@ public static class FeUserMenu
                     try
                     {
                         authController.SignOut();
+                        Console.WriteLine($"You have successfully signed out\n");
                     }
                     catch (NotAuthenticatedException exception)
                     {

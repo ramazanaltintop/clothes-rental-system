@@ -1,8 +1,9 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
-using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Entity;
+using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Exception.CategoryException;
+using ClothesRentalSystem.Exception.UserException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -10,7 +11,7 @@ public static class FeCategoryMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         CategoryController categoryController = new CategoryController();
 
@@ -53,6 +54,7 @@ public static class FeCategoryMenu
                     try
                     {
                         categoryController.Save(name);
+                        Console.WriteLine($"{name} has been successfully added.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -78,6 +80,7 @@ public static class FeCategoryMenu
                     try
                     {
                         categoryController.Remove(name);
+                        Console.WriteLine($"{name} has been successfully removed.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -113,6 +116,7 @@ public static class FeCategoryMenu
                     try
                     {
                         categoryController.Update(oldCategoryName, newCategoryName);
+                        Console.WriteLine($"{oldCategoryName} has been successfully updated.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -141,6 +145,7 @@ public static class FeCategoryMenu
 
                     break;
                 case 5:
+
                     break;
             }
         }

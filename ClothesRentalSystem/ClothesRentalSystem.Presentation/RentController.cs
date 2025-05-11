@@ -1,0 +1,92 @@
+﻿using ClothesRentalSystem.Entity;
+using ClothesRentalSystem.Repository;
+using ClothesRentalSystem.Service.Abstract;
+using ClothesRentalSystem.Service.Concrete;
+
+namespace ClothesRentalSystem.Presentation;
+
+public class RentController
+{
+    private readonly IRentService _rentService;
+
+    public RentController()
+    {
+        _rentService = new RentServiceImpl(
+            new RentRepository(),
+            new UserServiceImpl(new UserRepository()),
+            new ClothingItemServiceImpl(new ClothingItemRepository(),
+                new CategoryServiceImpl(new CategoryRepository(),
+                    new UserServiceImpl(new UserRepository())),
+                new UserServiceImpl(new UserRepository())));
+    }
+
+    public void AddToCart(byte day, byte quantity, string clothingItemName)
+    {
+        _rentService.AddToCart(day, quantity, clothingItemName);
+    }
+
+    public List<Rent> GetListByUsername(string username)
+    {
+        return _rentService.GetListByUsername(username);
+    }
+
+    public List<Rent> GetListByApproved()
+    {
+        return _rentService.GetListByApproved();
+    }
+
+    public List<Rent> GetListByPending()
+    {
+        return _rentService.GetListByPending();
+    }
+
+    public List<Rent> GetListByRejected()
+    {
+        return _rentService.GetListByRejected();
+    }
+
+    public List<Rent> GetListByApprovedOrRejected()
+    {
+        return _rentService.GetListByApprovedOrRejected();
+    }
+
+    public List<Rent> GetListByPendingAll()
+    {
+        return _rentService.GetListByPendingAll();
+    }
+
+    public List<Rent> GetListByAdminDecision()
+    {
+        return _rentService.GetListByAdminDecision();
+    }
+
+    public List<CartItem> GetCart()
+    {
+        return _rentService.GetCart();
+    }
+
+    public decimal GetTotalEarnings() => _rentService.GetTotalEarnings();
+
+    public long GetTotalSales() => _rentService.GetTotalSales();
+
+
+    public void SendRequest()
+    {
+        _rentService.SendRequest();
+    }
+
+    public void ApproveRequest(string ficheName)
+    {
+        _rentService.ApproveRequest(ficheName);
+    }
+
+    public void RejectRequest(string ficheName)
+    {
+        _rentService.RejectRequest(ficheName);
+    }
+
+    public void ClearCart()
+    {
+        _rentService.ClearCart();
+    }
+}

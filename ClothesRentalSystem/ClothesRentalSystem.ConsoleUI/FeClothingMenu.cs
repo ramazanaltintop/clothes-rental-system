@@ -1,7 +1,8 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.CategoryException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Entity;
+using ClothesRentalSystem.Exception.CategoryException;
+using ClothesRentalSystem.Exception.ClothingItemException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -9,7 +10,7 @@ public static class FeClothingMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         ClothingItemController clothingItemController = new ClothingItemController();
         CategoryController categoryController = new CategoryController();
@@ -134,6 +135,7 @@ public static class FeClothingMenu
 
                     break;
                 case 6:
+
                     break;
             }
         }

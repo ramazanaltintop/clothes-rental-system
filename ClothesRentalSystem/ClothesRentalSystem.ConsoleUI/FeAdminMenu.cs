@@ -1,6 +1,7 @@
-﻿using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Exception.UserException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -8,7 +9,7 @@ public static class FeAdminMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         AuthController authController = new AuthController();
 
@@ -74,6 +75,7 @@ public static class FeAdminMenu
                     try
                     {
                         authController.SignOut();
+                        Console.WriteLine($"You have successfully signed out\n");
                     }
                     catch (NotAuthenticatedException exception)
                     {

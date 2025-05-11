@@ -1,10 +1,11 @@
-﻿using ClothesRentalSystem.ConsoleUI.Entity;
-using ClothesRentalSystem.ConsoleUI.Exception.AuthException;
-using ClothesRentalSystem.ConsoleUI.Exception.ClothingItemException;
-using ClothesRentalSystem.ConsoleUI.Exception.ReturnException;
-using ClothesRentalSystem.ConsoleUI.Exception.RentalException;
-using ClothesRentalSystem.ConsoleUI.Exception.UserException;
-using ClothesRentalSystem.ConsoleUI.Presentation;
+﻿using ClothesRentalSystem.Entity;
+using ClothesRentalSystem.Exception.AuthException;
+using ClothesRentalSystem.Exception.ClothingItemException;
+using ClothesRentalSystem.Exception.RentalException;
+using ClothesRentalSystem.Exception.ReturnException;
+using ClothesRentalSystem.Exception.UserException;
+using ClothesRentalSystem.Presentation;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.ConsoleUI;
 
@@ -12,7 +13,7 @@ public static class FeReturnRequestsMenu
 {
     public static void Open()
     {
-        string hr = Program.HR;
+        string hr = HR.Get();
 
         ReturnController returnController = new ReturnController();
 
@@ -56,6 +57,7 @@ public static class FeReturnRequestsMenu
                     try
                     {
                         returnController.ApproveRequest(ficheName);
+                        Console.WriteLine("Return request approved.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -84,6 +86,7 @@ public static class FeReturnRequestsMenu
                     try
                     {
                         returnController.RejectRequest(ficheName);
+                        Console.WriteLine("Return request rejected.");
                     }
                     catch (System.Exception exception) when (
                         exception is UserNotFoundException ||
@@ -148,6 +151,7 @@ public static class FeReturnRequestsMenu
 
                     break;
                 case 5:
+
                     break;
             }
         }
