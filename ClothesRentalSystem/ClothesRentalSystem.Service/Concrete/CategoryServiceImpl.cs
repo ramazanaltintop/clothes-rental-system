@@ -29,8 +29,9 @@ public class CategoryServiceImpl : ICategoryService
         if (_repository.HasName(name))
             throw new CategoryAlreadyExistsException(name);
 
-        Category category = new Category(name.ToLower());
+        Category category = new Category();
         category.Id = GenerateId.GenerateCategoryId();
+        category.Name = name.ToLower();
 
         _repository.Save(category);
     }
@@ -72,7 +73,7 @@ public class CategoryServiceImpl : ICategoryService
         if (user.Auth.Role == ERole.USER)
             throw new AdminAccessOnlyException();
 
-        Category category = GetByName(name.ToLower());
+        Category category = GetByName(name);
 
         _repository.Remove(category);
     }

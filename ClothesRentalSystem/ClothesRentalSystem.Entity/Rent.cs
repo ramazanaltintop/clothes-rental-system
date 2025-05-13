@@ -25,7 +25,7 @@ public class Rent : BaseEntity
             $"Fiche Name : {FicheName}\n" +
             $"Username : {User.Auth.Username}\n" +
             $"CartItems : \n{cartItems}\n" +
-            $"Net Price : ${NetPrice}\n" +
+            $"Net Price : {NetPrice:C}\n" +
             $"Return Status : {ReturnStatus.ToString()}\n" +
             $"Approval Status : {ApprovalStatus.ToString()}\n" +
             (RentalApprovedBy is not null ? $"Rental Approved By : {RentalApprovedBy.Auth.Username}\n" : "") +

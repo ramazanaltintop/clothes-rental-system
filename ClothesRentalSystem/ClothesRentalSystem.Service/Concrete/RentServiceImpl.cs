@@ -41,7 +41,6 @@ public class RentServiceImpl : IRentService
 
             cartItem.Day += day;
             cartItem.Quantity += quantity;
-            cartItem.TotalPrice = cartItem.Day * cartItem.Quantity * clothingItem.Price;
         }
         else
         {
@@ -49,7 +48,6 @@ public class RentServiceImpl : IRentService
             cartItem.Day = day;
             cartItem.Quantity = quantity;
             cartItem.ClothingItem = clothingItem;
-            cartItem.TotalPrice = cartItem.Day * cartItem.Quantity * clothingItem.Price;
 
             _repository.AddToCart(cartItem);
         }

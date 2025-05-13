@@ -9,7 +9,7 @@ public class CartItem : BaseEntity
     public ClothingItem ClothingItem { get; set; } = default!;
     public byte Quantity { get; set; }
     public byte Day { get; set; }
-    public decimal TotalPrice { get; set; }
+    public decimal TotalPrice => Quantity * Day * ClothingItem.Price;
 
     public override string ToString()
     {
@@ -18,7 +18,7 @@ public class CartItem : BaseEntity
             $"\tClothing Item's Name : {ClothingItem.Name}\n" +
             $"\tQuantity : {Quantity}\n" +
             $"\tDay : {Day}\n" +
-            $"\tUnit Price : ${ClothingItem.Price}\n" +
-            $"\tTotal Price : ${TotalPrice}\n";
+            $"\tUnit Price : {ClothingItem.Price:C}\n" +
+            $"\tTotal Price : {TotalPrice:C}\n";
     }
 }

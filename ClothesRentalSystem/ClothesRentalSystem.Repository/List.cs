@@ -84,17 +84,20 @@ public class List
     };
     protected static List<Category> Categories = new List<Category>()
     {
-        new Category("takim elbise")
+        new Category()
         {
             Id = GenerateId.GenerateCategoryId(),
+            Name = "takim elbise"
         },
-        new Category("gomlek")
+        new Category()
         {
             Id = GenerateId.GenerateCategoryId(),
+            Name = "gomlek"
         },
-        new Category("pantolon")
+        new Category()
         {
             Id = GenerateId.GenerateCategoryId(),
+            Name = "pantolon"
         },
     };
     protected static List<ClothingItem> Clothes = new List<ClothingItem>()
