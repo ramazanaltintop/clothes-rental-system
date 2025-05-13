@@ -9,7 +9,6 @@ public interface IClothingItemService
     List<ClothingItem> GetList();
     List<ClothingItem> GetListByRentable();
     List<ClothingItem> GetListByCategoryName(string categoryName);
-    List<ClothingItem> GetListByMostRented();
     ClothingItem GetById(long id);
     ClothingItem GetByName(string name);
 

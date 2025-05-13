@@ -2,7 +2,7 @@
 
 namespace ClothesRentalSystem.Entity;
 
-public class User : BaseEntity<long>
+public class User : BaseEntity
 {
     public Auth Auth { get; set; }
     public DateTime CreatedAt { get; set; }

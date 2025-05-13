@@ -38,11 +38,6 @@ public class ClothingItemController
         return _clothingItemService.GetListByCategoryName(categoryName);
     }
 
-    public List<ClothingItem> GetListByMostRented()
-    {
-        return _clothingItemService.GetListByMostRented();
-    }
-
     public void Update(string name, string newName, decimal price)
     {
         _clothingItemService.Update(name, newName, price);

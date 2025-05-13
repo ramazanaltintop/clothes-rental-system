@@ -7,7 +7,6 @@ namespace ClothesRentalSystem.Repository;
 // Database Simulation
 public class List
 {
-    protected static List<Auth> Auths = new List<Auth>();
     protected static List<User> Users = new List<User>()
     {
         new User()
@@ -158,7 +157,7 @@ public class List
         }
     };
     protected static List<Rent> Rents = new List<Rent>();
-    protected static List<CartItem> Cart = new List<CartItem>();
+    protected List<CartItem> Cart = new List<CartItem>();
     protected static decimal TotalEarnings = 0m;
     protected static long TotalSales = 0;
     public static long UserId { get; set; }

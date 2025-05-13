@@ -24,15 +24,6 @@ public class ClothingItemRepository : List
         return Clothes.Where(cl => cl.Category.Name.Equals(categoryName)).ToList();
     }
 
-    public List<ClothingItem> GetListByMostRented()
-    {
-        return Clothes
-            .Where(cl => cl.RentedCount > 0)
-            .OrderByDescending(cl => cl.RentedCount)
-            .Take(5)
-            .ToList();
-    }
-
     public ClothingItem? GetById(long id)
     {
         return Clothes.FirstOrDefault(cl => cl.Id == id);

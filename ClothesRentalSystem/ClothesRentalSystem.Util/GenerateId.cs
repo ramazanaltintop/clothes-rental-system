@@ -4,7 +4,7 @@ public static class GenerateId
 {
     private static long _authId = 0;
     private static long _userId = 0;
-    private static short _categoryId = 0;
+    private static long _categoryId = 0;
     private static long _clothingItemId = 0;
     private static long _rentId = 0;
 
@@ -20,9 +20,9 @@ public static class GenerateId
         return _userId;
     }
 
-    public static short GenerateCategoryId()
+    public static long GenerateCategoryId()
     {
-        _categoryId = (short)(_categoryId + 1);
+        _categoryId = _categoryId + 1;
         return _categoryId;
     }
 

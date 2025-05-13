@@ -1,8 +1,9 @@
-﻿using ClothesRentalSystem.Util;
+﻿using ClothesRentalSystem.Entity.Base;
+using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.Entity;
 
-public class CartItem
+public class CartItem : BaseEntity
 {
     public Rent? Rent { get; set; }
     public ClothingItem ClothingItem { get; set; } = default!;

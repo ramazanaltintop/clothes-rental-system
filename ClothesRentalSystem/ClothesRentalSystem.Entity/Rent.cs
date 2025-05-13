@@ -4,7 +4,7 @@ using ClothesRentalSystem.Entity.Enum;
 
 namespace ClothesRentalSystem.Entity;
 
-public class Rent : BaseEntity<long>
+public class Rent : BaseEntity
 {
     public string FicheName => $"fiche-{Id}";
     public ECondition ReturnStatus { get; set; } = ECondition.FALSE;

@@ -6,7 +6,7 @@ using ClothesRentalSystem.Exception.UserException;
 using ClothesRentalSystem.Presentation;
 using ClothesRentalSystem.Util;
 
-namespace ClothesRentalSystem.ConsoleUI;
+namespace ClothesRentalSystem.UI.ConsoleApp;
 
 public static class FeRentMenu
 {

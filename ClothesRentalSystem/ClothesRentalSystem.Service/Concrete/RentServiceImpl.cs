@@ -263,7 +263,6 @@ public class RentServiceImpl : IRentService
         {
             ClothingItem cl = _clothingItemService.GetById(item.ClothingItem.Id);
             cl.StockCount -= item.Quantity;
-            cl.RentedCount += item.Quantity;
             _repository.SetTotalSales(item.Quantity);
         }
 

@@ -1,4 +1,4 @@
-﻿namespace ClothesRentalSystem.ConsoleUI;
+﻿namespace ClothesRentalSystem.UI.ConsoleApp;
 
 public static class Program
 {

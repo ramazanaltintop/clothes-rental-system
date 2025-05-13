@@ -3,7 +3,7 @@ using ClothesRentalSystem.Exception.UserException;
 using ClothesRentalSystem.Presentation;
 using ClothesRentalSystem.Util;
 
-namespace ClothesRentalSystem.ConsoleUI;
+namespace ClothesRentalSystem.UI.ConsoleApp;
 
 public static class FeAdminMenu
 {
@@ -77,7 +77,7 @@ public static class FeAdminMenu
                         authController.SignOut();
                         Console.WriteLine($"You have successfully signed out\n");
                     }
-                    catch (NotAuthenticatedException exception)
+                    catch (UserNotFoundException exception)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;

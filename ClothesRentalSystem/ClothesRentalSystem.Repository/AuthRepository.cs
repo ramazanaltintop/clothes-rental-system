@@ -4,32 +4,13 @@ namespace ClothesRentalSystem.Repository;
 
 public class AuthRepository : List
 {
-    public long SignIn(Auth auth)
+    public long SignIn(User user)
     {
-        Auths.Add(auth);
-
-        return auth.UserId;
+        return user.Id;
     }
 
-    public bool SignOut(Auth auth)
+    public bool SignOut()
     {
-        Auths.Remove(auth);
-
         return true;
-    }
-
-    public Auth? GetByUserId(long userId)
-    {
-        return Auths.FirstOrDefault(auth => auth.UserId == userId);
-    }
-
-    public bool HasUsernameSignedInBefore(string username)
-    {
-        return Auths.Any(auth => auth.Username.Equals(username));
-    }
-
-    public bool HasEmailSignedInBefore(string email)
-    {
-        return Auths.Any(auth => auth.Email.Equals(email));
     }
 }

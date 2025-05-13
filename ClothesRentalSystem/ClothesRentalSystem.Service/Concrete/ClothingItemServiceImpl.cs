@@ -82,16 +82,6 @@ public class ClothingItemServiceImpl : IClothingItemService
 
         return clothes;
     }
-    
-    public List<ClothingItem> GetListByMostRented()
-    {
-        List<ClothingItem> clothes = _repository.GetListByMostRented();
-
-        if (clothes.Count == 0)
-            throw new RentedClothingItemsNotFoundException();
-
-        return clothes;
-    }
 
     public ClothingItem GetById(long id)
     {

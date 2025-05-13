@@ -4,7 +4,7 @@ using ClothesRentalSystem.Exception.ClothingItemException;
 using ClothesRentalSystem.Presentation;
 using ClothesRentalSystem.Util;
 
-namespace ClothesRentalSystem.ConsoleUI;
+namespace ClothesRentalSystem.UI.ConsoleApp;
 
 public static class FeClothingMenu
 {
@@ -19,7 +19,7 @@ public static class FeClothingMenu
 
         int choice = 0;
 
-        while (choice != 6)
+        while (choice != 5)
         {
             Console.WriteLine(
                 $"{hr}\n" +
@@ -27,14 +27,13 @@ public static class FeClothingMenu
                 "2. View All Categories\n" +
                 "3. View Clothes by Category\n" +
                 "4. View Available Clothes\n" +
-                "5. View Most Rented Clothes\n" +
-                "6. Back to Previous Menu\n");
+                "5. Back to Previous Menu\n");
 
             Console.WriteLine($"{hr}\nYour choice : ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValid || choice < 1 || choice > 6)
+            if (!isValid || choice < 1 || choice > 5)
             {
                 Console.WriteLine($"{hr}\nInvalid input");
                 continue;
@@ -119,22 +118,6 @@ public static class FeClothingMenu
 
                     break;
                 case 5:
-                    try
-                    {
-                        List<ClothingItem> clothes = clothingItemController.GetListByMostRented();
-                        foreach (ClothingItem cl in clothes)
-                        {
-                            Console.WriteLine(cl);
-                        }
-                    }
-                    catch (RentedClothingItemsNotFoundException exception)
-                    {
-                        Console.WriteLine($"{hr}\n{exception.Message}");
-                        continue;
-                    }
-
-                    break;
-                case 6:
 
                     break;
             }

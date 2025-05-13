@@ -4,7 +4,6 @@ using ClothesRentalSystem.Exception.AuthException;
 using ClothesRentalSystem.Exception.UserException;
 using ClothesRentalSystem.Repository;
 using ClothesRentalSystem.Service.Abstract;
-using ClothesRentalSystem.Util;
 
 namespace ClothesRentalSystem.Service.Concrete;
 
@@ -21,12 +20,6 @@ public class AuthServiceImpl : IAuthService
 
     public long SignIn(string usernameOrEmail, string password)
     {
-        if (_repository.HasUsernameSignedInBefore(usernameOrEmail))
-            throw new AlreadyAuthenticatedException();
-
-        if (_repository.HasEmailSignedInBefore(usernameOrEmail))
-            throw new AlreadyAuthenticatedException();
-
         User? user = _userService.GetByUsername(usernameOrEmail);
 
         if (user is null)
@@ -38,21 +31,14 @@ public class AuthServiceImpl : IAuthService
         if (!user.Auth.Password.Equals(password))
             throw new InvalidPasswordException();
 
-        Auth auth = new Auth();
-        auth.Id = GenerateId.GenerateAuthId();
-        auth.UserId = user.Id;
-        auth.Username = usernameOrEmail;
-        auth.Role = user.Auth.Role;
-
-        return _repository.SignIn(auth);
+        return _repository.SignIn(user);
     }
 
     public bool SignOut()
     {
-        Auth auth = _repository.GetByUserId(List.UserId)
-            ?? throw new NotAuthenticatedException();
+        User user = _userService.GetById(List.UserId);
 
-        return _repository.SignOut(auth);
+        return _repository.SignOut();
     }
 
     public bool HasSuperAdmin()
@@ -67,11 +53,11 @@ public class AuthServiceImpl : IAuthService
 
     public ERole GetRole(long userId)
     {
-        Auth? auth = _repository.GetByUserId(userId);
+        User user = _userService.GetById(userId);
 
-        if (auth is null)
+        if (user.Auth is null)
             throw new AuthNotFoundException();
 
-        return auth.Role;
+        return user.Auth.Role;
     }
 }

@@ -5,7 +5,7 @@ using ClothesRentalSystem.Presentation;
 using ClothesRentalSystem.Repository;
 using ClothesRentalSystem.Util;
 
-namespace ClothesRentalSystem.ConsoleUI;
+namespace ClothesRentalSystem.UI.ConsoleApp;
 
 public static class FeClothesRentalSystem
 {
@@ -118,9 +118,9 @@ public static class FeClothesRentalSystem
                         }
                     }
                     catch (System.Exception exception) when (
-                        exception is AlreadyAuthenticatedException ||
                         exception is InvalidPasswordException ||
-                        exception is UserNotFoundException)
+                        exception is UserNotFoundException ||
+                        exception is AuthNotFoundException)
                     {
                         Console.WriteLine($"{hr}\n{exception.Message}");
                         continue;
